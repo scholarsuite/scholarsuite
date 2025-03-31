@@ -1,0 +1,19 @@
+{
+  "name": "scholarsuite",
+  "version": "0.0.0",
+  "description": "Scholarsuite est un système complet de gestion scolaire conçu pour aider les enseignants et les administrateurs à gérer efficacement les opérations académiques.",
+  "author": "Augustin Mauroy",
+  "license": "MIT",
+  "scripts": {
+    "db:generate": "prisma generate",
+    "db:push": "prisma db push",
+    "db:migrate": "prisma migrate dev",
+    "db:studio": "prisma studio",
+    "db:format": "prisma format"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.14",
+    "prisma": "^6.5.0",
+    "typescript": "^5.8.2"
+  }
+}
