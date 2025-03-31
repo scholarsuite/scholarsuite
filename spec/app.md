@@ -1,50 +1,69 @@
 # Scholarsuite app specification
 
-Scholarsuite est une application de gestion de vie scolaire et de gestion de la scolarité. Elle est destinée aux enseignants et aux administrateurs d'établissements scolaires.
+Scholarsuite est une application de gestion de vie scolaire. Elle est destinée aux enseignants et aux administrateurs d'établissements scolaires.
 
 ## Objectif
 
-L'objectif de cette application est de permettre aux enseignants et aux administrateurs d'établissements scolaires de gérer la vie scolaire et la scolarité des élèves. L'application doit permettre de gérer les notes, les absences, les bulletins scolaires, les relevés de notes, etc.
+- Gestion des présence
+  - Pointage: présence, retard, absence
+  - Création de justification
+  - Statistique corroboré entre pointage et justification
+- Gestion des rapports diciplinaire
+  - Création
+  - Suivis: overt, fermer, traité
+- Gestion des notes
+  - Par période
+  - Génération de bulletin
+  - Gestion du conseil de classe
 
-## Profils utilisateur
+Ne sont pas pris comme nécéssaires pour une version viable:
 
-- **Gestionaire**: Iels sont responsable de la gestion des utilisateurs, des travaux, des classes, des groupes, des années scolaires, des périodes de cotes, des tranches horaires.
-- **Direction**: Iels peuvent gérer les utilisateurs, les élèves, les classes, les groupes, les années scolaires, les périodes de cotes, les tranches horaires. Iels sont également responsables de la gestion des rapports disciplinaires et de la gestion des justifications d'absence.
-- **Administration**: Iels peuvent gérer les utilisateurs, les élèves, les classes, les groupes, les années scolaires, les périodes de cotes, les tranches horaires.
-- **Educateur•es**: Iels peuvent prendre le pointage des élèves. Iels peuvent également crée un rapport disciplinaire pour un élève. Mais aussi iels peuvent introduire les justificatifs d'absence.
-- **Enseignants**: Iels sont responsables de prendre le pointage des élèves, et d'introduire les notes des élèves. Iels peuvent également crée un rapport disciplinaire pour un élève.
+- Gestion des horaires
+- Gestion des locaux
+- Gestion du matériel
+- Gestion du "journal de classe"
+- Consultation des notes par les élèves + bulettin électronique
+- Communication avec les parents
+
+## Les grands rôles
+
+- **Administrateur système**: Corespond au responsable informatique, de la configuration du sytème
+  - Paramètrage de l'application
+  - Configuration et maintenance des données de base
+- **Gestionaire**: Corespond à la direction, au personnel administratif, aux éducateurs...
+  - Gestion des données de base de l'application
+  - Introduction de nouveaux utilisateur
+  - Suivis des rapports diciplinaire
+  - Gestion des conseils de classe
+  - Introduction de nouveaux élèves
+- **Enseignants**:
+  - Gestion des présences
+  - Introduction des notes
+  - Création de rapports diciplinaires
+- **Elèves**: n'ont pas accès au système dans un premier temps
 
 ## "User stories"
 
-### Gestionnaire
+<!--
+"en tant que <role>, : e veux pouvoir
+- <action> pour <but>"
+-->
 
-1. En tant que gestionnaire, je veux pouvoir inscrire de nouveaux utilisateurs afin qu'ils puissent accéder à l'application.
+### Administrateur système
 
-2. **En tant que gestionnaire, je veux pouvoir attribuer des rôles et des permissions aux utilisateurs pour qu'ils aient les accès nécessaires à leurs tâches.
+En tant qu'administrateur système, je veux pouvoir:
 
-### Direction
+### Gestionaire
 
-3. En tant que membre de la direction, je veux pouvoir consulter et gérer les rapports disciplinaires afin de suivre les comportements des élèves.
-
-4. En tant que membre de la direction, je veux pouvoir justifier les absences des élèves pour assurer un suivi précis des présences.
-
-### Administration
-
-5. En tant qu'administrateur, je veux pouvoir inscrire de nouveaux élèves afin de les intégrer dans le système.
-
-6. En tant qu'administrateur, je veux pouvoir gérer les informations personnelles des élèves pour les tenir à jour.
-
-### Éducateur
-
-7. En tant qu'éducateur, je veux pouvoir prendre le pointage des élèves pour suivre leur présence en classe.
-
-8. En tant qu'éducateur, je veux pouvoir créer un rapport disciplinaire pour signaler un comportement inapproprié.
+En tant que gestionaire, je veux pouvoir:
 
 ### Enseignant
 
-9. En tant qu'enseignant, je veux pouvoir introduire les notes des élèves pour évaluer leur performance.
+En tant qu'enseignant, je veux pouvoir:
 
-10. *En tant qu'enseignant, je veux pouvoir générer des bulletins scolaires pour communiquer les résultats aux élèves et à leurs parents.
+### Elève
+
+Les élèves n'ont pas accès au système dans un premier temps.
 
 ## Fonctionnalités
 

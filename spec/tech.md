@@ -10,10 +10,8 @@
 - [Auth.js](https://authjs.dev/) - Bibliothèque d'authentification pour Next.js
 - [Prisma](https://www.prisma.io/) - ORM pour Node.js et TypeScript
 - [PostgreSQL](https://www.postgresql.org/) - Système de gestion de base de données relationnelle
-
 - [react-pdf](https://react-pdf.org/) - Librairie pour générer des PDF à partir de composants React
 - [react-email](https://react.email/) - Librairie pour générer des emails à partir de composants React
-
 - [storybook](https://storybook.js.org/) - Outil de développement pour créer des composants d'interface utilisateur isolés
 - [nodejs-loader](https://nodejs-loaders.github.io) - Suites de loaders pour Node.js afin de charger des fichiers "frontend" dans Node.js. Uniquement pour le test
 
