@@ -11,15 +11,21 @@
 - [Prisma](https://www.prisma.io/) - ORM pour Node.js et TypeScript
 - [PostgreSQL](https://www.postgresql.org/) - Système de gestion de base de données relationnelle
 
+- [react-pdf](https://react-pdf.org/) - Librairie pour générer des PDF à partir de composants React
+- [react-email](https://react.email/) - Librairie pour générer des emails à partir de composants React
+
+- [storybook](https://storybook.js.org/) - Outil de développement pour créer des composants d'interface utilisateur isolés
+- [nodejs-loader](https://nodejs-loaders.github.io) - Suites de loaders pour Node.js afin de charger des fichiers "frontend" dans Node.js. Uniquement pour le test
+
 ## Architecture
 
 - **Client** : Application React qui s'exécute dans le navigateur de l'utilisateur
 - **Serveur** : Application Node.js qui s'exécute sur le serveur
 - **Base de données** : PostgreSQL pour stocker les données de l'application
-- **API** : Prisma pour interagir avec la base de données
+- **API** : Prisma pour interagir avec la base de données. Et Next.js pour créer des API RESTful
 - **Authentification** : Auth.js pour gérer l'authentification des utilisateurs
 - **Déploiement** : Service no-serverless pour héberger l'application (docker, kubernetes, etc.)
-- **Testing** : Node test runner pour les tests unitaires et d'intégration
+- **Testing** : Node native test runner pour les tests unitaires et d'intégration. Et storybook pour les tests d'interface utilisateur
 - **CI/CD** : Github actions pour l'intégration continue et le déploiement continu
 - **Documentation** : Markdown pour la documentation technique
 
@@ -32,3 +38,16 @@ Il faudrais idéalement utiliser que les composant client side, car l'applicatio
 - Google
 - Github _peut être juste pour le dev_
 - Microsoft
+
+## Déploiement/environnement
+
+- Dev : Environnement de développement local
+  - Base de données locale, mockée à l'aide d'un script
+  - Pas d'utilsation d'https
+- Staging : Environnement de pré-production
+  - Base de données de pré-production, potentiellement mockée
+  - Utilisation d'https
+  - Peut-etre utiliser pour les tests de charge, test d'integration, etc.
+- Production : Environnement de production
+  - Base de données de production
+  - Utilisation d'https
