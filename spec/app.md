@@ -57,9 +57,13 @@ En tant qu'administrateur système, je veux pouvoir:
 
 En tant que gestionaire, je veux pouvoir:
 
-### Enseignant
+### Enseignant•e
 
-En tant qu'enseignant, je veux pouvoir:
+En tant qu'enseignant•e, je veux pouvoir:
+- accéder à la liste des élèves de mon cours
+- faire les pointages de mes élèves le plus rapidement possible
+- crée un rapport disciplinaire pour un élève
+- introduire les notes de mes élèves
 
 ### Elève
 
