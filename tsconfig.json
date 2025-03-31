@@ -1,6 +1,10 @@
 {
-"compilerOptions": {
-    "lib": ["dom", "dom.iterable", "esnext"],
+  "compilerOptions": {
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "allowImportingTsExtensions": true,
     "skipLibCheck": true,
@@ -15,12 +19,22 @@
     "incremental": true,
     "target": "ESNext",
     "paths": {
-        "~/*": ["./*"]
-        }
+      "~/*": [
+        "./*"
+      ]
     },
-    "include": [
-        "**/*.ts",
-        "**/*.tsx",
-    ],
-    "exclude": ["node_modules"]
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }
