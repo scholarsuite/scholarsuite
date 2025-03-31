@@ -2,15 +2,15 @@ import GitHub from 'next-auth/providers/github';
 import type { NextAuthConfig } from 'next-auth';
 
 export default {
-    providers: [GitHub],
-    pages: {
+	providers: [GitHub],
+	pages: {
 		signIn: '/login',
 		signOut: '/logout',
 	},
 	callbacks: {
 		authorized: async ({ auth }) => {
 			// Logged in users are authenticated, otherwise redirect to login page
-			return !!auth
+			return !!auth;
 		},
 		jwt({ token, user }) {
 			if (user) {
@@ -24,5 +24,5 @@ export default {
 			}
 			return session;
 		},
-	}
+	},
 } as NextAuthConfig;

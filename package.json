@@ -7,6 +7,12 @@
   "type": "module",
   "scripts": {
     "build": "next build",
+    "biome:ci": "biome ci ./",
+    "biome:format": "biome format ./",
+    "biome:format:write": "biome format --write ./",
+    "biome:lint": "biome lint ./",
+    "biome:lint:fix": "biome lint --fix ./",
+    "biome:lint:fix:unsafe": "biome lint --fix --unsafe ./",
     "db:generate": "prisma generate",
     "db:push": "prisma db push",
     "db:migrate": "prisma migrate dev",
@@ -14,7 +20,8 @@
     "db:format": "prisma format",
     "dev": "next dev",
     "start": "next start",
-    "type:check": "tsc --noEmit"
+    "type:check": "tsc --noEmit",
+    "pre-commit": "node --run biome:lint:fix && node --run biome:format:write"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.8.0",
@@ -29,6 +36,7 @@
     "undici": "^7.6.0"
   },
   "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
     "@types/node": "^22.13.14",
     "@types/react": "^19.0.12",
     "@types/react-dom": "^19.0.4",

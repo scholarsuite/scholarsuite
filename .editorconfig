@@ -2,10 +2,24 @@
 root = true
 
 [*]
-charset = utf-8
+indent_style = tab
 end_of_line = lf
-insert_final_newline = true
+charset = utf-8
 trim_trailing_whitespace = true
+insert_final_newline = true
+tab_width = 4
+
+[*.json]
+indent_style = space
+indent_size = 2
+max_line_length = 50
+
+[*.{yaml,yml}]
+indent_style = space
+
+[*.css]
+indent_style = tab
+ident_size = 2
 
 [*.md]
 indent_style = space
