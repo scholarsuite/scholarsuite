@@ -44,18 +44,30 @@ Ne sont pas pris comme nécéssaires pour une version viable:
 
 ## "User stories"
 
-<!--
-"en tant que <role>, : e veux pouvoir
-- <action> pour <but>"
--->
-
 ### Administrateur système
 
 En tant qu'administrateur système, je veux pouvoir:
+- créer un utilisateur
+- archiver un utilisateur
+- réinitialiser le mot de passe d'un utilisateur
+- gérer les rôles et permissions des utilisateurs
+- définir des années scolaires, par une date de début et de fin
+- définir des périodes de cotes, par une date de début et de fin
+- définir des tranches horaires, par une heure de début et un ordre
+- définir des groupes, par une liste d'élèves
+- définir des classes, par une liste d'élèves
 
 ### Gestionaire
 
 En tant que gestionaire, je veux pouvoir:
+- faire le suivis des rapports disciplinaires par élève
+  - fermer un rapport disciplinaire
+  - émettre un commentaire sur un rapport disciplinaire
+  - marquer un rapport disciplinaire comme traité
+  - notifier l'enseignant ou le contact de l'élève
+- avoir un aperçu des de chaque élève l'un à la suite de l'autre pour le conseil de classe
+- introduire un commentaire pour chaque élève lors du conseil de classe
+- introduire des justifications d'absence
 
 ### Enseignant•e
 
@@ -64,6 +76,7 @@ En tant qu'enseignant•e, je veux pouvoir:
 - faire les pointages de mes élèves le plus rapidement possible
 - crée un rapport disciplinaire pour un élève
 - introduire les notes de mes élèves
+- introduire un commentaire chaque période de cote
 
 ### Elève
 
