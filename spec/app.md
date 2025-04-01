@@ -91,6 +91,8 @@ Cette liste peut être amenée à évoluer au fur et à mesure de l'avancement d
   - Connexion des utilisateurs
   - Gestion des rôles (enseignant, administrateur ...)
   - Gestion des permissions
+  - Archivage des utilisateurs
+  - Réinitialisation du mot de passe
 - Gestion des élèves
   - Inscription des élèves
   - Gestion des informations personnelles des élèves
@@ -111,6 +113,7 @@ Cette liste peut être amenée à évoluer au fur et à mesure de l'avancement d
   - Notification email
 - Gestion de justification d'absence
   - Cela se représente par une période donnée qui est comparée à une période d'absence.
+- "Dashboard" pour les conseil de classes
 
 - I18n (internationalisation), sûrement l'anglais et le français.
 - "Monitoring and logging"
