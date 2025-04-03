@@ -1,20 +1,12 @@
-# Scholarsuite app specification
+# ScholarSuite app specification
 
-Scholarsuite est une application de gestion de vie scolaire. Elle est destinée aux enseignants et aux administrateurs d'établissements scolaires.
+ScholarSuite est une application de gestion de vie scolaire. Elle est destinée aux enseignants et aux administrateurs d'établissements scolaires.
 
-## Objectif
+## Objectifs
 
-- Gestion des présence
-  - Pointage: présence, retard, absence
-  - Création de justification
-  - Statistique corroboré entre pointage et justification
-- Gestion des rapports diciplinaire
-  - Création
-  - Suivis: overt, fermer, traité
-- Gestion des notes
-  - Par période
-  - Génération de bulletin
-  - Gestion du conseil de classe
+- Gestion des présences
+- Gestion des rapports diciplinaires
+- Gestion des périodes d'évaluation
 
 Ne sont pas pris comme nécéssaires pour une version viable:
 
@@ -28,38 +20,35 @@ Ne sont pas pris comme nécéssaires pour une version viable:
 ## Les grands rôles
 
 - **Administrateur système**: Corespond au responsable informatique, de la configuration du sytème
-  - Paramètrage de l'application
-  - Configuration et maintenance des données de base
+  - Paramètrage de l'application: périodes de cours, créneaux horaires
+  - Gestion des utilisateurs et des rôles
 - **Gestionaire**: Corespond à la direction, au personnel administratif, aux éducateurs...
-  - Gestion des données de base de l'application
-  - Introduction de nouveaux utilisateur
+  - Gestion des années scolaires
   - Suivis des rapports diciplinaire
+  - Introduction de justificatifs d'absence
   - Gestion des conseils de classe
-  - Introduction de nouveaux élèves
 - **Enseignants**:
-  - Gestion des présences
-  - Introduction des notes
-  - Création de rapports diciplinaires
+  - Pointage des élèves par groupe ou classe sur une période de cours
+  - Introduction des notes pour une matière, pour tous les élèves de la classe ou du groupe durant une période d'évaluation
+  - Création de rapports diciplinaires pour un élève
+  - Introduction de commentaire sur la période d'évaluation par matière
 - **Elèves**: n'ont pas accès au système dans un premier temps
 
 ## "User stories"
 
 ### Administrateur système
 
-En tant qu'administrateur système, je veux pouvoir:
+En tant qu'administrateur système, je veux:
 - créer un utilisateur
 - archiver un utilisateur
 - réinitialiser le mot de passe d'un utilisateur
 - gérer les rôles et permissions des utilisateurs
-- définir des années scolaires, par une date de début et de fin
-- définir des périodes de cotes, par une date de début et de fin
-- définir des tranches horaires, par une heure de début et un ordre
-- définir des groupes, par une liste d'élèves
-- définir des classes, par une liste d'élèves
+- mettre en place les périodes de cours
+- mettre en place les unités de comptabilisation des absences
 
 ### Gestionaire
 
-En tant que gestionaire, je veux pouvoir:
+En tant que gestionaire, je veux:
 - faire le suivis des rapports disciplinaires par élève
   - fermer un rapport disciplinaire
   - émettre un commentaire sur un rapport disciplinaire
@@ -71,7 +60,7 @@ En tant que gestionaire, je veux pouvoir:
 
 ### Enseignant•e
 
-En tant qu'enseignant•e, je veux pouvoir:
+En tant qu'enseignant•e, je veux:
 - accéder à la liste des élèves de mon cours
 - faire les pointages de mes élèves le plus rapidement possible
 - crée un rapport disciplinaire pour un élève
@@ -115,6 +104,22 @@ Cette liste peut être amenée à évoluer au fur et à mesure de l'avancement d
   - Cela se représente par une période donnée qui est comparée à une période d'absence.
 - "Dashboard" pour les conseil de classes
 
-- I18n (internationalisation), sûrement l'anglais et le français.
-- "Monitoring and logging"
-- Système de notfication (SMS, push, email ...)
+- Gestion des présences
+  - Pointage: présence, retard, absence
+  - Création de justification pour les périodes d'absences
+  - Synthèse des absences non justifiées par élève sur une années scolaire, par unité de comptabilisaiton
+- Gestion des rapports diciplinaires
+  - Création
+  - Suivi: ouvert, fermé, traité
+- Gestion des périodes d'évaluation
+  - Introduction de notes d'évaluation pour une matière par l'enseignant
+  - Introduction de commentaire sur la période d'évaluation par matière par l'enseignant
+  - Gestion du conseil de classe
+    - Récapitulatif par élèves avec ses notes par matière, son nombre d'absences justfiées/injustifieés, de retards et de rapports disciplinaire
+    - Synthèse des notes par classe par période
+    - Introduction de commentaire du conseile privé ou publique
+  - Génération de bulletins par élève par classe pour une période d'évaluation
+- Gestion des années scolaires
+    - Introduction de nouveaux élèves
+    - Gestion des classes et des groupes
+    - Définition des périodes d'évaluation
