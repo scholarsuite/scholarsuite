@@ -1,6 +1,6 @@
-# Scholarsuite design specification
+# ScholarSuite design specification
 
-Scholarsuite est basé sur [tailwindcss](https://tailwindcss.com), nous allons garder le design de base de Tailwind CSS.
+ScholarSuite est basé sur [tailwindcss](https://tailwindcss.com), nous allons garder le design de base de Tailwind CSS.
 
 ## Design réactif
 

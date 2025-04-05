@@ -1,4 +1,4 @@
-# Scholarsuite technical specification
+# ScholarSuite technical specification
 
 ## Stack
 
