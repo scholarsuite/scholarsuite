@@ -1,6 +1,6 @@
 # ScholarSuite app specification
 
-ScholarSuite est une application de gestion de vie scolaire. Elle est destinée aux enseignants et aux administrateurs d'établissements scolaires.
+ScholarSuite est une application de gestion de vie scolaire. Elle est destinée aux enseignants et aux gestionnaires d'établissements scolaires.
 
 ## Objectifs
 
@@ -10,33 +10,33 @@ ScholarSuite est une application de gestion de vie scolaire. Elle est destinée 
 
 Ne sont pas pris comme nécessaires pour une version viable:
 
-- Gestion des sanction disciplinaire
+- Gestion des sanctions disciplinaires
 - Gestion des horaires
 - Gestion des locaux
 - Gestion du matériel
 - Gestion du "journal de classe"
-- Consultation des notes par les élèves + bulletin électronique
+- Consultation des notes par les élèves et du bulletin électronique
 - Communication avec les parents
 
 ## Les grands rôles
 
-- **Administrateur système**: Correspond au responsable informatique, de la configuration du système
-  - Paramétrage de l'application: périodes de cours, unité de comptabilisation des absences...
+- **Administrateur système**: Correspond au responsable informatique et de la configuration du système
+  - Paramétrage de l'application : périodes de cours, unité de comptabilisation des absences...
   - Gestion des utilisateurs et des rôles
 - **Gestionnaire**: Correspond à la direction, au personnel administratif...
   - Mise en place des années scolaires
-  - Suivis des rapports disciplinaires
   - Introduction de justificatifs d'absence
+  - Suivis des rapports disciplinaires
   - Gestion des conseils de classe
 - **Éducateur•trice**: Correspond à un éducateur, un surveillant...
-  - Pointage des élèves par groupe ou classe sur une période de cours
+  - Pointage des élèves par groupe sur une période d'étude
   - Introduction de justificatifs d'absence
   - Gestion des conseils de classe
 - **Enseignants**:
-  - Pointage des élèves par groupe ou classe sur une période de cours
-  - Introduction des notes pour une matière, pour tous les élèves de la classe ou du groupe durant une période d'évaluation
+  - Pointage des élèves par groupe sur une période de cours
+  - Introduction des notes pour une matière, pour tous les élèves du groupe durant une période d'évaluation
   - Création de rapports disciplinaires pour un élève
-  - Introduction de commentaires à destination du bulletin sur la période d'évaluation par matière par élève
+  - Introduction de commentaires à destination du bulletin sur la période d'évaluation par matière et par élève
 - **Élèves**: n'ont pas accès au système dans un premier temps
 
 ## "User stories"
@@ -46,13 +46,13 @@ Ne sont pas pris comme nécessaires pour une version viable:
 En tant qu'administrateur système, je veux:
 - créer, modifier et archiver les utilisateurs
 - réinitialiser le mot de passe d'un utilisateur s'il n'y a pas SSO en place
-- gérer les rôles et permissions des utilisateurs. Par exemple répartir les permission entre les rôles éducateur, enseignant et gestionnaire
+- gérer les rôles et permissions des utilisateurs. Par exemple répartir les permissions entre les rôles éducateur, enseignant et gestionnaire
 - mettre en place les paramètres initiaux de l'application qui définissent l'organisation de l'établissement scolaire
-  - définir les périodes de cours (8h25 - 9h15, 9h15 - 10h05, ...)
-  - définir les unités de comptabilisation des absences (matins, après-midi ...)
   - définir le nom de l'établissement scolaire
   - définir les niveaux d'étude (1ère année, 2ème année, 3ème année ...)
-  - définir les matières (mathématiques, français, néerlandais ...)
+  - définir les périodes de cours (8h25 - 9h15, 9h15 - 10h05, ...)
+  - définir les unités de comptabilisation des absences (matins, après-midi ...)
+  - définir les matières (mathématiques 6h, français, néerlandais LM1, anglais LM2 ...)
 
 ### Gestionnaire
 
@@ -99,7 +99,8 @@ En tant qu'enseignant•e, je veux:
 - gérer les périodes d'évaluation
   - introduire un commentaire pour chaque période d'évaluation et chaque élève
   - crée une évaluation pour une matière, pour une période d'évaluation et la note maximale
-  - introduire les notes de mes élèves
+  - introduire les notes de mes élèves pour une évaluation
+  - introduire la note de comportement pour un élève pour une période d'évaluation
 
 ### Élève
 
@@ -172,7 +173,7 @@ Les élèves n'ont pas accès au système dans un premier temps.
 ## Lexique/concepts
 
 - année scolaire: période de temps regroupant les élèves d'un établissement scolaire en classes et groupes. Elle est définie par une date de début et de fin et un libellé (ex: 2023-2024)
-- bulletin: synthèse de tous les moyens arithmétiques des notes pour un élève de tous ses groupes pour les périodes d'évaluation passées pour l'année courante
+- bulletin: synthèse de tous les moyennes arithmétiques des notes plus une note de comportement pour un élève de tous ses groupes pour les périodes d'évaluation passées pour l'année courante
 - classe: unité de gestion administrative des élèves par année scolaire, afin de gérer les bulletins et le conseil de classe. Possède un ou plusieurs titulaires et 0 ou plusieurs éducateurs (1ère année A, 1ère année B, 2ème année A, 2ème année B, 3ème année A, 3ème année B...)
 - contact: nom, prénom; parent/tuteur; email(s); téléphone fixe/portable; adresse de résidence; demande de courrier séparé
 - conseil de classe: événement qui survient à la fin de chaque période d'évaluation afin d'offrir la possibilité au corps professoral de
@@ -181,7 +182,7 @@ Les élèves n'ont pas accès au système dans un premier temps.
 - évaluation: événement pour une matière, pour une période d'évaluation et la note maximale
 - groupe: unité de gestion administrative des élèves par année scolaire à visée du pointage (étude lundi première heure, science de base 1, science de base 2, science économique, latin, langue moderne anglais 1 groupe 1)
 - justificatif d'absence: document justifiant l'absence d'un élève sur une période de temps
-- matière: mathématiques, français, néerlandais, anglais, histoire, géographie, éducation physique, éducation musicale
+- matière: un référentiel libellé pour tous niveau scolaire confondus. eg: mathématiques, français, néerlandais
 - niveau d'étude: 1ère année, 2ème année, 3ème année...
 - note: la valeur pour un élève pour une évaluation, peut être null sous-entendu non évalué
 - période de cours: liste de libellés définis par une heure de début, ex: 8h25 - 9h15, 9h15 - 10h05
@@ -190,3 +191,10 @@ Les élèves n'ont pas accès au système dans un premier temps.
 - rapport disciplinaire: un événement rapporté par un utilisateur (enseignant, éducateur...) pour un élève, une date voire une période de cours
 - unités de comptabilisation des absences: plusieurs ensembles de périodes de cours (ex: matin, après-midi, journée)
 - utilisateur: un configurateur système, un enseignant, un éducateur, un agent administratif mais pas un élève
+
+# Question gestion des matières
+
+- catégorie de matière: une liste par exemple cours généraux et à options ou autre + leur ordre
+- système de notation
+  - Numérique avec un minimum et un maximum et le nombre de décimal 0 ou 1. Eg: (de 0,0 à 10,0) (de 0 à 100) (de 0 à 20)
+  - Littéral sous forme de liste ordonnée d'acronyme et libellé. Eg:  (A+ = très bien; A- = XXX;A = XXX; B+ = XXX; B- = XXX; B = XXX) (I = Insuffisant, S= Satisferait, B = Bien, TB = Très Bien)
