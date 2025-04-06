@@ -1,0 +1,23 @@
+{
+  "cSpell.enabled": false,
+  "cSpell.words": ["ScholarSuite"],
+  "cSpell.caseSensitive": true,
+  "cSpell.overrides": [
+    {
+      "enabled": true,
+      "filename": "*.md",
+      "language": "fr",
+      "words": [
+        // "trice" from "Éducateur•trice" but cspell cut words at the •
+        "trice",
+        // tech terms
+        "null"
+      ]
+    }
+  ],
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "biomejs.biome",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.biome": "explicit"
+  }
+}

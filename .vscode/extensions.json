@@ -1,0 +1,9 @@
+{
+  "recommendations": [
+    "streetsidesoftware.code-spell-checker",
+    "streetsidesoftware.code-spell-checker-french",
+    "biomejs.biome",
+    "editorconfig.editorconfig",
+    "prisma.prisma"
+  ]
+}

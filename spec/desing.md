@@ -4,12 +4,13 @@ ScholarSuite est basé sur [tailwindcss](https://tailwindcss.com), nous allons g
 
 ## Design réactif
 
-L'application vas etre pensée pour les écrand "desktop" et "mobile" en second temps.
-La gestion des themes sombre et clair sera supporter.
+L'application vas être pensée pour les écran "desktop" et "mobile" en second temps.
+La gestion des thèmes sombre et clair sera supporter.
 
 ## Typographie
 
 Nous allons utiliser la police de caractères [`geist`](https://vercel.com/font) qui est un super police pour les applications web. Elle est très lisible et légère.
+Cette police d'écriture sera bundlée avec l'application grâce à [next/font](https://nextjs.org/docs/app/building-your-application/optimizing/fonts).
 
 ## Couleurs
 

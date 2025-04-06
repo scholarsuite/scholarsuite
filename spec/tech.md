@@ -1,5 +1,7 @@
 # ScholarSuite technical specification
 
+Cette spécification technique décrit les choix techniques et les standards de code pour le projet ScholarSuite. Elle est destinée aux développeurs et aux contributeurs qui souhaitent travailler sur le projet.
+
 ## Stack
 
 - [React](https://reactjs.org/) - Bibliothèque JavaScript pour la création d'interfaces utilisateur
@@ -29,7 +31,7 @@
 
 ## Positionnement entre les clients side et server side components
 
-Il faudrais idéalement utiliser que les composant client side, car l'application seras très interactive.
+Il faudrait idéalement utiliser que les composant client side, car l'application seras très interactive.
 
 ## Authentification provider supportés
 
@@ -41,11 +43,25 @@ Il faudrais idéalement utiliser que les composant client side, car l'applicatio
 
 - Dev : Environnement de développement local
   - Base de données locale, mockée à l'aide d'un script
-  - Pas d'utilsation d'https
+  - Pas d’utilisation d'https
 - Staging : Environnement de pré-production
   - Base de données de pré-production, potentiellement mockée
   - Utilisation d'https
-  - Peut-etre utiliser pour les tests de charge, test d'integration, etc.
+  - Peut-être utiliser pour les tests de charge, test d'integration, etc.
 - Production : Environnement de production
   - Base de données de production
   - Utilisation d'https
+
+## Standard de code
+
+**TOUTS** le code doit utiliser de l'anglais, même les commentaires et les noms de variables.
+
+Outils utilisés pour le standard de code :
+- [Biomejs](https://biomejs.dev/) - Outil de formatage et de linting pour JavaScript et TypeScript
+- [Prisma](https://www.prisma.io/docs/) - Formatage et linting pour le schema Prisma
+
+### Prisma
+
+- Toutes les modèles doivent avoir un champ `id`, `createdAt` et `updatedAt`
+- Les champs `createdAt` et `updatedAt` doivent être de type `DateTime`
+- Les enums doivent être écrits en "uppercase" et en "snake_case"
