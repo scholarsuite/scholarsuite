@@ -109,14 +109,17 @@ Les élèves n'ont pas accès au système dans un premier temps.
 ## Fonctionnalités
 
 ## Authentification
+
 - Connexion des utilisateurs (credentials si pas de SSO)
 
 ### Paramétrage de l'application
+
 - Définir le nom de l'établissement scolaire
 - Définir les niveaux d'étude (1ère année, 2ème année, 3ème année, etc.)
 - Définir les matières (mathématiques, français, néerlandais, etc.)
 
 ### Gestion des utilisateurs
+
 - Inscription, modification et archivage des utilisateurs
 - Gestion des rôles (enseignant, administrateur, gestionnaire, éducateur...)
 - Gestion des permissions
@@ -124,6 +127,7 @@ Les élèves n'ont pas accès au système dans un premier temps.
 - Réinitialisation du mot de passe d'un utilisateur (si pas de SSO)
 
 ### Gestion des années scolaires
+
 - Créer une nouvelle année scolaire (ex: 2023-2024) et archive l'ancienne
 - Définir les périodes d'évaluation (1er trimestre, 2ème trimestre, 3ème trimestre, etc.)
 - Gestion des élèves
@@ -136,10 +140,12 @@ Les élèves n'ont pas accès au système dans un premier temps.
 - Constituer les groupes avec 0 ou une matière, un ou plusieurs enseignants et un ensemble d'élèves
 
 ### Gestion des périodes de cours
+
 - Définir les périodes de cours (ex: 8h25 - 9h15, 9h15 - 10h05, etc.)
 - Définir les unités de comptabilisation des absences (matins, après-midi, etc.)
 
 ### Gestion des présences
+
 - Pointage: présence, retard, absence
 - Création de justification pour les périodes d'absences
 - Synthèse des absences non justifiées par élève sur une année scolaire, par unité de comptabilisation
@@ -153,6 +159,7 @@ Les élèves n'ont pas accès au système dans un premier temps.
 - Rapport de synthèse des absences non justifiées par élève sur une année scolaire, par unité de comptabilisation
 
 ### Gestion des rapports disciplinaires
+
 - Création de rapports disciplinaires
 - Suivi des rapports disciplinaires (ouvert, fermé, traité)
 - Notification par email
@@ -161,6 +168,7 @@ Les élèves n'ont pas accès au système dans un premier temps.
 - Notification d'un utilisateur concerné par un rapport disciplinaire ou un contact de l'élève
 
 ### Gestion des périodes d'évaluation
+
 - Création d'une évaluation par l'enseignant pour son groupe et pour une période d'évaluation et de sa note maximale
 - Introduction de notes d'évaluation pour chaque de l'évaluation (du groupe et de la matière)
 - Introduction de commentaires sur la période d'évaluation pour le groupe par l'enseignant pour chaque élève
@@ -182,7 +190,14 @@ Les élèves n'ont pas accès au système dans un premier temps.
 - évaluation: événement pour une matière, pour une période d'évaluation et la note maximale
 - groupe: unité de gestion administrative des élèves par année scolaire à visée du pointage (étude lundi première heure, science de base 1, science de base 2, science économique, latin, langue moderne anglais 1 groupe 1)
 - justificatif d'absence: document justifiant l'absence d'un élève sur une période de temps
-- matière: un référentiel libellé pour tous niveau scolaire confondus. eg: mathématiques, français, néerlandais
+- matière: un référentiel pour tous niveau scolaire confondus.
+  - libellé: nom utilisé dans la navigation et dans le bulletin
+  - catégorie de matière: une liste par exemple cours généraux et à options ou autre + leur ordre
+  - poids: le poids de la matière qui détermine l'ordre de priorité dans le bulletin
+  - système de notation
+    - Numérique avec un minimum et un maximum et le nombre de décimal 0 ou 1. Eg: (de 0,0 à 10,0) (de 0 à 100) (de 0 à 20)
+    - Littéral sous forme de liste ordonnée d'acronyme et libellé. Eg:  (A+ = très bien; A- = XXX;A = XXX; B+ = XXX; B- = XXX; B = XXX) (I = Insuffisant, S= Satisferait, B = Bien, TB = Très Bien)
+  - eg: mathématiques, français, néerlandais
 - niveau d'étude: 1ère année, 2ème année, 3ème année...
 - note: la valeur pour un élève pour une évaluation, peut être null sous-entendu non évalué
 - période de cours: liste de libellés définis par une heure de début, ex: 8h25 - 9h15, 9h15 - 10h05
@@ -191,11 +206,3 @@ Les élèves n'ont pas accès au système dans un premier temps.
 - rapport disciplinaire: un événement rapporté par un utilisateur (enseignant, éducateur...) pour un élève, une date voire une période de cours
 - unités de comptabilisation des absences: plusieurs ensembles de périodes de cours (ex: matin, après-midi, journée)
 - utilisateur: un configurateur système, un enseignant, un éducateur, un agent administratif mais pas un élève
-
-# Re-think de "matière"
-
-- libellé: nom utilisé dans la navigation et dans le bulletin
-- catégorie de matière: une liste par exemple cours généraux et à options ou autre + leur ordre
-- système de notation
-  - Numérique avec un minimum et un maximum et le nombre de décimal 0 ou 1. Eg: (de 0,0 à 10,0) (de 0 à 100) (de 0 à 20)
-  - Littéral sous forme de liste ordonnée d'acronyme et libellé. Eg:  (A+ = très bien; A- = XXX;A = XXX; B+ = XXX; B- = XXX; B = XXX) (I = Insuffisant, S= Satisferait, B = Bien, TB = Très Bien)
