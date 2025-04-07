@@ -192,8 +192,9 @@ Les élèves n'ont pas accès au système dans un premier temps.
 - unités de comptabilisation des absences: plusieurs ensembles de périodes de cours (ex: matin, après-midi, journée)
 - utilisateur: un configurateur système, un enseignant, un éducateur, un agent administratif mais pas un élève
 
-# Question gestion des matières
+# Re-think de "matière"
 
+- libellé: nom utilisé dans la navigation et dans le bulletin
 - catégorie de matière: une liste par exemple cours généraux et à options ou autre + leur ordre
 - système de notation
   - Numérique avec un minimum et un maximum et le nombre de décimal 0 ou 1. Eg: (de 0,0 à 10,0) (de 0 à 100) (de 0 à 20)
