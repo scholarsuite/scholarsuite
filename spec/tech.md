@@ -29,10 +29,6 @@ Cette spécification technique décrit les choix techniques et les standards de 
 - **CI/CD** : Github actions pour l'intégration continue et le déploiement continu
 - **Documentation** : Markdown pour la documentation technique
 
-## Positionnement entre les clients side et server side components
-
-Il faudrait idéalement utiliser que les composant client side, car l'application seras très interactive.
-
 ## Authentification provider supportés
 
 - Google

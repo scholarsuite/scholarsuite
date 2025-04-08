@@ -11,8 +11,13 @@ ScholarSuite est une application de gestion de vie scolaire. Elle est destinée 
 Ne sont pas pris comme nécessaires pour une version viable:
 
 - Gestion des sanctions disciplinaires
-- Gestion des horaires
 - Gestion des locaux
+- Gestion des horaires
+  - Gestion des horraires enseignant
+  - Gestion des horraires élèves
+  - Gestion des licenciements d'élèves
+  - Gestion des absences enseignante
+  - Gestion des remplacements
 - Gestion du matériel
 - Gestion du "journal de classe"
 - Consultation des notes par les élèves et du bulletin électronique
@@ -185,7 +190,7 @@ Les élèves n'ont pas accès au système dans un premier temps.
 - classe: unité de gestion administrative des élèves par année scolaire, afin de gérer les bulletins et le conseil de classe. Possède un ou plusieurs titulaires et 0 ou plusieurs éducateurs (1ère année A, 1ère année B, 2ème année A, 2ème année B, 3ème année A, 3ème année B...)
 - contact: nom, prénom; parent/tuteur; email(s); téléphone fixe/portable; adresse de résidence; demande de courrier séparé
 - conseil de classe: événement qui survient à la fin de chaque période d'évaluation afin d'offrir la possibilité au corps professoral de
-- élève: individu inscrit dans l'établissement scolaire, identifié par son nom, prénom, genre, pronoms, photo, date de naissance, adresse de résidence, liste de contacts, et associé à des années scolaires avec une note spécifique pour chacune.
+- élève: individu inscrit dans l'établissement scolaire, identifié par son nom, prénom, genre, pronoms, photo, date de naissance, adresse de résidence, liste de contacts, autorisaiton de licensiment, et associé à des années scolaires avec une note spécifique pour chacune.
 - étude/permanence: période de cours durant laquelle les élèves ne sont pas avec un enseignant, gestion supervisée par un éducateur
 - évaluation: événement pour une matière, pour une période d'évaluation et la note maximale
 - groupe: unité de gestion administrative des élèves par année scolaire à visée du pointage (étude lundi première heure, science de base 1, science de base 2, science économique, latin, langue moderne anglais 1 groupe 1)
