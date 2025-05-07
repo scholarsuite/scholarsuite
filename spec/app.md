@@ -13,8 +13,8 @@ Ne sont pas pris comme nécessaires pour une version viable:
 - Gestion des sanctions disciplinaires
 - Gestion des locaux
 - Gestion des horaires
-  - Gestion des horraires enseignant
-  - Gestion des horraires élèves
+  - Gestion des horaires enseignant
+  - Gestion des horaires élèves
   - Gestion des licenciements d'élèves
   - Gestion des absences enseignante
   - Gestion des remplacements
@@ -103,8 +103,7 @@ En tant qu'enseignant•e, je veux:
 - créer un rapport disciplinaire pour un élève
 - gérer les périodes d'évaluation
   - introduire un commentaire pour chaque période d'évaluation et chaque élève
-  - crée une évaluation pour une matière, pour une période d'évaluation et la note maximale
-  - introduire les notes de mes élèves pour une évaluation
+  - créer une évaluation pour une matière, pour une période d'évaluation et la note maximale
   - introduire la note de comportement pour un élève pour une période d'évaluation
 
 ### Élève

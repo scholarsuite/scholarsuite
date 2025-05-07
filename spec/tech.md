@@ -50,7 +50,7 @@ Cette spécification technique décrit les choix techniques et les standards de 
 
 ## Standard de code
 
-**TOUTS** le code doit utiliser de l'anglais, même les commentaires et les noms de variables.
+**Tout** le code doit utiliser de l'anglais, même les commentaires et les noms de variables.
 
 Outils utilisés pour le standard de code :
 - [Biomejs](https://biomejs.dev/) - Outil de formatage et de linting pour JavaScript et TypeScript
