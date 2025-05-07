@@ -16,7 +16,7 @@ Ne sont pas pris comme nécessaires pour une version viable:
   - Gestion des horaires enseignant
   - Gestion des horaires élèves
   - Gestion des licenciements d'élèves
-  - Gestion des absences enseignante
+  - Gestion des absences enseignants
   - Gestion des remplacements
 - Gestion du matériel
 - Gestion du "journal de classe"
@@ -67,7 +67,7 @@ En tant que gestionnaire, je veux:
   - définir les périodes d'évaluation (1er trimestre, 2ème trimestre, 3ème trimestre ...) pour les niveaux d'étude
   - introduire les nouveaux élèves et mettre à jour ceux qui sont déjà dans le système. En leur assignant un niveau d'étude, une classe et un ou plusieurs groupes
   - constituer les classes avec des élèves avec un ou plusieurs utilisateurs titulaires
-  - constituer les groupes avec 0 ou une matière, un ou plusieurs utilisateurs (enseignant ou éducateur) et un ensemble d'élèves, pouvant ête importer depuis une classe ou selection par mis les élèves d'un niveau d'étude
+  - constituer les groupes avec 0 ou une matière, un ou plusieurs utilisateurs (enseignant ou éducateur) et un ensemble d'élèves, pouvant être importé depuis une classe ou sélection parmi les élèves d'un niveau d'étude
 - faire le suivis des rapports disciplinaires par élève
   - changer le statut d'un rapport disciplinaire
   - émettre un commentaire sur un rapport disciplinaire
