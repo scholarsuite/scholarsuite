@@ -18,7 +18,7 @@ Cette police d'écriture sera bundlée avec l'application grâce à [next/font](
 - Couleur d'accent : `teal`
   - Utilisé pour les boutons, les liens et les éléments interactifs.
 - Couleur de succès : `green`
-  - Utilisé pour les messages de succès et les éléments positifs mais aussi asigné aux élément lier à la "précense" dans la gestion des présences
+  - Utilisé pour les messages de succès et les éléments positifs mais aussi assigné aux éléments liés à la "présence" dans la gestion des présences
   - Utilisé pour les messages de succès et les éléments positifs mais aussi assigné aux éléments liés à la "présence" dans la gestion des présences
 - Couleur d'avertissement : `amber`
   - Utilisé pour les messages d'avertissement et les éléments d'attention mais aussi assigné aux éléments liés au "retard" dans la gestion des présences
