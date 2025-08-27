@@ -1,6 +1,6 @@
-# Scholarsuite
+# ScholarSuite
 
-Scholarsuite est un système complet de gestion scolaire conçu pour aider les enseignants et les administrateurs à gérer efficacement les opérations académiques.
+ScholarSuite est un système complet de gestion scolaire conçu pour aider les enseignants et les administrateurs à gérer efficacement les opérations académiques.
 
 > [!IMPORTANT]
 > Ce projet est en cours de développement et n'est pas encore prêt pour une utilisation en production.
