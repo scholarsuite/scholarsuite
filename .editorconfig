@@ -19,7 +19,7 @@ indent_style = space
 
 [*.css]
 indent_style = tab
-ident_size = 2
+indent_size = 2
 
 [*.md]
 indent_style = space

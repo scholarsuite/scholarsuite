@@ -1,0 +1,3 @@
+- traduction, format de date et heure, etc.
+- observabilité avec des logs structurés et des métriques.
+- définir les MVP (produit minimum viable) pour chaque fonctionnalité.

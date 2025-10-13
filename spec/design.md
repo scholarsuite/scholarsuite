@@ -18,14 +18,13 @@ Cette police d'écriture sera bundlée avec l'application grâce à [next/font](
 - Couleur d'accent : `teal`
   - Utilisé pour les boutons, les liens et les éléments interactifs.
 - Couleur de succès : `green`
-  - Utilisé pour les messages de succès et les éléments positifs mais aussi assigné aux éléments liés à la "présence" dans la gestion des présences
-  - Utilisé pour les messages de succès et les éléments positifs mais aussi assigné aux éléments liés à la "présence" dans la gestion des présences
+  - Utilisé pour les messages de succès et les éléments positifs mais aussi assigné aux éléments liés à la "présence" dans la gestion des présences.
 - Couleur d'avertissement : `amber`
-  - Utilisé pour les messages d'avertissement et les éléments d'attention mais aussi assigné aux éléments liés au "retard" dans la gestion des présences
+  - Utilisé pour les messages d'avertissement et les éléments d'attention mais aussi assigné aux éléments liés au "retard" dans la gestion des présences.
 - Couleur d'erreur : `red`
-  - Utilisé pour les messages d'erreur et les éléments négatifs mais aussi assigné aux éléments liés à l'"absence" dans la gestion des présences
+  - Utilisé pour les messages d'erreur et les éléments négatifs mais aussi assigné aux éléments liés à l'"absence" dans la gestion des présences.
 - Couleur d'information supplementaire : `blue`
-  - Utilisé pour les messages d'information et les éléments informatifs mais aussi assigné aux éléments liés à la "justification" dans la gestion des présences
+  - Utilisé pour les messages d'information et les éléments informatifs mais aussi assigné aux éléments liés à la "justification" dans la gestion des présences.
 
 Il faut une bibliothèque d'icônes pour les icônes de l'application. Nous allons utiliser [heroicons](https://heroicons.com/) qui est la bibliothèque d'icônes de Tailwind CSS.
 

@@ -9,7 +9,7 @@ Cette spécification technique décrit les choix techniques et les standards de 
 - [Next.js](https://nextjs.org/) - Framework React pour le développement d'applications web
 - [Typescript](https://www.typescriptlang.org/) - Superset de JavaScript qui ajoute des types statiques
 - [Node.js](https://nodejs.org/) - Environnement d'exécution JavaScript côté serveur
-- [Auth.js](https://authjs.dev/) - Bibliothèque d'authentification pour Next.js
+- [Better-auth](https://www.better-auth.com) - Bibliothèque d'authentification
 - [Prisma](https://www.prisma.io/) - ORM pour Node.js et TypeScript
 - [PostgreSQL](https://www.postgresql.org/) - Système de gestion de base de données relationnelle
 - [react-pdf](https://react-pdf.org/) - Librairie pour générer des PDF à partir de composants React
@@ -23,7 +23,7 @@ Cette spécification technique décrit les choix techniques et les standards de 
 - **Serveur** : Application Node.js qui s'exécute sur le serveur
 - **Base de données** : PostgreSQL pour stocker les données de l'application
 - **API** : Prisma pour interagir avec la base de données. Et Next.js pour créer des API RESTful
-- **Authentification** : Auth.js pour gérer l'authentification des utilisateurs
+- **Authentification** : better-auth pour gérer l'authentification des utilisateurs
 - **Déploiement** : Service no-serverless pour héberger l'application (docker, kubernetes, etc.)
 - **Testing** : Node native test runner pour les tests unitaires et d'intégration. Et storybook pour les tests d'interface utilisateur
 - **CI/CD** : Github actions pour l'intégration continue et le déploiement continu
