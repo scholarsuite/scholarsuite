@@ -46,6 +46,12 @@ Ne sont pas pris comme nécessaires pour une version viable:
 
 ## "User stories"
 
+- [Administrateur système](#administrateur-système)
+- [Gestionnaire](#gestionnaire)
+- [Éducateur•trice](#éducateurtrice)
+- [Enseignant•e](#enseignante)
+- [Élève](#élève)
+
 ### Administrateur système
 
 En tant qu'administrateur système, je veux:
@@ -110,11 +116,22 @@ En tant qu'enseignant•e, je veux:
 
 Les élèves n'ont pas accès au système dans un premier temps.
 
+Dans un second temps, en tant qu'élève, je veux:
+- consulter mes notes par matière pour une période d'évaluation
+- consulter mon bulletin pour une période d'évaluation
+- consulter mes absences justifiées et non justifiées
+- consulter mes rapports disciplinaires
+
 ## Fonctionnalités
 
 ## Authentification
 
+Dans un premier temps:
 - Connexion des utilisateurs (credentials si pas de SSO)
+- Ne pas autoriser l'accès aux élèves
+
+Dans un second temps:
+- Connexion des élèves (credentials si pas de SSO)
 
 ### Paramétrage de l'application
 
@@ -181,6 +198,13 @@ Les élèves n'ont pas accès au système dans un premier temps.
   - Synthèse des notes par classe par période
   - Introduction de commentaires du conseil privé et ou public
 - Génération de bulletins par élève et ou par classe pour une période d'évaluation au format PDF
+
+### Consultation par les élèves (dans un second temps)
+
+- Consultation des notes par matière pour une période d'évaluation
+- Consultation du bulletin pour une période d'évaluation
+- Consultation des absences justifiées et non justifiées
+- Consultation des rapports disciplinaires
 
 ## Lexique/concepts
 
