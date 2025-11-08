@@ -10,3 +10,737 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+// =====================
+// Enums
+// =====================
+
+enum USER_ROLE {
+  SYSTEM_ADMIN
+  MANAGER
+  EDUCATOR
+  TEACHER
+  STUDENT // reserved for future; cannot be combined with others at application level
+}
+
+enum ATTENDANCE_STATUS {
+  PRESENT
+  ABSENT
+  LATE
+}
+
+enum DISCIPLINARY_REPORT_STATUS {
+  OPEN
+  IN_PROGRESS
+  CLOSED
+}
+
+enum LOG_LEVEL {
+  DEBUG
+  INFO
+  WARN
+  ERROR
+}
+
+enum GENDER {
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum COMMENT_VISIBILITY {
+  PUBLIC
+  PRIVATE
+  INTERNAL
+}
+
+enum GRADE_VALUE_TYPE {
+  NUMERIC
+  LITERAL
+}
+
+enum GROUP_KIND {
+  STUDY
+  SUBJECT
+}
+
+// NOTE: Enforced at application level:
+// - STUDENT role cannot be combined with any other role. See business rules.
+
+// Absence justification workflow status
+enum ABSENCE_JUSTIFICATION_STATUS {
+  SUBMITTED
+  VALIDATED
+  REJECTED
+}
+
+// =====================
+// Core reference models
+// =====================
+
+model SchoolSettings {
+  id         String   @id @default(cuid())
+  schoolName String
+
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model SchoolYear {
+  id           String             @id @default(cuid())
+  label        String // e.g. 2025-2026
+  startsAt     DateTime
+  endsAt       DateTime
+  archived     Boolean            @default(false)
+
+  levels       SchoolYearLevel[]
+  periods      EvaluationPeriod[]
+  classes      Class[]
+  groups       Group[]
+  studentYears StudentYear[]
+
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
+}
+
+model Level {
+  id           String            @id @default(cuid())
+  label        String // e.g. "1st year"
+  order        Int // sorting order
+
+  schoolYears  SchoolYearLevel[]
+  classes      Class[]
+  groups       Group[]
+  studentYears StudentYear[]
+
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+}
+
+model SchoolYearLevel {
+  id           String     @id @default(cuid())
+  schoolYear   SchoolYear @relation(fields: [schoolYearId], references: [id])
+  schoolYearId String
+  level        Level      @relation(fields: [levelId], references: [id])
+  levelId      String
+
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  @@unique([schoolYearId, levelId])
+}
+
+model SubjectCategory {
+  id        String    @id @default(cuid())
+  label     String
+  order     Int
+
+  subjects  Subject[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Subject {
+  id              String           @id @default(cuid())
+  label           String // display name
+  weight          Int              @default(0) // bulletin ordering / weighting
+  category        SubjectCategory? @relation(fields: [categoryId], references: [id])
+  categoryId      String?
+  valueType       GRADE_VALUE_TYPE @default(NUMERIC) // grading system type
+  numericMin      Decimal? // if numeric
+  numericMax      Decimal? // if numeric
+  numericDecimals Int? // 0 or 1 typically
+  literalScale    Json? // ordered list of { code, label }
+
+  groups          Group[]
+  evaluations     Evaluation[]
+
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+}
+
+// =====================
+// Users & Roles (excluding auth provider data for now)
+// =====================
+
+model User {
+  id                          String                 @id @default(cuid())
+  email                       String                 @unique
+  firstName                   String?
+  lastName                    String?
+  archived                    Boolean                @default(false)
+
+  roles                       UserRole[]
+  classTeachers               ClassTeacher[]
+  classEducators              ClassEducator[]
+  groupTeachers               GroupTeacher[]
+  groupEducators              GroupEducator[]
+  disciplinaryReportsAuthored DisciplinaryReport[]   @relation("ReportAuthor")
+  reportComments              ReportComment[]
+  periodComments              PeriodComment[]
+  logs                        Log[]
+  metrics                     Metric[]
+  justificationsCreated       AbsenceJustification[] @relation("JustificationCreator")
+  attendances                 Attendance[] // if needed for who marked attendance
+  // History back-relations
+  attendanceHistoryChanges    AttendanceHistory[]    @relation("AttendanceHistoryChangedBy")
+  absenceJustificationHistoryChanges AbsenceJustificationHistory[] @relation("AbsenceJustificationHistoryChangedBy")
+  behaviorScoresAuthored      BehaviorScore[]        @relation("BehaviorScoreAuthor")
+
+  createdAt                   DateTime               @default(now())
+  updatedAt                   DateTime               @updatedAt
+}
+
+model UserRole {
+  id        String    @id @default(cuid())
+  user      User      @relation(fields: [userId], references: [id])
+  userId    String
+  role      USER_ROLE
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@unique([userId, role])
+}
+
+// =====================
+// Students and Contacts
+// =====================
+
+model Student {
+  id                  String                 @id @default(cuid())
+  firstName           String
+  lastName            String
+  gender              GENDER?
+  pronouns            String?
+  photoUrl            String?
+  birthDate           DateTime?
+  address             String?
+  dismissalAuthorized Boolean                @default(false)
+  archived            Boolean                @default(false)
+
+  contacts            StudentContact[]
+  enrollments         StudentYear[]
+  classMemberships    ClassStudent[]
+  groupMemberships    GroupStudent[]
+  attendances         Attendance[]
+  justifications      AbsenceJustification[]
+  disciplinaryReports DisciplinaryReport[]   @relation("StudentReports")
+  reportComments      ReportComment[]
+  grades              Grade[]
+  behaviorScores      BehaviorScore[]
+  periodComments      PeriodComment[]
+
+  createdAt           DateTime               @default(now())
+  updatedAt           DateTime               @updatedAt
+}
+
+model StudentContact {
+  id           String   @id @default(cuid())
+  student      Student  @relation(fields: [studentId], references: [id])
+  studentId    String
+  firstName    String
+  lastName     String
+  relationship String? // parent, tutor, guardian
+  address      String?
+  separateMail Boolean  @default(false)
+
+  emails       StudentContactEmail[]
+  phonesList   StudentContactPhone[]
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model StudentContactEmail {
+  id           String   @id @default(cuid())
+  contact      StudentContact @relation(fields: [contactId], references: [id])
+  contactId    String
+  email        String
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@unique([contactId, email])
+}
+
+model StudentContactPhone {
+  id           String   @id @default(cuid())
+  contact      StudentContact @relation(fields: [contactId], references: [id])
+  contactId    String
+  phone        String
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@unique([contactId, phone])
+}
+
+// Student <-> SchoolYear association (with level & class for that year)
+model StudentYear {
+  id           String     @id @default(cuid())
+  student      Student    @relation(fields: [studentId], references: [id])
+  studentId    String
+  schoolYear   SchoolYear @relation(fields: [schoolYearId], references: [id])
+  schoolYearId String
+  level        Level?     @relation(fields: [levelId], references: [id])
+  levelId      String?
+  class        Class?     @relation(fields: [classId], references: [id])
+  classId      String?
+
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  @@unique([studentId, schoolYearId])
+}
+
+// =====================
+// Classes & Groups
+// =====================
+
+model Class {
+  id           String          @id @default(cuid())
+  label        String // e.g. "1A"
+  schoolYear   SchoolYear      @relation(fields: [schoolYearId], references: [id])
+  schoolYearId String
+  level        Level?          @relation(fields: [levelId], references: [id])
+  levelId      String?
+  archived     Boolean         @default(false)
+
+  teachers     ClassTeacher[]
+  educators    ClassEducator[]
+  students     ClassStudent[]
+  attendances  Attendance[]
+  studentYears StudentYear[]
+
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+}
+
+model ClassTeacher {
+  id        String   @id @default(cuid())
+  class     Class    @relation(fields: [classId], references: [id])
+  classId   String
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([classId, userId])
+}
+
+model ClassEducator {
+  id        String   @id @default(cuid())
+  class     Class    @relation(fields: [classId], references: [id])
+  classId   String
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([classId, userId])
+}
+
+model ClassStudent {
+  id        String   @id @default(cuid())
+  class     Class    @relation(fields: [classId], references: [id])
+  classId   String
+  student   Student  @relation(fields: [studentId], references: [id])
+  studentId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([classId, studentId])
+}
+
+model Group {
+  id             String          @id @default(cuid())
+  label          String
+  kind           GROUP_KIND      @default(SUBJECT)
+  schoolYear     SchoolYear      @relation(fields: [schoolYearId], references: [id])
+  schoolYearId   String
+  level          Level?          @relation(fields: [levelId], references: [id])
+  levelId        String?
+  subject        Subject?        @relation(fields: [subjectId], references: [id])
+  subjectId      String?
+  archived       Boolean         @default(false)
+
+  teachers       GroupTeacher[]
+  educators      GroupEducator[]
+  students       GroupStudent[]
+  evaluations    Evaluation[]
+  attendances    Attendance[]
+  periodComments PeriodComment[]
+
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+}
+
+model GroupTeacher {
+  id        String   @id @default(cuid())
+  group     Group    @relation(fields: [groupId], references: [id])
+  groupId   String
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([groupId, userId])
+}
+
+model GroupEducator {
+  id        String   @id @default(cuid())
+  group     Group    @relation(fields: [groupId], references: [id])
+  groupId   String
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([groupId, userId])
+}
+
+model GroupStudent {
+  id        String   @id @default(cuid())
+  group     Group    @relation(fields: [groupId], references: [id])
+  groupId   String
+  student   Student  @relation(fields: [studentId], references: [id])
+  studentId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([groupId, studentId])
+}
+
+// =====================
+// Time structures & absence units
+// =====================
+
+model CoursePeriod {
+  id                  String               @id @default(cuid())
+  label               String // e.g. "08:25 - 09:15"
+  startsAt            DateTime // start time (date part maybe ignored for template rows)
+  endsAt              DateTime
+  order               Int
+
+  attendances         Attendance[]
+  unitLinks           AbsenceUnitPeriod[]
+  disciplinaryReports DisciplinaryReport[]
+
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime             @updatedAt
+}
+
+model AbsenceUnit {
+  id          String              @id @default(cuid())
+  label       String
+
+  periodLinks AbsenceUnitPeriod[]
+
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+}
+
+model AbsenceUnitPeriod {
+  id        String       @id @default(cuid())
+  unit      AbsenceUnit  @relation(fields: [unitId], references: [id])
+  unitId    String
+  period    CoursePeriod @relation(fields: [periodId], references: [id])
+  periodId  String
+
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+
+  @@unique([unitId, periodId])
+}
+
+// =====================
+// Attendance & Justifications
+// =====================
+
+model Attendance {
+  id              String                @id @default(cuid())
+  student         Student               @relation(fields: [studentId], references: [id])
+  studentId       String
+  courseDate      DateTime // date of occurrence
+  status          ATTENDANCE_STATUS
+  coursePeriod    CoursePeriod?         @relation(fields: [coursePeriodId], references: [id])
+  coursePeriodId  String?
+  group           Group?                @relation(fields: [groupId], references: [id])
+  groupId         String?
+  class           Class?                @relation(fields: [classId], references: [id])
+  classId         String?
+  markedBy        User?                 @relation(fields: [markedByUserId], references: [id])
+  markedByUserId  String?
+  justification   AbsenceJustification? @relation(fields: [justificationId], references: [id])
+  justificationId String?
+
+  // History of changes (status/justification)
+  histories       AttendanceHistory[]
+
+  createdAt       DateTime              @default(now())
+  updatedAt       DateTime              @updatedAt
+
+  @@index([studentId, courseDate])
+  // Business uniqueness: one attendance per student per date/context/period.
+  // Note: Because some fields can be null, this composite unique may not fully prevent duplicates with NULLs.
+  // Additional validation is enforced at the application level (ensure exactly one of groupId or classId is set).
+  @@unique([studentId, courseDate, coursePeriodId, groupId, classId])
+}
+
+model AbsenceJustification {
+  id              String       @id @default(cuid())
+  student         Student      @relation(fields: [studentId], references: [id])
+  studentId       String
+  startsAt        DateTime
+  endsAt          DateTime
+  reason          String?
+  documentUrl     String?
+  createdBy       User         @relation("JustificationCreator", fields: [createdByUserId], references: [id])
+  createdByUserId String
+  status          ABSENCE_JUSTIFICATION_STATUS @default(SUBMITTED)
+
+  attendances     Attendance[]
+
+  // History of changes (status/interval/metadata)
+  histories       AbsenceJustificationHistory[]
+  // Back-relations for attendance history references
+  previousAttendanceHistoryLinks AttendanceHistory[] @relation("PrevJustification")
+  newAttendanceHistoryLinks      AttendanceHistory[] @relation("NewJustification")
+
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+
+  @@index([studentId, startsAt, endsAt])
+}
+
+// =====================
+// Disciplinary Reports
+// =====================
+
+model DisciplinaryReport {
+  id             String                     @id @default(cuid())
+  student        Student                    @relation("StudentReports", fields: [studentId], references: [id])
+  studentId      String
+  author         User                       @relation("ReportAuthor", fields: [authorUserId], references: [id])
+  authorUserId   String
+  occurredAt     DateTime
+  coursePeriod   CoursePeriod?              @relation(fields: [coursePeriodId], references: [id])
+  coursePeriodId String?
+  status         DISCIPLINARY_REPORT_STATUS @default(OPEN)
+  title          String?
+  description    String?
+
+  comments       ReportComment[]
+
+  createdAt      DateTime                   @default(now())
+  updatedAt      DateTime                   @updatedAt
+
+  @@index([studentId, occurredAt])
+}
+
+model ReportComment {
+  id           String             @id @default(cuid())
+  report       DisciplinaryReport @relation(fields: [reportId], references: [id])
+  reportId     String
+  author       User               @relation(fields: [authorUserId], references: [id])
+  authorUserId String
+  student      Student?           @relation(fields: [studentId], references: [id]) // optional if comment references student context
+  studentId    String?
+  content      String
+
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
+}
+
+// =====================
+// Evaluation periods, evaluations & grades
+// =====================
+
+model EvaluationPeriod {
+  id             String          @id @default(cuid())
+  schoolYear     SchoolYear      @relation(fields: [schoolYearId], references: [id])
+  schoolYearId   String
+  label          String // e.g. "Trimester 1"
+  startsAt       DateTime
+  endsAt         DateTime
+
+  evaluations    Evaluation[]
+  periodComments PeriodComment[]
+  behaviorScores BehaviorScore[]
+
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+
+  @@index([schoolYearId, startsAt, endsAt])
+}
+
+model Evaluation {
+  id        String           @id @default(cuid())
+  title     String?
+  group     Group            @relation(fields: [groupId], references: [id])
+  groupId   String
+  subject   Subject?         @relation(fields: [subjectId], references: [id]) // redundancy for convenience
+  subjectId String?
+  period    EvaluationPeriod @relation(fields: [periodId], references: [id])
+  periodId  String
+  maxScore  Decimal? // when NUMERIC system
+  date      DateTime?
+
+  grades    Grade[]
+
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+
+  @@index([groupId, periodId])
+}
+
+model Grade {
+  id           String     @id @default(cuid())
+  evaluation   Evaluation @relation(fields: [evaluationId], references: [id])
+  evaluationId String
+  student      Student    @relation(fields: [studentId], references: [id])
+  studentId    String
+  numericValue Decimal? // null if literal
+  literalValue String? // null if numeric
+
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  @@unique([evaluationId, studentId])
+}
+
+model BehaviorScore {
+  id           String           @id @default(cuid())
+  student      Student          @relation(fields: [studentId], references: [id])
+  studentId    String
+  period       EvaluationPeriod @relation(fields: [periodId], references: [id])
+  periodId     String
+  numericValue Decimal?
+  literalValue String?
+  // Optional attribution of who recorded/validated the behavior score
+  author       User?            @relation("BehaviorScoreAuthor", fields: [authorUserId], references: [id])
+  authorUserId String?
+
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+
+  @@unique([studentId, periodId])
+}
+
+// =====================
+// Histories (audit trail for critical changes)
+// =====================
+
+model AttendanceHistory {
+  id                       String                @id @default(cuid())
+  attendance               Attendance            @relation(fields: [attendanceId], references: [id])
+  attendanceId             String
+  changedBy                User?                 @relation("AttendanceHistoryChangedBy", fields: [changedByUserId], references: [id])
+  changedByUserId          String?
+  previousStatus           ATTENDANCE_STATUS?
+  newStatus                ATTENDANCE_STATUS?
+  previousJustification    AbsenceJustification? @relation("PrevJustification", fields: [previousJustificationId], references: [id])
+  previousJustificationId  String?
+  newJustification         AbsenceJustification? @relation("NewJustification", fields: [newJustificationId], references: [id])
+  newJustificationId       String?
+  changedAt                DateTime              @default(now())
+
+  createdAt                DateTime              @default(now())
+  updatedAt                DateTime              @updatedAt
+
+  @@index([attendanceId, changedAt])
+}
+
+model AbsenceJustificationHistory {
+  id                 String                      @id @default(cuid())
+  justification      AbsenceJustification        @relation(fields: [justificationId], references: [id])
+  justificationId    String
+  changedBy          User?                       @relation("AbsenceJustificationHistoryChangedBy", fields: [changedByUserId], references: [id])
+  changedByUserId    String?
+  previousStatus     ABSENCE_JUSTIFICATION_STATUS?
+  newStatus          ABSENCE_JUSTIFICATION_STATUS?
+  previousStartsAt   DateTime?
+  previousEndsAt     DateTime?
+  newStartsAt        DateTime?
+  newEndsAt          DateTime?
+  changedAt          DateTime                    @default(now())
+
+  createdAt          DateTime                    @default(now())
+  updatedAt          DateTime                    @updatedAt
+
+  @@index([justificationId, changedAt])
+}
+
+model PeriodComment {
+  id           String             @id @default(cuid())
+  period       EvaluationPeriod   @relation(fields: [periodId], references: [id])
+  periodId     String
+  student      Student            @relation(fields: [studentId], references: [id])
+  studentId    String
+  group        Group?             @relation(fields: [groupId], references: [id])
+  groupId      String?
+  author       User               @relation(fields: [authorUserId], references: [id])
+  authorUserId String
+  visibility   COMMENT_VISIBILITY @default(PUBLIC)
+  content      String
+
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
+
+  @@index([periodId, studentId])
+}
+
+// =====================
+// Observability & Metrics
+// =====================
+
+model Log {
+  id        String    @id @default(cuid())
+  timestamp DateTime  @default(now())
+  level     LOG_LEVEL
+  message   String
+  metadata  Json?
+  user      User?     @relation(fields: [userId], references: [id])
+  userId    String?
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([level, timestamp])
+}
+
+model Metric {
+  id        String   @id @default(cuid())
+  name      String
+  value     Decimal
+  timestamp DateTime @default(now())
+  user      User?    @relation(fields: [userId], references: [id]) // optional attribution
+  userId    String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([name, timestamp])
+}
+
+// =====================
+// Notes & Deferred items (documentation)
+// =====================
+
+// Deferred (Not MVP):
+//  Class council feature
+//    - To be modeled as ClassCouncil (schoolYearId, periodId, classId, occurredAt)
+//      with ClassCouncilComment (councilId, studentId, authorUserId, visibility, content).
+//    - For MVP, use PeriodComment for teacher comments; council-specific comments are deferred.
+// Bulletin snapshot/caching
+//    - To be modeled as BulletinSnapshot (studentId, schoolYearId, periodId, jsonData, generatedAt)
+//      to speed up PDF generation and archival consistency.
+//    - For MVP, compute on the fly without persistence.
