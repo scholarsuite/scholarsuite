@@ -1,0 +1,17 @@
+{
+  "name": "scholarsuite",
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "db:studio": "npx prisma studio",
+    "db:generate": "npx prisma generate",
+    "db:seed-dev": "node prisma/seed.ts"
+  },
+  "imports": {
+    "#prisma/client": "./generated/prisma/client.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.0",
+    "prisma": "^6.19.0"
+  }
+}
