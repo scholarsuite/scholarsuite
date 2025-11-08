@@ -22,27 +22,60 @@ Ne sont pas pris comme nécessaires pour une version viable:
 - Gestion du "journal de classe"
 - Consultation des notes par les élèves et du bulletin électronique
 - Communication avec les parents
+- Ecriture de Donnée de télémétrie
+- Lecture de Donnée de télémétrie
 
 ## Les grands rôles
 
 - **Administrateur système**: Correspond au responsable informatique et de la configuration du système
   - Paramétrage de l'application : périodes de cours, unité de comptabilisation des absences...
-  - Gestion des utilisateurs et des rôles
+  - Lecture des logs système
 - **Gestionnaire**: Correspond à la direction, au personnel administratif...
   - Mise en place des années scolaires
-  - Introduction de justificatifs d'absence
-  - Suivis des rapports disciplinaires
   - Gestion des conseils de classe
 - **Éducateur•trice**: Correspond à un éducateur, un surveillant...
   - Pointage des élèves par groupe sur une période d'étude
-  - Introduction de justificatifs d'absence
   - Gestion des conseils de classe
 - **Enseignants**:
   - Pointage des élèves par groupe sur une période de cours
-  - Introduction des notes pour une matière, pour tous les élèves du groupe durant une période d'évaluation
-  - Création de rapports disciplinaires pour un élève
   - Introduction de commentaires à destination du bulletin sur la période d'évaluation par matière et par élève
 - **Élèves**: n'ont pas accès au système dans un premier temps
+
+### Combinaison des rôles
+
+Les utilisateurs peuvent avoir plusieurs rôles combinés (par exemple, un utilisateur peut être à la fois enseignant et gestionnaire). Cependant, le rôle d'élève ne peut pas être combiné avec d'autres rôles.
+
+### Scénarios utilisateur
+
+#### Administrateur système
+- **Scénario** : En tant qu'administrateur système, je veux créer un nouvel utilisateur avec les rôles d'enseignant et de gestionnaire afin qu'il puisse gérer les conseils de classe et pointer les élèves.
+- **Critères d'acceptation** :
+  - L'utilisateur est créé avec les rôles spécifiés.
+  - Les permissions associées aux rôles sont correctement appliquées.
+
+#### Gestionnaire
+- **Scénario** : En tant que gestionnaire, je veux consulter les rapports disciplinaires d'un élève afin de préparer un conseil de classe.
+- **Critères d'acceptation** :
+  - Les rapports disciplinaires sont affichés pour l'élève sélectionné.
+  - Les informations sont triées par date.
+
+#### Éducateur•trice
+- **Scénario** : En tant qu'éducateur, je veux pointer les présences des élèves pour une période d'étude afin de suivre leur assiduité.
+- **Critères d'acceptation** :
+  - Les élèves sont listés pour la période sélectionnée.
+  - Les présences sont enregistrées avec succès.
+
+#### Enseignant•e
+- **Scénario** : En tant qu'enseignant, je veux ajouter un commentaire pour un élève dans son bulletin afin de fournir un retour constructif.
+- **Critères d'acceptation** :
+  - Le commentaire est sauvegardé et visible dans le bulletin de l'élève.
+  - Une confirmation est affichée après l'enregistrement.
+
+#### Élève
+- **Scénario** : En tant qu'élève, je n'ai pas accès au système mais je veux que mes absences soient correctement justifiées par mes enseignants ou éducateurs.
+- **Critères d'acceptation** :
+  - Les absences justifiées sont marquées dans le système.
+  - Les enseignants ou éducateurs peuvent ajouter une justification.
 
 ## "User stories"
 
@@ -64,6 +97,7 @@ En tant qu'administrateur système, je veux:
   - définir les périodes de cours (8h25 - 9h15, 9h15 - 10h05, ...)
   - définir les unités de comptabilisation des absences (matins, après-midi ...)
   - définir les matières (mathématiques 6h, français, néerlandais LM1, anglais LM2 ...)
+- Lire les logs système pour le debug et la maintenance en cas de service "self-hosted"
 
 ### Gestionnaire
 
