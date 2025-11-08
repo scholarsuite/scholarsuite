@@ -48,30 +48,35 @@ Les utilisateurs peuvent avoir plusieurs rôles combinés (par exemple, un utili
 ### Scénarios utilisateur
 
 #### Administrateur système
+
 - **Scénario** : En tant qu'administrateur système, je veux créer un nouvel utilisateur avec les rôles d'enseignant et de gestionnaire afin qu'il puisse gérer les conseils de classe et pointer les élèves.
 - **Critères d'acceptation** :
   - L'utilisateur est créé avec les rôles spécifiés.
   - Les permissions associées aux rôles sont correctement appliquées.
 
 #### Gestionnaire
+
 - **Scénario** : En tant que gestionnaire, je veux consulter les rapports disciplinaires d'un élève afin de préparer un conseil de classe.
 - **Critères d'acceptation** :
   - Les rapports disciplinaires sont affichés pour l'élève sélectionné.
   - Les informations sont triées par date.
 
 #### Éducateur•trice
+
 - **Scénario** : En tant qu'éducateur, je veux pointer les présences des élèves pour une période d'étude afin de suivre leur assiduité.
 - **Critères d'acceptation** :
   - Les élèves sont listés pour la période sélectionnée.
   - Les présences sont enregistrées avec succès.
 
 #### Enseignant•e
+
 - **Scénario** : En tant qu'enseignant, je veux ajouter un commentaire pour un élève dans son bulletin afin de fournir un retour constructif.
 - **Critères d'acceptation** :
   - Le commentaire est sauvegardé et visible dans le bulletin de l'élève.
   - Une confirmation est affichée après l'enregistrement.
 
 #### Élève
+
 - **Scénario** : En tant qu'élève, je n'ai pas accès au système mais je veux que mes absences soient correctement justifiées par mes enseignants ou éducateurs.
 - **Critères d'acceptation** :
   - Les absences justifiées sont marquées dans le système.
