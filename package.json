@@ -13,7 +13,8 @@
     "type-check": "tsc --noEmit"
   },
   "imports": {
-    "#prisma/client": "./generated/client.ts"
+    "#prisma/client": "./generated/client.ts",
+    "#lib/*": "./src/lib/*"
   },
   "dependencies": {
     "@prisma/client": "^6.19.0",
