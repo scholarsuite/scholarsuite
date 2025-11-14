@@ -7,6 +7,18 @@ const prisma = new PrismaClient();
 
 export const auth = betterAuth({
 	appName: "ScholarSuite",
+
+	// Expose user's preferred language on the user object so it is
+	// available in session.user.preferredLanguage throughout the app.
+	user: {
+		additionalFields: {
+			preferredLanguage: {
+				type: "string",
+				required: false,
+				defaultValue: "en",
+			},
+		},
+	},
 	database: prismaAdapter(prisma, {
 		provider: "postgresql",
 	}),

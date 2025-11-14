@@ -1,5 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
+import { useLocale } from "next-intl";
 import type { FC } from "react";
 import { authClient } from "#lib/auth-client.ts";
 
@@ -8,6 +9,7 @@ const { useSession, signOut, listAccounts } = authClient;
 const LandingPage: FC = () => {
 	const { data } = useSession();
 	const router = useRouter();
+	const locale = useLocale();
 
 	return (
 		<>
@@ -25,6 +27,7 @@ const LandingPage: FC = () => {
 					<span className="z-10 font-semibold">Se déconnecter</span>
 				</button>
 			</div>
+			<p>Current locale: {locale}</p>
 			<pre className="min-h-screen w-screen flex items-center justify-center p-8 bg-white dark:bg-black text-slate-900 dark:text-white">
 				{JSON.stringify(data, null, 2)}
 			</pre>

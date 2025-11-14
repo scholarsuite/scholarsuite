@@ -170,6 +170,7 @@ model User {
   password  String?
   firstName String?
   lastName  String?
+  preferredLanguage String? // e.g. "en", "fr"
   archived  Boolean @default(false)
 
   // data furnished by auth provider

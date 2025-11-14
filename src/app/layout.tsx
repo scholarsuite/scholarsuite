@@ -1,10 +1,20 @@
-import type { FC, PropsWithChildren } from "react";
 import "#styles/globals.css";
+import { NextIntlClientProvider } from "next-intl";
+import { getLocale } from "next-intl/server";
+import type { ReactNode } from "react";
 
-const RootLayout: FC<PropsWithChildren> = ({ children }) => (
-	<html lang="en">
-		<body>{children}</body>
-	</html>
-);
+export default async function RootLayout({
+	children,
+}: {
+	children: ReactNode;
+}) {
+	const locale = await getLocale();
 
-export default RootLayout;
+	return (
+		<html lang={locale}>
+			<body>
+				<NextIntlClientProvider>{children}</NextIntlClientProvider>
+			</body>
+		</html>
+	);
+}
