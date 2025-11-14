@@ -167,13 +167,14 @@ model Subject {
 model User {
   id        String  @id @default(cuid())
   email     String  @unique
+  password  String?
   firstName String?
   lastName  String?
   archived  Boolean @default(false)
 
   // data furnished by auth provider
   name          String
-  emailVerified Boolean   @default(false)
+  emailVerified Boolean @default(false)
   image         String?
 
   roles                              UserRole[]
@@ -194,11 +195,11 @@ model User {
   behaviorScoresAuthored             BehaviorScore[]               @relation("BehaviorScoreAuthor")
 
   // require by better-auth
-  sessions      Session[]
-  accounts      Account[]
+  sessions Session[]
+  accounts Account[]
 
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("user")
 }
@@ -791,7 +792,6 @@ model Verification {
 
   @@map("verification")
 }
-
 
 // =====================
 // Notes & Deferred items (documentation)
