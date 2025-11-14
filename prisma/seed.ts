@@ -1,7 +1,7 @@
-import { PrismaClient } from "#prisma/client";
-import { createInterface } from "node:readline";
 import { randomUUID } from "node:crypto";
-import { hashPassword } from 'better-auth/crypto';
+import { createInterface } from "node:readline";
+import { hashPassword } from "better-auth/crypto";
+import { PrismaClient } from "#prisma/client";
 
 const prisma = new PrismaClient();
 
@@ -21,7 +21,9 @@ async function prompt(question: string): Promise<string> {
 
 const name = await prompt("Enter admin full name: ");
 const email = await prompt("Enter admin email: ");
-const password = await prompt("Enter admin password: ").then((pwd) => hashPassword(pwd));
+const password = await prompt("Enter admin password: ").then((pwd) =>
+	hashPassword(pwd),
+);
 
 const user = await prisma.user.create({
 	data: {

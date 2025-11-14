@@ -1,27 +1,27 @@
-import type { Meta as MetaObj, StoryObj } from '@storybook/react';
-import { Input } from './Input';
+import type { Meta as MetaObj, StoryObj } from "@storybook/react";
+import { Input } from "./Input";
 
 type Story = StoryObj<typeof Input>;
 type Meta = MetaObj<typeof Input>;
 
 export const Default: Story = {
-  args: {
-    placeholder: 'you@example.com',
-  },
+	args: {
+		placeholder: "you@example.com",
+	},
 };
 
 export const WithDescription: Story = {
-  args: {
-    placeholder: 'you@example.com',
-    description: 'Nous ne partagerons jamais votre adresse e‑mail.',
-  },
+	args: {
+		placeholder: "you@example.com",
+		description: "Nous ne partagerons jamais votre adresse e‑mail.",
+	},
 };
 
 export const Disabled: Story = {
-  args: {
-    placeholder: 'disabled@example.com',
-    disabled: true,
-  },
+	args: {
+		placeholder: "disabled@example.com",
+		disabled: true,
+	},
 };
 
 export default { component: Input } as Meta;

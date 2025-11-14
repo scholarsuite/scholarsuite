@@ -39,7 +39,7 @@ export const auth = betterAuth({
 	databaseHooks: {
 		user: {
 			create: {
-				before: async (user, ctx) => {
+				before: async (user) => {
 					if (!user?.email) {
 						return false;
 					}
@@ -47,10 +47,9 @@ export const auth = betterAuth({
 					user.email = String(user.email).toLowerCase();
 					// allow core to proceed and link if a matching user exists
 					return;
-				}
-			}
-		}
+				},
+			},
+		},
 	},
 	plugins: [nextCookies()],
 });
-

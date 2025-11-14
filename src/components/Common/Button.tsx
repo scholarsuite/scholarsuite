@@ -1,13 +1,15 @@
-import classnames from 'classnames';
-import type { FC, ComponentProps } from 'react';
+import classnames from "classnames";
+import type { ComponentProps, FC } from "react";
 
-export const Button: FC<ComponentProps<'button'>> = ({ children, ...props }) => (
+export const Button: FC<ComponentProps<"button">> = ({
+	children,
+	...props
+}) => (
 	<button
 		{...props}
 		className={classnames(
 			props.className,
-			'group relative inline-flex items-center justify-center gap-3 w-fit px-6 py-3 mt-2 rounded-xl transition duration-200 ease-out overflow-hidden bg-slate-100 border border-slate-200 text-slate-900 shadow-sm hover:scale-[1.02] active:scale-95 hover:bg-slate-50 dark:bg-white/8 dark:border-white/20 dark:text-white dark:backdrop-blur-md dark:shadow-lg dark:hover:bg-white/12',
-
+			"group relative inline-flex items-center justify-center gap-3 w-fit px-6 py-3 mt-2 rounded-xl transition duration-200 ease-out overflow-hidden bg-slate-100 border border-slate-200 text-slate-900 shadow-sm hover:scale-[1.02] active:scale-95 hover:bg-slate-50 dark:bg-white/8 dark:border-white/20 dark:text-white dark:backdrop-blur-md dark:shadow-lg dark:hover:bg-white/12",
 		)}
 	>
 		{children}

@@ -1,7 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { authClient } from "#lib/auth-client.ts";
 import type { FC } from "react";
+import { authClient } from "#lib/auth-client.ts";
 
 const { useSession, signOut, listAccounts } = authClient;
 
@@ -14,7 +14,10 @@ const LandingPage: FC = () => {
 			<div className="p-8 flex items-center justify-center">
 				<button
 					type="button"
-					onClick={async () => { await signOut(); router.push("/"); }}
+					onClick={async () => {
+						await signOut();
+						router.push("/");
+					}}
 					className="group relative inline-flex items-center justify-center gap-3 px-6 py-3 rounded-xl transition duration-200 ease-out overflow-hidden bg-slate-100 border border-slate-200 text-slate-900 shadow-sm hover:scale-[1.02] active:scale-95 hover:bg-slate-50 dark:bg-white/8 dark:border-white/20 dark:text-white dark:backdrop-blur-md dark:shadow-lg dark:hover:bg-white/12"
 				>
 					<span className="absolute inset-0 pointer-events-none rounded-xl border border-slate-200 dark:border-white/10" />
@@ -22,14 +25,11 @@ const LandingPage: FC = () => {
 					<span className="z-10 font-semibold">Se déconnecter</span>
 				</button>
 			</div>
-			<pre
-				className="min-h-screen w-screen flex items-center justify-center p-8 bg-white dark:bg-black text-slate-900 dark:text-white"
-			>{JSON.stringify(data, null, 2)}
+			<pre className="min-h-screen w-screen flex items-center justify-center p-8 bg-white dark:bg-black text-slate-900 dark:text-white">
+				{JSON.stringify(data, null, 2)}
 			</pre>
 			<p>list account</p>
-			<pre>
-				{JSON.stringify(listAccounts(), null, 2)}
-			</pre>
+			<pre>{JSON.stringify(listAccounts(), null, 2)}</pre>
 		</>
 	);
 };

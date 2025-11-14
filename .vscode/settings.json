@@ -3,16 +3,24 @@
   "cSpell.words": ["ScholarSuite"],
   "cSpell.caseSensitive": true,
   "cSpell.overrides": [
-      {
-          "enabled": true,
-          "filename": "*.md",
-          "language": "fr",
-          "words": [
-              // "trice" from "Éducateur•trice" but cspell cut words at the •
-              "trice",
-              // tech terms
-              "null"
-          ]
-      }
-  ]
+    {
+      "enabled": true,
+      "filename": "*.md",
+      "language": "fr",
+      "words": [
+        // "trice" from "Éducateur•trice" but cspell cut words at the •
+        "trice",
+        // tech terms
+        "null"
+      ]
+    }
+  ],
+  "editor.codeActionsOnSave": {
+    "source.fixAll.biome": "explicit",
+    "source.organizeImports.biome": "explicit",
+    "source.biome": "explicit"
+  },
+  "biome.enabled": true,
+  "editor.defaultFormatter": "biomejs.biome",
+  "editor.formatOnSave": true
 }
