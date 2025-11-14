@@ -6,7 +6,7 @@ type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
 	description?: string;
 };
 
-const Input = forwardRef<HTMLInputElement, InputProps>(
+export const Input = forwardRef<HTMLInputElement, InputProps>(
 	({ className = "", description, ...props }, ref) => {
 		return (
 			<div className={`w-full ${description ? "space-y-1" : ""}`}>
@@ -24,8 +24,3 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
 		);
 	},
 );
-
-Input.displayName = "Input";
-
-export { Input };
-export default Input;

@@ -28,7 +28,7 @@ const LandingPage: FC = () => {
 				</button>
 			</div>
 			<p>Current locale: {locale}</p>
-			<pre className="min-h-screen w-screen flex items-center justify-center p-8 bg-white dark:bg-black text-slate-900 dark:text-white">
+			<pre className="max-w-3xl p-4  rounded-md my-4 overflow-x-auto">
 				{JSON.stringify(data, null, 2)}
 			</pre>
 			<p>list account</p>

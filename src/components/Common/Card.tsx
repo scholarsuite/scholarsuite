@@ -6,7 +6,7 @@ type CardProps = React.HTMLAttributes<HTMLDivElement> & {
 	innerClassName?: string;
 };
 
-const Card: React.FC<CardProps> = ({
+export const Card: React.FC<CardProps> = ({
 	children,
 	className = "",
 	innerClassName = "",
@@ -28,6 +28,3 @@ const Card: React.FC<CardProps> = ({
 		</div>
 	);
 };
-
-export { Card };
-export default Card;

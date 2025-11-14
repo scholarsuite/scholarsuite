@@ -31,7 +31,7 @@ const SignInPage: FC = () => {
 	};
 
 	return (
-		<main className="min-h-screen w-screen flex items-center justify-center relative overflow-hidden bg-white dark:bg-black">
+		<main className="min-h-screen w-screen flex items-center justify-center relative overflow-hidden">
 			{/* Decorative subtle blurred blobs for depth */}
 			<div className="absolute -top-32 -left-20 w-96 h-96 opacity-40 rounded-full filter blur-3xl transform rotate-12 pointer-events-none bg-slate-900/6 dark:bg-white/6" />
 			<div className="absolute -bottom-40 -right-20 w-96 h-96 opacity-30 rounded-full filter blur-3xl transform -rotate-12 pointer-events-none bg-slate-900/4 dark:bg-white/4" />
