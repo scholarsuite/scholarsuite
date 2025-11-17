@@ -6,7 +6,7 @@ import { Card } from "#components/Common/Card.tsx";
 import { Select } from "#components/Common/Select.tsx";
 
 export default function ThemeSwitcher() {
-	const { theme, setTheme, resolvedTheme } = useTheme();
+	const { theme, setTheme } = useTheme();
 	const [mounted, setMounted] = useState(false);
 
 	useEffect(() => setMounted(true), []);

@@ -100,6 +100,7 @@ export const Select = <T extends string>({
 		[mappedValues, value],
 	);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: read the end of this useMemo
 	const memoizedMappedValues = useMemo(() => {
 		return mappedValues.map(({ label, items }, key) => (
 			<SelectPrimitive.Group key={label?.toString() ?? key}>
