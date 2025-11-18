@@ -20,6 +20,12 @@ const ADMIN_SECTIONS: Array<{
 			"Tune global school settings, levels, subjects, and reporting units.",
 	},
 	{
+		href: "/admin/logs",
+		title: "Logs",
+		description:
+			"Review system events to monitor activity and troubleshoot issues.",
+	},
+	{
 		href: "/admin/school-years",
 		title: "School Years",
 		description:

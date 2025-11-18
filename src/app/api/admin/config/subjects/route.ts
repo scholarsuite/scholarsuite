@@ -1,4 +1,5 @@
 import { getAuthorizedSystemAdmin } from "#lib/authz.ts";
+import { createApiLogger } from "#lib/logging.ts";
 import { prisma } from "#lib/prisma.ts";
 import type { Prisma } from "#prisma/client";
 import { GRADE_VALUE_TYPE } from "#prisma/client";
@@ -130,16 +131,25 @@ function validateSubjectPayload(body: SubjectPayload): ValidatedSubjectPayload {
 	};
 }
 
+const ROUTE_SCOPE = "api:admin/config/subjects";
+
 export async function POST(req: Request): Promise<Response> {
+	const logger = createApiLogger(`${ROUTE_SCOPE}#POST`);
+	await logger.debug("Incoming request", { method: req.method, url: req.url });
+
 	const authContext = await getAuthorizedSystemAdmin(req.headers);
 	if (authContext instanceof Response) {
+		await logger.warn("Rejected access", { status: authContext.status });
 		return authContext;
 	}
+
+	const scopedLogger = logger.with({ userId: authContext.user.id });
 
 	let body: SubjectPayload;
 	try {
 		body = await req.json();
 	} catch {
+		await scopedLogger.warn("Invalid JSON payload received");
 		return Response.json({ error: "Invalid JSON" }, { status: 400 });
 	}
 
@@ -147,6 +157,9 @@ export async function POST(req: Request): Promise<Response> {
 	try {
 		validated = validateSubjectPayload(body);
 	} catch (error) {
+		await scopedLogger.warn("Invalid subject payload", {
+			reason: error instanceof Error ? error.message : "Unknown error",
+		});
 		return Response.json(
 			{ error: error instanceof Error ? error.message : "Invalid payload" },
 			{ status: 400 },
@@ -166,6 +179,11 @@ export async function POST(req: Request): Promise<Response> {
 				? { category: { connect: { id: validated.categoryId } } }
 				: {}),
 		},
+	});
+
+	await scopedLogger.info("Created subject", {
+		subjectId: subject.id,
+		valueType: subject.valueType,
 	});
 
 	return Response.json(

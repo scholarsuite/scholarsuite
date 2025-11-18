@@ -3,6 +3,7 @@ import { prismaAdapter } from "better-auth/adapters/prisma";
 import { nextCookies } from "better-auth/next-js";
 import { prisma } from "#lib/prisma.ts";
 
+// todo(@AugustinMauroy): link internal logger to better-auth
 export const auth = betterAuth({
 	appName: "ScholarSuite",
 

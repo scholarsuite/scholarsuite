@@ -1,5 +1,6 @@
 import { hashPassword } from "better-auth/crypto";
 import { getAuthorizedSystemAdmin, normalizeRoles } from "#lib/authz.ts";
+import { createApiLogger } from "#lib/logging.ts";
 import { prisma } from "#lib/prisma.ts";
 import { isUniqueViolation, serializeUser } from "./lib.ts";
 
@@ -13,16 +14,26 @@ type ValidatedCreatePayload = {
 	password: string | null;
 };
 
+const ROUTE_SCOPE = "api:admin/users";
+
 export async function GET(req: Request): Promise<Response> {
+	const logger = createApiLogger(`${ROUTE_SCOPE}#GET`);
+	await logger.debug("Incoming request", { method: req.method, url: req.url });
+
 	const context = await getAuthorizedSystemAdmin(req.headers);
 	if (context instanceof Response) {
+		await logger.warn("Rejected access", { status: context.status });
 		return context;
 	}
+
+	const scopedLogger = logger.with({ userId: context.user.id });
 
 	const users = await prisma.user.findMany({
 		orderBy: { createdAt: "desc" },
 		include: { roles: true },
 	});
+
+	await scopedLogger.info("Fetched admin users", { count: users.length });
 
 	return Response.json({
 		users: users.map((user) => serializeUser(user)),
@@ -84,15 +95,22 @@ function validateCreatePayload(
 }
 
 export async function POST(req: Request): Promise<Response> {
+	const logger = createApiLogger(`${ROUTE_SCOPE}#POST`);
+	await logger.debug("Incoming request", { method: req.method, url: req.url });
+
 	const context = await getAuthorizedSystemAdmin(req.headers);
 	if (context instanceof Response) {
+		await logger.warn("Rejected access", { status: context.status });
 		return context;
 	}
+
+	const scopedLogger = logger.with({ userId: context.user.id });
 
 	let payload: CreateUserPayload;
 	try {
 		payload = await req.json();
 	} catch {
+		await scopedLogger.warn("Invalid JSON payload received");
 		return Response.json({ error: "Invalid JSON" }, { status: 400 });
 	}
 
@@ -100,6 +118,9 @@ export async function POST(req: Request): Promise<Response> {
 	try {
 		validated = validateCreatePayload(payload);
 	} catch (error) {
+		await scopedLogger.warn("Invalid payload", {
+			reason: error instanceof Error ? error.message : "Unknown error",
+		});
 		return Response.json(
 			{ error: error instanceof Error ? error.message : "Invalid payload" },
 			{ status: 400 },
@@ -161,15 +182,23 @@ export async function POST(req: Request): Promise<Response> {
 			return serializeUser(freshUser);
 		});
 
+		await scopedLogger.info("Created admin user", { userId: result.id });
+
 		return Response.json({ user: result }, { status: 201 });
 	} catch (error) {
 		if (isUniqueViolation(error)) {
+			await scopedLogger.warn("User creation failed due to duplicate email", {
+				email: validated.email,
+			});
 			return Response.json(
 				{ error: "A user with this email already exists" },
 				{ status: 409 },
 			);
 		}
 
+		await scopedLogger.error("Unexpected error during user creation", {
+			reason: error instanceof Error ? error.message : "Unknown error",
+		});
 		return Response.json({ error: "Failed to create user" }, { status: 500 });
 	}
 }

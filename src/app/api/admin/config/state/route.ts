@@ -1,11 +1,20 @@
 import { getAuthorizedSystemAdmin } from "#lib/authz.ts";
+import { createApiLogger } from "#lib/logging.ts";
 import { prisma } from "#lib/prisma.ts";
 
+const ROUTE_SCOPE = "api:admin/config/state";
+
 export async function GET(req: Request): Promise<Response> {
+	const logger = createApiLogger(`${ROUTE_SCOPE}#GET`);
+	await logger.debug("Incoming request", { method: req.method, url: req.url });
+
 	const authContext = await getAuthorizedSystemAdmin(req.headers);
 	if (authContext instanceof Response) {
+		await logger.warn("Rejected access", { status: authContext.status });
 		return authContext;
 	}
+
+	const scopedLogger = logger.with({ userId: authContext.user.id });
 
 	const [settings, levels, periods, absenceUnits, subjectCategories, subjects] =
 		await Promise.all([
@@ -22,6 +31,14 @@ export async function GET(req: Request): Promise<Response> {
 				include: { category: true },
 			}),
 		]);
+
+	await scopedLogger.info("Fetched admin configuration state", {
+		levels: levels.length,
+		periods: periods.length,
+		absenceUnits: absenceUnits.length,
+		subjectCategories: subjectCategories.length,
+		subjects: subjects.length,
+	});
 
 	return Response.json({
 		schoolSettings: settings

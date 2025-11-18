@@ -1,4 +1,5 @@
 import { getAuthorizedSystemAdmin } from "#lib/authz.ts";
+import { createApiLogger } from "#lib/logging.ts";
 import { prisma } from "#lib/prisma.ts";
 
 function validatePeriodIds(periodIds: unknown): string[] {
@@ -17,20 +18,30 @@ function validatePeriodIds(periodIds: unknown): string[] {
 	return Array.from(new Set(ids));
 }
 
+const ROUTE_SCOPE = "api:admin/config/absence-units";
+
 export async function POST(req: Request): Promise<Response> {
+	const logger = createApiLogger(`${ROUTE_SCOPE}#POST`);
+	await logger.debug("Incoming request", { method: req.method, url: req.url });
+
 	const authContext = await getAuthorizedSystemAdmin(req.headers);
 	if (authContext instanceof Response) {
+		await logger.warn("Rejected access", { status: authContext.status });
 		return authContext;
 	}
+
+	const scopedLogger = logger.with({ userId: authContext.user.id });
 
 	let body: { label?: unknown; periodIds?: unknown };
 	try {
 		body = await req.json();
 	} catch {
+		await scopedLogger.warn("Invalid JSON payload received");
 		return Response.json({ error: "Invalid JSON" }, { status: 400 });
 	}
 
 	if (typeof body.label !== "string" || body.label.trim().length === 0) {
+		await scopedLogger.warn("Missing absence unit label");
 		return Response.json({ error: "label is required" }, { status: 400 });
 	}
 
@@ -38,6 +49,9 @@ export async function POST(req: Request): Promise<Response> {
 	try {
 		periodIds = validatePeriodIds(body.periodIds);
 	} catch (error) {
+		await scopedLogger.warn("Invalid periodIds", {
+			reason: error instanceof Error ? error.message : "Unknown error",
+		});
 		return Response.json(
 			{ error: error instanceof Error ? error.message : "Invalid periodIds" },
 			{ status: 400 },
@@ -62,6 +76,11 @@ export async function POST(req: Request): Promise<Response> {
 			label: unit.label,
 			periodIds,
 		};
+	});
+
+	await scopedLogger.info("Created absence unit", {
+		unitId: result.id,
+		periodCount: periodIds.length,
 	});
 
 	return Response.json({ absenceUnit: result }, { status: 201 });

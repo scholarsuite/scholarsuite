@@ -1,4 +1,5 @@
 import { getAuthorizedSystemAdmin, normalizeRoles } from "#lib/authz.ts";
+import { createApiLogger } from "#lib/logging.ts";
 import { prisma } from "#lib/prisma.ts";
 import type { Prisma } from "#prisma/client";
 import { isUniqueViolation, serializeUser } from "../lib.ts";
@@ -88,14 +89,21 @@ export async function PATCH(
 	req: Request,
 	context: RouteContext<"/api/admin/users/[userId]">,
 ): Promise<Response> {
+	const logger = createApiLogger("api:admin/users/[userId]#PATCH");
+	await logger.debug("Incoming request", { method: req.method, url: req.url });
+
 	const authContext = await getAuthorizedSystemAdmin(req.headers);
 	if (authContext instanceof Response) {
+		await logger.warn("Rejected access", { status: authContext.status });
 		return authContext;
 	}
+
+	const scopedLogger = logger.with({ userId: authContext.user.id });
 
 	const params = await context.params;
 	const userId = params.userId;
 	if (!userId) {
+		await scopedLogger.warn("Missing userId parameter");
 		return Response.json({ error: "Missing userId" }, { status: 400 });
 	}
 
@@ -103,6 +111,7 @@ export async function PATCH(
 	try {
 		payload = await req.json();
 	} catch {
+		await scopedLogger.warn("Invalid JSON payload received", { userId });
 		return Response.json({ error: "Invalid JSON" }, { status: 400 });
 	}
 
@@ -110,6 +119,10 @@ export async function PATCH(
 	try {
 		validated = validateUpdatePayload(payload);
 	} catch (error) {
+		await scopedLogger.warn("Invalid payload", {
+			userId,
+			reason: error instanceof Error ? error.message : "Unknown error",
+		});
 		return Response.json(
 			{ error: error instanceof Error ? error.message : "Invalid payload" },
 			{ status: 400 },
@@ -149,18 +162,28 @@ export async function PATCH(
 		});
 
 		if (!updatedUser) {
+			await scopedLogger.warn("User not found", { userId });
 			return Response.json({ error: "User not found" }, { status: 404 });
 		}
+
+		await scopedLogger.info("Updated user", { userId });
 
 		return Response.json({ user: serializeUser(updatedUser) });
 	} catch (error) {
 		if (isUniqueViolation(error)) {
+			await scopedLogger.warn("User update failed due to duplicate email", {
+				userId,
+			});
 			return Response.json(
 				{ error: "A user with this email already exists" },
 				{ status: 409 },
 			);
 		}
 
+		await scopedLogger.error("Unexpected error when updating user", {
+			userId,
+			reason: error instanceof Error ? error.message : "Unknown error",
+		});
 		return Response.json({ error: "Failed to update user" }, { status: 500 });
 	}
 }
