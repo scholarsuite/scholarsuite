@@ -1,10 +1,11 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import type { FormEvent } from "react";
+import type { FC, FormEvent } from "react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Button } from "#components/Common/Button.tsx";
 import { Input } from "#components/Common/Input.tsx";
+import { USER_ROLE } from "#prisma/enums";
 
 type ApiUser = {
 	id: string;
@@ -32,7 +33,6 @@ type CreateFormState = {
 };
 
 type UsersClientProps = {
-	roleOptions: string[];
 	defaultRole: string;
 };
 
@@ -46,7 +46,7 @@ const buildDefaultCreateForm = (defaultRole: string): CreateFormState => ({
 	roles: [defaultRole],
 });
 
-export function UsersClient({ roleOptions, defaultRole }: UsersClientProps) {
+export function UsersClient({ defaultRole }: UsersClientProps) {
 	const t = useTranslations("app.admin.users");
 
 	const [users, setUsers] = useState<ApiUser[]>([]);
@@ -234,22 +234,24 @@ export function UsersClient({ roleOptions, defaultRole }: UsersClientProps) {
 							{t("rolesLabel")}
 						</p>
 						<div className="flex flex-wrap gap-3">
-							{roleOptions.map((role) => {
-								const checked = createForm.roles.includes(role);
-								return (
-									<label
-										key={role}
-										className="flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-700 transition hover:bg-slate-50 dark:border-white/10 dark:text-white/80 dark:hover:bg-white/10"
-									>
-										<input
-											type="checkbox"
-											checked={checked}
-											onChange={() => handleRoleToggle(role)}
-										/>
-										<span>{role.replaceAll("_", " ")}</span>
-									</label>
-								);
-							})}
+							{Object.values(USER_ROLE)
+								.filter((role) => role !== USER_ROLE.STUDENT)
+								.map((role) => {
+									const checked = createForm.roles.includes(role);
+									return (
+										<label
+											key={role}
+											className="flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-700 transition hover:bg-slate-50 dark:border-white/10 dark:text-white/80 dark:hover:bg-white/10"
+										>
+											<input
+												type="checkbox"
+												checked={checked}
+												onChange={() => handleRoleToggle(role)}
+											/>
+											<span>{role.replaceAll("_", " ")}</span>
+										</label>
+									);
+								})}
 						</div>
 					</div>
 
@@ -309,7 +311,9 @@ export function UsersClient({ roleOptions, defaultRole }: UsersClientProps) {
 									key={user.id}
 									user={user}
 									onUpdated={handleUserUpdated}
-									roleOptions={roleOptions}
+									roleOptions={Object.values(USER_ROLE).filter(
+										(role) => role !== USER_ROLE.STUDENT,
+									)}
 								/>
 							))}
 						</tbody>
@@ -326,7 +330,7 @@ type UserRowProps = {
 	roleOptions: string[];
 };
 
-function UserRow({ user, onUpdated, roleOptions }: UserRowProps) {
+const UserRow: FC<UserRowProps> = ({ user, onUpdated, roleOptions }) => {
 	const [isEditing, setIsEditing] = useState(false);
 	const [localUser, setLocalUser] = useState(() => ({
 		name: user.name,
@@ -542,7 +546,10 @@ function UserRow({ user, onUpdated, roleOptions }: UserRowProps) {
 			</td>
 			<td className="px-4 py-4 align-top text-right">
 				<div className="flex flex-wrap justify-end gap-2">
-					<Button onClick={() => setIsEditing((prev) => !prev)}>
+					<Button
+						onClick={() => setIsEditing((prev) => !prev)}
+						disabled={saving}
+					>
 						{isEditing ? "Cancel" : "Edit"}
 					</Button>
 					{isEditing ? (
@@ -561,4 +568,4 @@ function UserRow({ user, onUpdated, roleOptions }: UserRowProps) {
 			</td>
 		</tr>
 	);
-}
+};

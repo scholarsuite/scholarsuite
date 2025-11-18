@@ -36,10 +36,11 @@ enum DISCIPLINARY_REPORT_STATUS {
 }
 
 enum LOG_LEVEL {
-  DEBUG
   INFO
   WARN
   ERROR
+  // debug is considered very verbose; use only for troubleshooting or development
+  DEBUG
 }
 
 enum GENDER {

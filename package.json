@@ -20,7 +20,7 @@
     "storybook:build": "storybook build"
   },
   "imports": {
-    "#prisma/client": "./generated/client.ts",
+    "#prisma/*": "./generated/*.ts",
     "#lib/*": "./src/lib/*",
     "#styles/*": "./src/styles/*",
     "#components/*": "./src/components/*",

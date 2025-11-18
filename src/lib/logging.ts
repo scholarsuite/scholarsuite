@@ -1,5 +1,5 @@
 import { prisma } from "#lib/prisma.ts";
-import { LOG_LEVEL } from "#prisma/client";
+import { LOG_LEVEL } from "#prisma/enums";
 
 export type LoggerContext = {
 	scope?: string;
