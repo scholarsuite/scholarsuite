@@ -3,6 +3,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 
 export type AdminDashboardLayoutProps = {
+	backLinkLabel: string;
 	title: string;
 	description?: string;
 	actions?: ReactNode;
@@ -14,6 +15,7 @@ export function AdminDashboardLayout({
 	description,
 	actions,
 	children,
+	backLinkLabel,
 }: AdminDashboardLayoutProps) {
 	return (
 		<div className="mx-auto max-w-6xl space-y-8 p-6">
@@ -23,7 +25,7 @@ export function AdminDashboardLayout({
 					className="inline-flex items-center gap-2 text-slate-600 transition hover:text-slate-900 dark:text-slate-300 dark:hover:text-white"
 				>
 					<ArrowLeftIcon className="size-4" />
-					<span>Back to admin dashboard</span>
+					<span>{backLinkLabel}</span>
 				</Link>
 			</nav>
 
@@ -32,15 +34,13 @@ export function AdminDashboardLayout({
 					<h1 className="text-3xl font-semibold text-slate-900 dark:text-white">
 						{title}
 					</h1>
-					{description ? (
+					{description && (
 						<p className="max-w-2xl text-sm text-slate-600 dark:text-slate-300">
 							{description}
 						</p>
-					) : null}
+					)}
 				</div>
-				{actions ? (
-					<div className="flex items-center gap-2">{actions}</div>
-				) : null}
+				{actions && <div className="flex items-center gap-2">{actions}</div>}
 			</header>
 
 			<section className="space-y-8">{children}</section>

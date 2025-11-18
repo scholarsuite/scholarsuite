@@ -1,12 +1,17 @@
+import { getTranslations } from "next-intl/server";
+
 import { AdminDashboardLayout } from "#components/Layout/AdminDashboard.tsx";
 
 import { SettingsClient } from "./SettingsClient.tsx";
 
-export default function AdminSettingsPage() {
+export default async function AdminSettingsPage() {
+	const t = await getTranslations("app.admin");
+
 	return (
 		<AdminDashboardLayout
-			title="Platform configuration"
-			description="Control how the school platform behaves by adjusting domain settings, calendars, grading rules, and more."
+			backLinkLabel={t("backToAdminDashboard")}
+			title={t("sections.settings.title")}
+			description={t("sections.settings.description")}
 		>
 			<SettingsClient />
 		</AdminDashboardLayout>

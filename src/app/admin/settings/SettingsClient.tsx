@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { Button } from "#components/Common/Button.tsx";
@@ -50,6 +51,8 @@ type ConfigState = {
 type FetchState = "idle" | "loading" | "saving";
 
 export function SettingsClient() {
+	const t = useTranslations("app.admin.settings");
+
 	const [config, setConfig] = useState<ConfigState | null>(null);
 	const [state, setState] = useState<FetchState>("loading");
 	const [error, setError] = useState<string | null>(null);
@@ -944,7 +947,7 @@ export function SettingsClient() {
 
 	if (isLoading) {
 		return (
-			<p className="p-6 text-sm text-slate-600">Loading configuration...</p>
+			<p className="p-6 text-sm text-slate-600">{t("loadingConfiguration")}</p>
 		);
 	}
 
@@ -954,16 +957,16 @@ export function SettingsClient() {
 
 			<section className="rounded-2xl border border-slate-200/80 p-6 shadow-sm dark:border-white/10 dark:bg-white/4">
 				<h2 className="text-lg font-medium text-slate-900 dark:text-white">
-					School identity
+					{t("schoolIdentity")}
 				</h2>
 				<div className="mt-4 flex flex-wrap items-center gap-4">
 					<Input
 						value={pendingSchoolName}
 						onChange={(event) => setPendingSchoolName(event.target.value)}
-						placeholder="School name"
+						placeholder={t("schoolNamePlaceholder")}
 					/>
 					<Button onClick={() => void saveSchoolName()} disabled={isSaving}>
-						Save name
+						{t("saveName")}
 					</Button>
 				</div>
 			</section>
@@ -972,11 +975,10 @@ export function SettingsClient() {
 				<header className="flex items-center justify-between">
 					<div>
 						<h2 className="text-lg font-medium text-slate-900 dark:text-white">
-							Study levels
+							{t("studyLevels")}
 						</h2>
 						<p className="text-xs text-slate-500 dark:text-slate-300">
-							Define and order the academic levels available in your
-							institution.
+							{t("studyLevelsDescription")}
 						</p>
 					</div>
 					<div className="flex items-center gap-2">
@@ -985,7 +987,7 @@ export function SettingsClient() {
 							onChange={(event) =>
 								setLevelForm((prev) => ({ ...prev, label: event.target.value }))
 							}
-							placeholder="Label"
+							placeholder={t("labelPlaceholder")}
 						/>
 						<Input
 							type="number"
@@ -993,7 +995,7 @@ export function SettingsClient() {
 							onChange={(event) =>
 								setLevelForm((prev) => ({ ...prev, order: event.target.value }))
 							}
-							placeholder="Order"
+							placeholder={t("orderPlaceholder")}
 						/>
 						<Button
 							onClick={() =>
@@ -1004,7 +1006,7 @@ export function SettingsClient() {
 							}
 							disabled={isSaving}
 						>
-							Add level
+							{t("addLevel")}
 						</Button>
 					</div>
 				</header>
@@ -1026,11 +1028,10 @@ export function SettingsClient() {
 				<header className="flex items-center justify-between">
 					<div>
 						<h2 className="text-lg font-medium text-slate-900 dark:text-white">
-							Course periods
+							{t("coursePeriods")}
 						</h2>
 						<p className="text-xs text-slate-500 dark:text-slate-300">
-							Define the time slots used across attendance and scheduling
-							features.
+							{t("coursePeriodsDescription")}
 						</p>
 					</div>
 					<div className="flex flex-wrap items-center gap-2">
@@ -1042,7 +1043,7 @@ export function SettingsClient() {
 									label: event.target.value,
 								}))
 							}
-							placeholder="Label"
+							placeholder={t("labelPlaceholder")}
 						/>
 						<input
 							type="datetime-local"
@@ -1054,6 +1055,7 @@ export function SettingsClient() {
 								}))
 							}
 							className="rounded-lg border border-slate-200 px-3 py-2 text-sm shadow-sm dark:border-white/10 dark:bg-white/8"
+							disabled={isSaving}
 						/>
 						<input
 							type="datetime-local"
@@ -1065,6 +1067,7 @@ export function SettingsClient() {
 								}))
 							}
 							className="rounded-lg border border-slate-200 px-3 py-2 text-sm shadow-sm dark:border-white/10 dark:bg-white/8"
+							disabled={isSaving}
 						/>
 						<Input
 							type="number"
@@ -1075,10 +1078,10 @@ export function SettingsClient() {
 									order: event.target.value,
 								}))
 							}
-							placeholder="Order"
+							placeholder={t("orderPlaceholder")}
 						/>
 						<Button onClick={() => void createPeriod()} disabled={isSaving}>
-							Add period
+							{t("addPeriod")}
 						</Button>
 					</div>
 				</header>
@@ -1099,11 +1102,10 @@ export function SettingsClient() {
 			<section className="space-y-6 rounded-2xl border border-slate-200/80 p-6 shadow-sm dark:border-white/10 dark:bg-white/4">
 				<header>
 					<h2 className="text-lg font-medium text-slate-900 dark:text-white">
-						Absence units
+						{t("absenceUnits")}
 					</h2>
 					<p className="text-xs text-slate-500 dark:text-slate-300">
-						Group course periods into larger units (e.g. morning, afternoon) for
-						reporting.
+						{t("absenceUnitsDescription")}
 					</p>
 				</header>
 
@@ -1121,11 +1123,10 @@ export function SettingsClient() {
 				<header className="flex items-center justify-between">
 					<div>
 						<h2 className="text-lg font-medium text-slate-900 dark:text-white">
-							Subject categories
+							{t("subjectCategories")}
 						</h2>
 						<p className="text-xs text-slate-500 dark:text-slate-300">
-							Organize subjects into ordered groups for navigation and
-							bulletins.
+							{t("subjectCategoriesDescription")}
 						</p>
 					</div>
 					<div className="flex items-center gap-2">
@@ -1137,7 +1138,7 @@ export function SettingsClient() {
 									label: event.target.value,
 								}))
 							}
-							placeholder="Label"
+							placeholder={t("labelPlaceholder")}
 						/>
 						<Input
 							type="number"
@@ -1148,7 +1149,7 @@ export function SettingsClient() {
 									order: event.target.value,
 								}))
 							}
-							placeholder="Order"
+							placeholder={t("orderPlaceholder")}
 						/>
 						<Button
 							onClick={() =>
@@ -1159,7 +1160,7 @@ export function SettingsClient() {
 							}
 							disabled={isSaving}
 						>
-							Add category
+							{t("addCategory")}
 						</Button>
 					</div>
 				</header>
@@ -1180,10 +1181,10 @@ export function SettingsClient() {
 			<section className="space-y-6 rounded-2xl border border-slate-200/80 p-6 shadow-sm dark:border-white/10 dark:bg-white/4">
 				<header>
 					<h2 className="text-lg font-medium text-slate-900 dark:text-white">
-						Subjects
+						{t("subjects")}
 					</h2>
 					<p className="text-xs text-slate-500 dark:text-slate-300">
-						Create and manage the subjects that drive evaluations and bulletins.
+						{t("subjectsDescription")}
 					</p>
 				</header>
 
@@ -1863,9 +1864,9 @@ function EditableSubjectRow({
 		subject.categoryId,
 		subject.label,
 		subject.literalScale,
-		subject.numericDecimals,
 		subject.numericMax,
 		subject.numericMin,
+		subject.numericDecimals,
 		subject.valueType,
 		subject.weight,
 	]);

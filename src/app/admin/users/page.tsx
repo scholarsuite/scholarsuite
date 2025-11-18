@@ -1,3 +1,4 @@
+import { getTranslations } from "next-intl/server";
 import { Suspense } from "react";
 
 import { AdminDashboardLayout } from "#components/Layout/AdminDashboard.tsx";
@@ -9,16 +10,19 @@ const ROLE_OPTIONS = Object.values(USER_ROLE).filter(
 	(role) => role !== USER_ROLE.STUDENT,
 );
 
-export default function AdminUsersPage() {
+export default async function AdminUsersPage() {
+	const t = await getTranslations("app.admin");
+
 	return (
 		<AdminDashboardLayout
-			title="User management"
-			description="Create, edit, and support the internal users that operate the school platform."
+			backLinkLabel={t("backToAdminDashboard")}
+			title={t("sections.users.title")}
+			description={t("sections.users.description")}
 		>
 			<Suspense
 				fallback={
 					<p className="text-sm text-slate-600 dark:text-slate-300">
-						Loading users...
+						{t("users.loadingUsers")}
 					</p>
 				}
 			>

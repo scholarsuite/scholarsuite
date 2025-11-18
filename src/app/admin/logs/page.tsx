@@ -1,5 +1,5 @@
 import Link from "next/link";
-
+import { getTranslations } from "next-intl/server";
 import { AdminDashboardLayout } from "#components/Layout/AdminDashboard.tsx";
 import { prisma } from "#lib/prisma.ts";
 import { LOG_LEVEL } from "#prisma/client";
@@ -121,6 +121,7 @@ function LevelBadge({ level }: { level: LOG_LEVEL }) {
 	);
 }
 
+// todo(@AugustinMauroy): move to a shared component + i18n
 function MetadataViewer({ metadata }: { metadata: unknown }) {
 	if (metadata === null || metadata === undefined) {
 		return (
@@ -186,6 +187,8 @@ function formatRelative(timestamp: string): string {
  * and add pagination + filtering capabilities
  */
 export default async function AdminLogsPage() {
+	const t = await getTranslations("app.admin");
+
 	const logs = await getRecentLogs();
 
 	const levelCounts = {} as Record<LOG_LEVEL, number>;
@@ -199,15 +202,16 @@ export default async function AdminLogsPage() {
 
 	return (
 		<AdminDashboardLayout
-			title="System logs"
-			description="Audit platform activity to troubleshoot issues and maintain compliance."
+			backLinkLabel={t("backToAdminDashboard")}
+			title={t("logs.title")}
+			description={t("logs.description")}
 			actions={
 				<Link
 					href="/admin/logs"
 					className="inline-flex items-center justify-center rounded-lg border border-slate-200 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 dark:border-white/15 dark:text-white dark:hover:bg-white/10"
 					prefetch={false}
 				>
-					Refresh
+					{t("refresh")}
 				</Link>
 			}
 		>
@@ -232,14 +236,13 @@ export default async function AdminLogsPage() {
 
 				<div className="rounded-xl border border-slate-200 bg-white/80 p-4 shadow-sm dark:border-white/10 dark:bg-white/5">
 					<p className="text-sm text-slate-600 dark:text-slate-300">
-						Showing {logs.length} of the latest {LOG_LIMIT} log entries. New
-						entries appear here once they are written to the database.
+						{t("logs.showingLogs", { count: logs.length, limit: LOG_LIMIT })}
 					</p>
 				</div>
 
 				{logs.length === 0 ? (
 					<div className="rounded-xl border border-slate-200 bg-white/80 p-8 text-center text-sm text-slate-500 shadow-sm dark:border-white/10 dark:bg-white/5 dark:text-slate-300">
-						No logs recorded yet.
+						{t("logs.noLogs")}
 					</div>
 				) : (
 					<div className="space-y-4">
@@ -270,7 +273,7 @@ export default async function AdminLogsPage() {
 												) : null}
 												{log.requestId ? (
 													<span className="font-mono text-[11px] text-slate-500 dark:text-slate-300">
-														Request {log.requestId}
+														{t("logs.requestId", { id: log.requestId })}
 													</span>
 												) : null}
 											</div>
@@ -285,7 +288,7 @@ export default async function AdminLogsPage() {
 									<dl className="mt-4 grid gap-3 text-xs text-slate-500 dark:text-slate-400 sm:grid-cols-2">
 										<div>
 											<dt className="font-medium text-slate-600 dark:text-slate-300">
-												User
+												{t("logs.user")}
 											</dt>
 											<dd className="mt-1">
 												{log.user ? (
@@ -298,13 +301,13 @@ export default async function AdminLogsPage() {
 														) : null}
 													</div>
 												) : (
-													<span>System</span>
+													<span>{t("logs.systemUser")}</span>
 												)}
 											</dd>
 										</div>
 										<div>
 											<dt className="font-medium text-slate-600 dark:text-slate-300">
-												Metadata
+												{t("logs.metadata")}
 											</dt>
 											<dd className="mt-1">
 												<MetadataViewer metadata={log.metadata} />

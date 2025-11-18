@@ -1,1 +1,137 @@
-{}
+{
+  "app": {
+    "admin": {
+      "title": "Administration",
+      "description": "Access the tools required to operate the platform. Pick a module to review data, configure the school, or assist staff members.",
+      "sections": {
+        "users": {
+          "title": "Users",
+          "description": "Invite, edit, and archive internal accounts with the right roles."
+        },
+        "settings": {
+          "title": "Configuration",
+          "description": "Tune global school settings, levels, subjects, and reporting units."
+        },
+        "logs": {
+          "title": "Logs",
+          "description": "Review system events to monitor activity and troubleshoot issues."
+        },
+        "schoolYears": {
+          "title": "School Years",
+          "description": "Define academic cycles, their periods, and associated levels."
+        },
+        "classes": {
+          "title": "Classes",
+          "description": "Manage class groups, educators, and student assignments."
+        },
+        "students": {
+          "title": "Students",
+          "description": "Review student profiles, contacts, and year placement records."
+        },
+        "attendance": {
+          "title": "Attendance",
+          "description": "Track and adjust attendance logs across course periods."
+        },
+        "evaluations": {
+          "title": "Evaluations",
+          "description": "Configure evaluation periods and manage grade inputs."
+        },
+        "reports": {
+          "title": "Reports",
+          "description": "Generate and publish report cards and progress bulletins."
+        },
+        "disciplinaryReports": {
+          "title": "Disciplinary",
+          "description": "Record behavioural incidents and follow up on actions."
+        }
+      },
+      "openModule": "Open module",
+      "backToAdminDashboard": "Back to admin dashboard",
+      "refresh": "Refresh",
+      "users": {
+        "title": "User Management",
+        "description": "Create, edit, and support the internal users that operate the school platform.",
+        "loadingUsers": "Loading users...",
+        "createNewUser": "Create a new user",
+        "emailPlaceholder": "Email",
+        "displayNamePlaceholder": "Display name",
+        "firstNamePlaceholder": "First name",
+        "lastNamePlaceholder": "Last name",
+        "preferredLanguagePlaceholder": "Preferred language (e.g. en, fr)",
+        "temporaryPasswordPlaceholder": "Temporary password (optional)",
+        "temporaryPasswordDescription": "Users without passwords must authenticate via a connected provider.",
+        "rolesLabel": "Roles",
+        "creating": "Creating...",
+        "createUser": "Create user",
+        "reset": "Reset",
+        "existingUsers": "Existing users",
+        "refreshing": "Refreshing...",
+        "refresh": "Refresh",
+        "nameColumn": "Name",
+        "emailColumn": "Email",
+        "rolesColumn": "Roles",
+        "statusColumn": "Status",
+        "actionsColumn": "Actions",
+        "archivedStatus": "Archived",
+        "activeStatus": "Active",
+        "edit": "Edit",
+        "cancel": "Cancel",
+        "save": "Save",
+        "saving": "Saving...",
+        "archive": "Archive",
+        "unarchive": "Unarchive",
+        "resetPassword": "Reset password",
+        "passwordPrompt": "Enter the new password for {email} (minimum 8 characters)",
+        "passwordTooShort": "Password must contain at least 8 characters"
+      },
+      "settings": {
+        "title": "Platform configuration",
+        "description": "Control how the school platform behaves by adjusting domain settings, calendars, grading rules, and more.",
+        "schoolIdentity": "School identity",
+        "schoolNamePlaceholder": "School name",
+        "saveName": "Save name",
+        "studyLevels": "Study levels",
+        "studyLevelsDescription": "Define and order the academic levels available in your institution.",
+        "labelPlaceholder": "Label",
+        "orderPlaceholder": "Order",
+        "addLevel": "Add level",
+        "coursePeriods": "Course periods",
+        "coursePeriodsDescription": "Define the time slots used across attendance and scheduling features.",
+        "addPeriod": "Add period",
+        "absenceUnits": "Absence units",
+        "absenceUnitsDescription": "Group course periods into larger units (e.g. morning, afternoon) for reporting.",
+        "subjectCategories": "Subject categories",
+        "subjectCategoriesDescription": "Organize subjects into ordered groups for navigation and bulletins.",
+        "addCategory": "Add category",
+        "subjects": "Subjects",
+        "subjectsDescription": "Create and manage the subjects that drive evaluations and bulletins.",
+        "addSubject": "Add subject",
+        "loadingConfiguration": "Loading configuration...",
+        "save": "Save",
+        "delete": "Delete"
+      },
+      "logs": {
+        "title": "System Logs",
+        "description": "Review recent system events to monitor activity and troubleshoot issues.",
+        "showingLogs": "Showing {count} of the latest {limit} log entries. New entries appear here once they are written to the database.",
+        "noLogs": "No logs recorded yet.",
+        "requestId": "Request {id}",
+        "user": "User",
+        "metadata": "Metadata",
+        "systemUser": "System"
+      }
+    },
+    "signIn": {
+      "emailLabel": "Email",
+      "loginToYourAccount": "Login to your account",
+      "orContinueWith": "Or sign in with",
+      "signInButton": "Sign In",
+      "passwordLabel": "Password",
+      "signInWithGitHub": "Sign in with GitHub"
+    }
+  },
+  "common": {
+    "tagline": "School life and academic management",
+    "loading": "Loading..."
+  }
+}

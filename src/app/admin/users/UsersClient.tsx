@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import type { FormEvent } from "react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Button } from "#components/Common/Button.tsx";
@@ -46,6 +47,8 @@ const buildDefaultCreateForm = (defaultRole: string): CreateFormState => ({
 });
 
 export function UsersClient({ roleOptions, defaultRole }: UsersClientProps) {
+	const t = useTranslations("app.admin.users");
+
 	const [users, setUsers] = useState<ApiUser[]>([]);
 	const [state, setState] = useState<FetchState>("loading");
 	const [error, setError] = useState<string | null>(null);
@@ -158,7 +161,7 @@ export function UsersClient({ roleOptions, defaultRole }: UsersClientProps) {
 					className="grid gap-4 rounded-2xl border border-slate-200/80 p-6 shadow-sm dark:border-white/10 dark:bg-white/4"
 				>
 					<h2 className="text-lg font-medium text-slate-900 dark:text-white">
-						Create a new user
+						{t("createNewUser")}
 					</h2>
 
 					<div className="grid gap-4 sm:grid-cols-2">
@@ -172,7 +175,7 @@ export function UsersClient({ roleOptions, defaultRole }: UsersClientProps) {
 									email: event.target.value,
 								}))
 							}
-							placeholder="Email"
+							placeholder={t("emailPlaceholder")}
 						/>
 						<Input
 							required
@@ -180,7 +183,7 @@ export function UsersClient({ roleOptions, defaultRole }: UsersClientProps) {
 							onChange={(event) =>
 								setCreateForm((prev) => ({ ...prev, name: event.target.value }))
 							}
-							placeholder="Display name"
+							placeholder={t("displayNamePlaceholder")}
 						/>
 						<Input
 							value={createForm.firstName}
@@ -190,7 +193,7 @@ export function UsersClient({ roleOptions, defaultRole }: UsersClientProps) {
 									firstName: event.target.value,
 								}))
 							}
-							placeholder="First name"
+							placeholder={t("firstNamePlaceholder")}
 						/>
 						<Input
 							value={createForm.lastName}
@@ -200,7 +203,7 @@ export function UsersClient({ roleOptions, defaultRole }: UsersClientProps) {
 									lastName: event.target.value,
 								}))
 							}
-							placeholder="Last name"
+							placeholder={t("lastNamePlaceholder")}
 						/>
 						<Input
 							value={createForm.preferredLanguage}
@@ -210,7 +213,7 @@ export function UsersClient({ roleOptions, defaultRole }: UsersClientProps) {
 									preferredLanguage: event.target.value,
 								}))
 							}
-							placeholder="Preferred language (e.g. en, fr)"
+							placeholder={t("preferredLanguagePlaceholder")}
 						/>
 						<Input
 							type="password"
@@ -221,14 +224,14 @@ export function UsersClient({ roleOptions, defaultRole }: UsersClientProps) {
 									password: event.target.value,
 								}))
 							}
-							placeholder="Temporary password (optional)"
-							description="Users without passwords must authenticate via a connected provider."
+							placeholder={t("temporaryPasswordPlaceholder")}
+							description={t("temporaryPasswordDescription")}
 						/>
 					</div>
 
 					<div className="space-y-2">
 						<p className="text-sm font-medium text-slate-700 dark:text-slate-200">
-							Roles
+							{t("rolesLabel")}
 						</p>
 						<div className="flex flex-wrap gap-3">
 							{roleOptions.map((role) => {
@@ -252,10 +255,10 @@ export function UsersClient({ roleOptions, defaultRole }: UsersClientProps) {
 
 					<div className="flex items-center gap-3">
 						<Button type="submit" disabled={isSaving}>
-							{isSaving ? "Creating..." : "Create user"}
+							{isSaving ? t("creating") : t("createUser")}
 						</Button>
 						<Button type="button" onClick={resetForm} disabled={isSaving}>
-							Reset
+							{t("reset")}
 						</Button>
 						{createError ? (
 							<p className="text-sm text-red-500">{createError}</p>
@@ -267,13 +270,13 @@ export function UsersClient({ roleOptions, defaultRole }: UsersClientProps) {
 			<section className="space-y-3">
 				<header className="flex items-center justify-between">
 					<h2 className="text-lg font-medium text-slate-900 dark:text-white">
-						Existing users
+						{t("existingUsers")}
 					</h2>
 					<Button
 						onClick={() => void loadUsers()}
 						disabled={state === "loading"}
 					>
-						{state === "loading" ? "Refreshing..." : "Refresh"}
+						{state === "loading" ? t("refreshing") : t("refresh")}
 					</Button>
 				</header>
 
@@ -284,19 +287,19 @@ export function UsersClient({ roleOptions, defaultRole }: UsersClientProps) {
 						<thead className="bg-slate-50 dark:bg-white/5">
 							<tr>
 								<th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
-									Name
+									{t("nameColumn")}
 								</th>
 								<th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
-									Email
+									{t("emailColumn")}
 								</th>
 								<th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
-									Roles
+									{t("rolesColumn")}
 								</th>
 								<th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
-									Status
+									{t("statusColumn")}
 								</th>
 								<th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500">
-									Actions
+									{t("actionsColumn")}
 								</th>
 							</tr>
 						</thead>

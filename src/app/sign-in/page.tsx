@@ -1,5 +1,6 @@
 "use client";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import type { FC, FormEvent } from "react";
 import { useState } from "react";
 import { Card } from "#components/Common/Card.tsx";
@@ -10,6 +11,8 @@ import { authClient } from "#lib/auth-client.ts";
 const { signIn } = authClient;
 
 const SignInPage: FC = () => {
+	const t = useTranslations();
+
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [loading, setLoading] = useState(false);
@@ -47,12 +50,12 @@ const SignInPage: FC = () => {
 					/>
 					<h1 className="text-2xl font-bold">Scholarsuite</h1>
 					<p className="text-sm text-slate-600 dark:text-white/80">
-						Gestion de vie scolaire et de scolarité
+						{t("common.tagline")}
 					</p>
 				</div>
 
 				<h2 className="text-lg font-semibold mb-4 text-center text-slate-700 dark:text-white">
-					Connexion
+					{t("app.signIn.loginToYourAccount")}
 				</h2>
 
 				<form onSubmit={handleSubmit} className="space-y-4">
@@ -61,7 +64,7 @@ const SignInPage: FC = () => {
 							htmlFor="email"
 							className="block text-sm font-medium mb-2 text-slate-700 dark:text-white/80"
 						>
-							Email
+							{t("app.signIn.emailLabel")}
 						</Label>
 						<div className="relative">
 							<Input
@@ -82,7 +85,7 @@ const SignInPage: FC = () => {
 							htmlFor="password"
 							className="block text-sm font-medium mb-2 text-slate-700 dark:text-white/80"
 						>
-							Mot de passe
+							{t("app.signIn.passwordLabel")}
 						</Label>
 						<Input
 							id="password"
@@ -103,7 +106,7 @@ const SignInPage: FC = () => {
 						<span className="absolute inset-0 pointer-events-none rounded-xl border border-slate-200 dark:border-white/10" />
 						<span className="absolute -left-10 -top-6 w-36 h-40 bg-linear-to-br from-slate-700/20 via-slate-600/10 to-transparent opacity-30 transform -rotate-12 blur-xl transition-transform duration-500 ease-out group-hover:translate-x-10 group-hover:scale-110 group-active:translate-x-6 dark:from-white/40 dark:via-white/10 dark:to-transparent" />
 						<span className="z-10 font-semibold">
-							{loading ? "Connexion..." : "Se connecter"}
+							{loading ? t("common.loading") : t("app.signIn.signInButton")}
 						</span>
 					</button>
 				</form>
@@ -112,7 +115,7 @@ const SignInPage: FC = () => {
 					<div className="flex items-center my-4">
 						<span className="flex-1 h-px bg-slate-200 dark:bg-white/10" />
 						<span className="mx-3 text-sm text-slate-500 dark:text-white/70">
-							ou avec
+							{t("app.signIn.orContinueWith")}
 						</span>
 						<span className="flex-1 h-px bg-slate-200 dark:bg-white/10" />
 					</div>
@@ -152,7 +155,7 @@ const SignInPage: FC = () => {
 						</svg>
 
 						<span className="z-10 font-semibold">
-							{loading ? "Connexion..." : "Se connecter avec GitHub"}
+							{loading ? t("common.loading") : t("app.signIn.signInWithGitHub")}
 						</span>
 					</button>
 				</div>

@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 type AdminRoute = `/admin/${string}`;
 
@@ -9,71 +12,67 @@ const ADMIN_SECTIONS: Array<{
 }> = [
 	{
 		href: "/admin/users",
-		title: "Users",
-		description:
-			"Invite, edit, and archive internal accounts with the right roles.",
+		title: "sections.users.title",
+		description: "sections.users.description",
 	},
 	{
 		href: "/admin/settings",
-		title: "Configuration",
-		description:
-			"Tune global school settings, levels, subjects, and reporting units.",
+		title: "sections.settings.title",
+		description: "sections.settings.description",
 	},
 	{
 		href: "/admin/logs",
-		title: "Logs",
-		description:
-			"Review system events to monitor activity and troubleshoot issues.",
+		title: "sections.logs.title",
+		description: "sections.logs.description",
 	},
 	{
 		href: "/admin/school-years",
-		title: "School Years",
-		description:
-			"Define academic cycles, their periods, and associated levels.",
+		title: "sections.schoolYears.title",
+		description: "sections.schoolYears.description",
 	},
 	{
 		href: "/admin/classes",
-		title: "Classes",
-		description: "Manage class groups, educators, and student assignments.",
+		title: "sections.classes.title",
+		description: "sections.classes.description",
 	},
 	{
 		href: "/admin/students",
-		title: "Students",
-		description:
-			"Review student profiles, contacts, and year placement records.",
+		title: "sections.students.title",
+		description: "sections.students.description",
 	},
 	{
 		href: "/admin/attendance",
-		title: "Attendance",
-		description: "Track and adjust attendance logs across course periods.",
+		title: "sections.attendance.title",
+		description: "sections.attendance.description",
 	},
 	{
 		href: "/admin/evaluations",
-		title: "Evaluations",
-		description: "Configure evaluation periods and manage grade inputs.",
+		title: "sections.evaluations.title",
+		description: "sections.evaluations.description",
 	},
 	{
 		href: "/admin/reports",
-		title: "Reports",
-		description: "Generate and publish report cards and progress bulletins.",
+		title: "sections.reports.title",
+		description: "sections.reports.description",
 	},
 	{
 		href: "/admin/disciplinary-reports",
-		title: "Disciplinary",
-		description: "Record behavioural incidents and follow up on actions.",
+		title: "sections.disciplinaryReports.title",
+		description: "sections.disciplinaryReports.description",
 	},
 ];
 
 export default function AdminPage() {
+	const t = useTranslations("app.admin");
+
 	return (
 		<div className="mx-auto max-w-6xl space-y-10 p-6">
 			<header className="space-y-3">
 				<h1 className="text-3xl font-semibold text-slate-900 dark:text-white">
-					Administration
+					{t("title")}
 				</h1>
 				<p className="text-sm text-slate-600 dark:text-slate-300">
-					Access the tools required to operate the platform. Pick a module to
-					review data, configure the school, or assist staff members.
+					{t("description")}
 				</p>
 			</header>
 
@@ -87,14 +86,14 @@ export default function AdminPage() {
 						>
 							<div className="space-y-3">
 								<h2 className="text-lg font-medium text-slate-900 transition group-hover:text-slate-700 dark:text-white dark:group-hover:text-white/80">
-									{section.title}
+									{t(section.title)}
 								</h2>
 								<p className="text-sm text-slate-600 dark:text-slate-300">
-									{section.description}
+									{t(section.description)}
 								</p>
 							</div>
 							<span className="mt-6 inline-flex items-center text-sm font-medium text-slate-700 transition group-hover:text-slate-900 dark:text-white/80 dark:group-hover:text-white">
-								Open module
+								{t("openModule")}
 								<svg
 									aria-hidden="true"
 									className="ml-2 h-4 w-4"
