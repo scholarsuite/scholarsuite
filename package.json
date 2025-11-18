@@ -8,6 +8,7 @@
     "start": "next start",
     "type:gen": "next typegen && npx prisma generate",
     "type:check": "tsc --noEmit",
+    "test:unit": "node --test",
     "db:format": "npx prisma format",
     "db:generate": "npx prisma generate",
     "db:seed-dev": "node --env-file-if-exists=.env prisma/seed.ts",
@@ -24,6 +25,7 @@
     "#lib/*": "./src/lib/*",
     "#styles/*": "./src/styles/*",
     "#components/*": "./src/components/*",
+    "#utils/*": "./src/utils/*",
     "#locales/*": "./locales/*",
     "#providers/*": "./src/providers/*"
   },

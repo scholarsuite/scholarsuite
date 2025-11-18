@@ -3,6 +3,8 @@ import { Button } from "#components/Common/Button.tsx";
 import { Card } from "#components/Common/Card.tsx";
 import { Input } from "#components/Common/Input.tsx";
 import { Label } from "#components/Common/Label.tsx";
+import { Table, Tbody, Td, Th, Thead, Tr } from "#components/Common/Table.tsx";
+import { Tag } from "#components/Common/Tag.tsx";
 
 type Story = StoryObj<typeof Card>;
 type Meta = MetaObj<typeof Card>;
@@ -38,3 +40,70 @@ export const LoginForm: Story = {
 };
 
 export default { component: Card, title: "Composition/Integration" } as Meta;
+
+export const DenseTableWithTags: Story = {
+	render: () => (
+		<Card innerClassName="p-0 overflow-hidden" glass>
+			<Table className="text-sm">
+				<Thead>
+					<Tr>
+						<Th className="py-2">ID</Th>
+						<Th className="py-2">Nom</Th>
+						<Th className="py-2">Catégorie</Th>
+						<Th className="py-2">Statut</Th>
+					</Tr>
+				</Thead>
+				<Tbody>
+					{[
+						{
+							id: "U-1024",
+							name: "Alice Martin",
+							category: "enseignant",
+							status: "actif",
+						},
+						{
+							id: "U-1025",
+							name: "Bob Leroy",
+							category: "élève",
+							status: "suspendu",
+						},
+						{
+							id: "U-1026",
+							name: "Chloé Dupont",
+							category: "administrateur",
+							status: "invité",
+						},
+					].map((row) => (
+						<Tr key={row.id}>
+							<Td className="py-2">
+								<Tag variant="neutral" size="sm" mono>
+									{row.id}
+								</Tag>
+							</Td>
+							<Td className="py-2">{row.name}</Td>
+							<Td className="py-2">
+								<Tag variant="info" size="sm">
+									{row.category}
+								</Tag>
+							</Td>
+							<Td className="py-2">
+								<Tag
+									size="sm"
+									variant={
+										row.status === "actif"
+											? "success"
+											: row.status === "suspendu"
+												? "danger"
+												: "warning"
+									}
+								>
+									{row.status}
+								</Tag>
+							</Td>
+						</Tr>
+					))}
+				</Tbody>
+			</Table>
+		</Card>
+	),
+};

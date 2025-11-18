@@ -1,16 +1,17 @@
 import Link from "next/link";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
+import { LevelBadge } from "#components/admin/logs/LevelBadge.tsx";
+import { MetadataViewer } from "#components/Common/MetadataViewer.tsx";
+import { Tag } from "#components/Common/Tag.tsx";
 import { AdminDashboardLayout } from "#components/Layout/AdminDashboard.tsx";
 import { prisma } from "#lib/prisma.ts";
 import { LOG_LEVEL } from "#prisma/client";
+import { formatRelative } from "#utils/datetime.ts";
 
 export const revalidate = 0;
 
 const LOG_LIMIT = 150;
-const absoluteFormatter = new Intl.DateTimeFormat("en-GB", {
-	dateStyle: "medium",
-	timeStyle: "medium",
-});
+
 const levelOrder: readonly LOG_LEVEL[] = [
 	LOG_LEVEL.ERROR,
 	LOG_LEVEL.WARN,
@@ -100,94 +101,13 @@ async function getRecentLogs(): Promise<SerializedLog[]> {
 	});
 }
 
-const levelStyles: Record<LOG_LEVEL, string> = {
-	[LOG_LEVEL.DEBUG]:
-		"bg-slate-100 text-slate-700 dark:bg-white/10 dark:text-slate-200",
-	[LOG_LEVEL.INFO]:
-		"bg-sky-100 text-sky-800 dark:bg-sky-400/20 dark:text-sky-200",
-	[LOG_LEVEL.WARN]:
-		"bg-amber-100 text-amber-900 dark:bg-amber-400/20 dark:text-amber-200",
-	[LOG_LEVEL.ERROR]:
-		"bg-rose-100 text-rose-900 dark:bg-rose-400/20 dark:text-rose-200",
-};
-
-function LevelBadge({ level }: { level: LOG_LEVEL }) {
-	return (
-		<span
-			className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold leading-none ${levelStyles[level]}`}
-		>
-			{level}
-		</span>
-	);
-}
-
-// todo(@AugustinMauroy): move to a shared component + i18n
-function MetadataViewer({ metadata }: { metadata: unknown }) {
-	if (metadata === null || metadata === undefined) {
-		return (
-			<span className="text-xs text-slate-500 dark:text-slate-400">
-				No metadata
-			</span>
-		);
-	}
-
-	return (
-		<details className="text-xs">
-			<summary className="cursor-pointer text-sky-600 transition hover:text-sky-700 dark:text-sky-300 dark:hover:text-sky-200">
-				View metadata
-			</summary>
-			<pre className="mt-2 max-h-64 overflow-auto rounded-lg border border-slate-200 bg-slate-50 p-3 text-xs text-slate-700 dark:border-white/10 dark:bg-white/5 dark:text-slate-200">
-				{safeStringify(metadata)}
-			</pre>
-		</details>
-	);
-}
-
-function safeStringify(value: unknown): string {
-	if (typeof value === "string") {
-		return value;
-	}
-
-	try {
-		return JSON.stringify(value, null, 2);
-	} catch (error) {
-		return `Unable to display metadata: ${error instanceof Error ? error.message : "Unknown error"}`;
-	}
-}
-
-function formatRelative(timestamp: string): string {
-	const date = new Date(timestamp);
-	const diff = Date.now() - date.getTime();
-	const abs = Math.abs(diff);
-	const minute = 60_000;
-	const hour = 60 * minute;
-	const day = 24 * hour;
-
-	if (abs < minute) {
-		const seconds = Math.max(1, Math.round(abs / 1_000));
-		return `${seconds}s ago`;
-	}
-
-	if (abs < hour) {
-		const minutes = Math.round(abs / minute);
-		return `${minutes}m ago`;
-	}
-
-	if (abs < day) {
-		const hours = Math.round(abs / hour);
-		return `${hours}h ago`;
-	}
-
-	const days = Math.round(abs / day);
-	return `${days}d ago`;
-}
-
 /**
  * todo(@AugustinMauroy): move server logic to rest api route
  * and add pagination + filtering capabilities
  */
 export default async function AdminLogsPage() {
 	const t = await getTranslations("app.admin");
+	const locale = await getLocale();
 
 	const logs = await getRecentLogs();
 
@@ -247,9 +167,10 @@ export default async function AdminLogsPage() {
 				) : (
 					<div className="space-y-4">
 						{logs.map((log) => {
-							const absoluteTime = absoluteFormatter.format(
-								new Date(log.timestamp),
-							);
+							const absoluteTime = new Intl.DateTimeFormat(locale, {
+								dateStyle: "medium",
+								timeStyle: "medium",
+							}).format(new Date(log.timestamp));
 
 							return (
 								<article
@@ -265,16 +186,14 @@ export default async function AdminLogsPage() {
 												{absoluteTime}
 											</time>
 											<div className="mt-1 flex flex-wrap items-center gap-3 text-xs text-slate-500 dark:text-slate-400">
-												<span>{formatRelative(log.timestamp)}</span>
+												<span>{formatRelative(log.timestamp, locale)}</span>
 												{log.scope ? (
-													<span className="rounded-full bg-slate-200 px-2 py-0.5 text-xs text-slate-700 dark:bg-white/10 dark:text-slate-200">
-														{log.scope}
-													</span>
+													<Tag variant="info">{log.scope}</Tag>
 												) : null}
 												{log.requestId ? (
-													<span className="font-mono text-[11px] text-slate-500 dark:text-slate-300">
+													<Tag variant="neutral" mono>
 														{t("logs.requestId", { id: log.requestId })}
-													</span>
+													</Tag>
 												) : null}
 											</div>
 										</div>

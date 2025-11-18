@@ -1,5 +1,4 @@
 import { getTranslations } from "next-intl/server";
-import { Suspense } from "react";
 
 import { AdminDashboardLayout } from "#components/Layout/AdminDashboard.tsx";
 import { USER_ROLE } from "#prisma/enums";
@@ -15,15 +14,7 @@ export default async function AdminUsersPage() {
 			title={t("sections.users.title")}
 			description={t("sections.users.description")}
 		>
-			<Suspense
-				fallback={
-					<p className="text-sm text-slate-600 dark:text-slate-300">
-						{t("users.loadingUsers")}
-					</p>
-				}
-			>
-				<UsersClient defaultRole={USER_ROLE.TEACHER} />
-			</Suspense>
+			<UsersClient defaultRole={USER_ROLE.TEACHER} />
 		</AdminDashboardLayout>
 	);
 }

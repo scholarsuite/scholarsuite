@@ -2,9 +2,11 @@
 
 import { useTranslations } from "next-intl";
 import type { FC, FormEvent } from "react";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { UserRow } from "#components/admin/users/UserRow.tsx";
 import { Button } from "#components/Common/Button.tsx";
 import { Input } from "#components/Common/Input.tsx";
+import { Table, Tbody, Th, Thead, Tr } from "#components/Common/Table.tsx";
 import { USER_ROLE } from "#prisma/enums";
 
 type ApiUser = {
@@ -46,7 +48,7 @@ const buildDefaultCreateForm = (defaultRole: string): CreateFormState => ({
 	roles: [defaultRole],
 });
 
-export function UsersClient({ defaultRole }: UsersClientProps) {
+export const UsersClient: FC<UsersClientProps> = ({ defaultRole }) => {
 	const t = useTranslations("app.admin.users");
 
 	const [users, setUsers] = useState<ApiUser[]>([]);
@@ -67,17 +69,17 @@ export function UsersClient({ defaultRole }: UsersClientProps) {
 			});
 
 			if (!response.ok) {
-				throw new Error(`Failed to load users (${response.status})`);
+				throw new Error(t("loadingUsers"));
 			}
 
 			const payload = (await response.json()) as { users: ApiUser[] };
 			setUsers(payload.users);
 		} catch (cause) {
-			setError(cause instanceof Error ? cause.message : "Failed to load users");
+			setError(cause instanceof Error ? cause.message : t("loadingUsers"));
 		} finally {
 			setState("idle");
 		}
-	}, []);
+	}, [t]);
 
 	useEffect(() => {
 		void loadUsers();
@@ -128,7 +130,7 @@ export function UsersClient({ defaultRole }: UsersClientProps) {
 
 				if (!response.ok) {
 					const body = (await response.json()) as { error?: string };
-					throw new Error(body.error ?? "Failed to create user");
+					throw new Error(body.error ?? t("createUser"));
 				}
 
 				const json = (await response.json()) as { user: ApiUser };
@@ -136,13 +138,13 @@ export function UsersClient({ defaultRole }: UsersClientProps) {
 				resetForm();
 			} catch (cause) {
 				setCreateError(
-					cause instanceof Error ? cause.message : "Failed to create user",
+					cause instanceof Error ? cause.message : t("createUser"),
 				);
 			} finally {
 				setState("idle");
 			}
 		},
-		[createForm, resetForm],
+		[createForm, resetForm, t],
 	);
 
 	const handleUserUpdated = useCallback((updatedUser: ApiUser) => {
@@ -285,27 +287,17 @@ export function UsersClient({ defaultRole }: UsersClientProps) {
 				{error ? <p className="text-sm text-red-500">{error}</p> : null}
 
 				<div className="overflow-x-auto">
-					<table className="min-w-full divide-y divide-slate-200 dark:divide-white/10">
-						<thead className="bg-slate-50 dark:bg-white/5">
-							<tr>
-								<th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
-									{t("nameColumn")}
-								</th>
-								<th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
-									{t("emailColumn")}
-								</th>
-								<th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
-									{t("rolesColumn")}
-								</th>
-								<th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
-									{t("statusColumn")}
-								</th>
-								<th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500">
-									{t("actionsColumn")}
-								</th>
-							</tr>
-						</thead>
-						<tbody className="divide-y divide-slate-200 bg-white dark:divide-white/10 dark:bg-white/2">
+					<Table>
+						<Thead>
+							<Tr>
+								<Th>{t("nameColumn")}</Th>
+								<Th>{t("emailColumn")}</Th>
+								<Th>{t("rolesColumn")}</Th>
+								<Th>{t("statusColumn")}</Th>
+								<Th className="text-right">{t("actionsColumn")}</Th>
+							</Tr>
+						</Thead>
+						<Tbody>
 							{users.map((user) => (
 								<UserRow
 									key={user.id}
@@ -316,256 +308,10 @@ export function UsersClient({ defaultRole }: UsersClientProps) {
 									)}
 								/>
 							))}
-						</tbody>
-					</table>
+						</Tbody>
+					</Table>
 				</div>
 			</section>
 		</div>
-	);
-}
-
-type UserRowProps = {
-	user: ApiUser;
-	onUpdated: (user: ApiUser) => void;
-	roleOptions: string[];
-};
-
-const UserRow: FC<UserRowProps> = ({ user, onUpdated, roleOptions }) => {
-	const [isEditing, setIsEditing] = useState(false);
-	const [localUser, setLocalUser] = useState(() => ({
-		name: user.name,
-		email: user.email,
-		firstName: user.firstName ?? "",
-		lastName: user.lastName ?? "",
-		preferredLanguage: user.preferredLanguage ?? "",
-		roles: user.roles,
-	}));
-	const [error, setError] = useState<string | null>(null);
-	const [saving, setSaving] = useState(false);
-
-	useEffect(() => {
-		setLocalUser({
-			name: user.name,
-			email: user.email,
-			firstName: user.firstName ?? "",
-			lastName: user.lastName ?? "",
-			preferredLanguage: user.preferredLanguage ?? "",
-			roles: user.roles,
-		});
-	}, [user]);
-
-	const toggleRole = (role: string) => {
-		setLocalUser((prev) => {
-			const hasRole = prev.roles.includes(role);
-			return {
-				...prev,
-				roles: hasRole
-					? prev.roles.filter((existing) => existing !== role)
-					: [...prev.roles, role],
-			};
-		});
-	};
-
-	const saveChanges = async () => {
-		setSaving(true);
-		setError(null);
-		try {
-			const response = await fetch(`/api/admin/users/${user.id}`, {
-				method: "PATCH",
-				credentials: "include",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({
-					name: localUser.name.trim(),
-					email: localUser.email.trim(),
-					firstName: localUser.firstName.trim() || null,
-					lastName: localUser.lastName.trim() || null,
-					preferredLanguage: localUser.preferredLanguage.trim() || null,
-					roles: localUser.roles,
-				}),
-			});
-
-			if (!response.ok) {
-				const body = (await response.json()) as { error?: string };
-				throw new Error(body.error ?? "Failed to update user");
-			}
-
-			const payload = (await response.json()) as { user: ApiUser };
-			onUpdated(payload.user);
-			setIsEditing(false);
-		} catch (cause) {
-			setError(
-				cause instanceof Error ? cause.message : "Failed to update user",
-			);
-		} finally {
-			setSaving(false);
-		}
-	};
-
-	const toggleArchive = async () => {
-		setSaving(true);
-		setError(null);
-		try {
-			const response = await fetch(`/api/admin/users/${user.id}`, {
-				method: "PATCH",
-				credentials: "include",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ archived: !user.archived }),
-			});
-
-			if (!response.ok) {
-				const body = (await response.json()) as { error?: string };
-				throw new Error(body.error ?? "Failed to toggle archive state");
-			}
-
-			const payload = (await response.json()) as { user: ApiUser };
-			onUpdated(payload.user);
-		} catch (cause) {
-			setError(
-				cause instanceof Error
-					? cause.message
-					: "Failed to toggle archive state",
-			);
-		} finally {
-			setSaving(false);
-		}
-	};
-
-	const resetPassword = async () => {
-		const password = window.prompt(
-			`Enter the new password for ${user.email} (minimum 8 characters)`,
-		);
-		if (!password) {
-			return;
-		}
-		if (password.length < 8) {
-			setError("Password must contain at least 8 characters");
-			return;
-		}
-
-		setSaving(true);
-		setError(null);
-		try {
-			const response = await fetch(
-				`/api/admin/users/${user.id}/reset-password`,
-				{
-					method: "POST",
-					credentials: "include",
-					headers: { "Content-Type": "application/json" },
-					body: JSON.stringify({ password }),
-				},
-			);
-
-			if (!response.ok) {
-				const body = (await response.json()) as { error?: string };
-				throw new Error(body.error ?? "Failed to reset password");
-			}
-		} catch (cause) {
-			setError(
-				cause instanceof Error ? cause.message : "Failed to reset password",
-			);
-		} finally {
-			setSaving(false);
-		}
-	};
-
-	const statusLabel = useMemo(
-		() => (user.archived ? "Archived" : "Active"),
-		[user.archived],
-	);
-
-	return (
-		<tr>
-			<td className="px-4 py-4 align-top">
-				{isEditing ? (
-					<Input
-						value={localUser.name}
-						onChange={(event) =>
-							setLocalUser((prev) => ({ ...prev, name: event.target.value }))
-						}
-					/>
-				) : (
-					<div className="space-y-1">
-						<p className="font-medium text-slate-900 dark:text-white">
-							{user.name}
-						</p>
-						{user.firstName || user.lastName ? (
-							<p className="text-xs text-slate-500 dark:text-slate-300">
-								{[user.firstName, user.lastName].filter(Boolean).join(" ")}
-							</p>
-						) : null}
-					</div>
-				)}
-			</td>
-			<td className="px-4 py-4 align-top">
-				{isEditing ? (
-					<Input
-						type="email"
-						value={localUser.email}
-						onChange={(event) =>
-							setLocalUser((prev) => ({ ...prev, email: event.target.value }))
-						}
-					/>
-				) : (
-					<p className="text-sm text-slate-700 dark:text-slate-200">
-						{user.email}
-					</p>
-				)}
-			</td>
-			<td className="px-4 py-4 align-top">
-				{isEditing ? (
-					<div className="flex flex-wrap gap-2">
-						{roleOptions.map((role) => {
-							const checked = localUser.roles.includes(role);
-							return (
-								<label
-									key={role}
-									className="flex items-center gap-2 rounded-lg border border-slate-200 px-2 py-1 text-xs uppercase tracking-wide text-slate-600 dark:border-white/10 dark:text-white/70"
-								>
-									<input
-										type="checkbox"
-										checked={checked}
-										onChange={() => toggleRole(role)}
-									/>
-									<span>{role.replaceAll("_", " ")}</span>
-								</label>
-							);
-						})}
-					</div>
-				) : (
-					<p className="text-xs uppercase tracking-wide text-slate-500 dark:text-white/60">
-						{user.roles.join(", ")}
-					</p>
-				)}
-			</td>
-			<td className="px-4 py-4 align-top">
-				<span
-					className={`inline-flex rounded-full px-3 py-1 text-xs font-medium ${user.archived ? "bg-amber-50 text-amber-700 dark:bg-amber-500/10 dark:text-amber-300" : "bg-emerald-50 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-300"}`}
-				>
-					{statusLabel}
-				</span>
-			</td>
-			<td className="px-4 py-4 align-top text-right">
-				<div className="flex flex-wrap justify-end gap-2">
-					<Button
-						onClick={() => setIsEditing((prev) => !prev)}
-						disabled={saving}
-					>
-						{isEditing ? "Cancel" : "Edit"}
-					</Button>
-					{isEditing ? (
-						<Button onClick={() => void saveChanges()} disabled={saving}>
-							{saving ? "Saving..." : "Save"}
-						</Button>
-					) : null}
-					<Button onClick={() => void toggleArchive()} disabled={saving}>
-						{user.archived ? "Unarchive" : "Archive"}
-					</Button>
-					<Button onClick={() => void resetPassword()} disabled={saving}>
-						Reset password
-					</Button>
-				</div>
-				{error ? <p className="mt-2 text-xs text-red-500">{error}</p> : null}
-			</td>
-		</tr>
 	);
 };

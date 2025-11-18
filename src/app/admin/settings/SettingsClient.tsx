@@ -6,18 +6,8 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { Button } from "#components/Common/Button.tsx";
 import { Input } from "#components/Common/Input.tsx";
 import type { GRADE_VALUE_TYPE } from "#prisma/client";
-
-function sortByOrder<T extends { order: number }>(items: T[]): T[] {
-	return [...items].sort((a, b) => a.order - b.order);
-}
-
-function formatTimeInput(value: string): string {
-	const date = new Date(value);
-	if (Number.isNaN(Number(date))) {
-		return "";
-	}
-	return date.toISOString().slice(0, 16);
-}
+import { formatTimeInput } from "#utils/admin/datetime.ts";
+import { sortByOrder } from "#utils/admin/sort.ts";
 
 type ConfigState = {
 	schoolSettings: { id: string; schoolName: string } | null;
@@ -101,7 +91,7 @@ export function SettingsClient() {
 
 	const saveSchoolName = async () => {
 		if (!pendingSchoolName.trim()) {
-			setError("School name cannot be empty");
+			setError(t("errors.schoolNameRequired"));
 			return;
 		}
 
@@ -117,7 +107,7 @@ export function SettingsClient() {
 
 			if (!response.ok) {
 				const body = (await response.json()) as { error?: string };
-				throw new Error(body.error ?? "Failed to save school name");
+				throw new Error(body.error ?? t("errors.saveSchoolNameFailed"));
 			}
 
 			const payload = (await response.json()) as ConfigState["schoolSettings"];
@@ -138,7 +128,9 @@ export function SettingsClient() {
 			);
 		} catch (cause) {
 			setError(
-				cause instanceof Error ? cause.message : "Failed to save school name",
+				cause instanceof Error
+					? cause.message
+					: t("errors.saveSchoolNameFailed"),
 			);
 		} finally {
 			setState("idle");
@@ -148,11 +140,11 @@ export function SettingsClient() {
 	const createLevel = async (label: string, order: number) => {
 		const normalizedLabel = label.trim();
 		if (!normalizedLabel) {
-			setError("Level label is required");
+			setError(t("errors.levelLabelRequired"));
 			return;
 		}
 		if (!Number.isFinite(order) || !Number.isInteger(order)) {
-			setError("Order must be an integer");
+			setError(t("errors.orderMustBeInteger"));
 			return;
 		}
 
@@ -168,7 +160,7 @@ export function SettingsClient() {
 
 			if (!response.ok) {
 				const body = (await response.json()) as { error?: string };
-				throw new Error(body.error ?? "Failed to create level");
+				throw new Error(body.error ?? t("errors.createLevelFailed"));
 			}
 
 			const payload = (await response.json()) as {
@@ -184,7 +176,7 @@ export function SettingsClient() {
 			);
 		} catch (cause) {
 			setError(
-				cause instanceof Error ? cause.message : "Failed to create level",
+				cause instanceof Error ? cause.message : t("errors.createLevelFailed"),
 			);
 		} finally {
 			setState("idle");
@@ -199,14 +191,14 @@ export function SettingsClient() {
 		if (data.label !== undefined) {
 			const trimmed = data.label.trim();
 			if (!trimmed) {
-				setError("Level label cannot be empty");
+				setError(t("errors.levelLabelEmpty"));
 				return;
 			}
 			payload.label = trimmed;
 		}
 		if (data.order !== undefined) {
 			if (!Number.isFinite(data.order) || !Number.isInteger(data.order)) {
-				setError("Order must be an integer");
+				setError(t("errors.orderMustBeInteger"));
 				return;
 			}
 			payload.order = data.order;
@@ -227,7 +219,7 @@ export function SettingsClient() {
 
 			if (!response.ok) {
 				const body = (await response.json()) as { error?: string };
-				throw new Error(body.error ?? "Failed to update level");
+				throw new Error(body.error ?? t("errors.updateLevelFailed"));
 			}
 
 			const updated = (await response.json()) as {
@@ -247,7 +239,7 @@ export function SettingsClient() {
 			);
 		} catch (cause) {
 			setError(
-				cause instanceof Error ? cause.message : "Failed to update level",
+				cause instanceof Error ? cause.message : t("errors.updateLevelFailed"),
 			);
 		} finally {
 			setState("idle");
@@ -265,7 +257,7 @@ export function SettingsClient() {
 
 			if (!response.ok) {
 				const body = (await response.json()) as { error?: string };
-				throw new Error(body.error ?? "Failed to delete level");
+				throw new Error(body.error ?? t("errors.deleteLevelFailed"));
 			}
 
 			setConfig((prev) =>
@@ -278,7 +270,7 @@ export function SettingsClient() {
 			);
 		} catch (cause) {
 			setError(
-				cause instanceof Error ? cause.message : "Failed to delete level",
+				cause instanceof Error ? cause.message : t("errors.deleteLevelFailed"),
 			);
 		} finally {
 			setState("idle");
@@ -304,16 +296,16 @@ export function SettingsClient() {
 
 	const createPeriod = async () => {
 		if (!periodForm.label.trim()) {
-			setError("Period label is required");
+			setError(t("errors.periodLabelRequired"));
 			return;
 		}
 		if (!periodForm.startsAt || !periodForm.endsAt) {
-			setError("Start and end times are required");
+			setError(t("errors.timesRequired"));
 			return;
 		}
 		const order = Number.parseInt(periodForm.order, 10);
 		if (!Number.isFinite(order) || !Number.isInteger(order)) {
-			setError("Order must be an integer");
+			setError(t("errors.orderMustBeInteger"));
 			return;
 		}
 
@@ -323,11 +315,11 @@ export function SettingsClient() {
 			Number.isNaN(startsAtDate.getTime()) ||
 			Number.isNaN(endsAtDate.getTime())
 		) {
-			setError("Start and end times must be valid");
+			setError(t("errors.timesMustBeValid"));
 			return;
 		}
 		if (startsAtDate >= endsAtDate) {
-			setError("End time must be after start time");
+			setError(t("errors.endAfterStart"));
 			return;
 		}
 
@@ -348,7 +340,7 @@ export function SettingsClient() {
 
 			if (!response.ok) {
 				const body = (await response.json()) as { error?: string };
-				throw new Error(body.error ?? "Failed to create period");
+				throw new Error(body.error ?? t("errors.createPeriodFailed"));
 			}
 
 			const payload = (await response.json()) as {
@@ -373,7 +365,7 @@ export function SettingsClient() {
 			});
 		} catch (cause) {
 			setError(
-				cause instanceof Error ? cause.message : "Failed to create period",
+				cause instanceof Error ? cause.message : t("errors.createPeriodFailed"),
 			);
 		} finally {
 			setState("idle");
@@ -406,7 +398,7 @@ export function SettingsClient() {
 		if (updates.startsAt !== undefined) {
 			const parsed = new Date(updates.startsAt);
 			if (Number.isNaN(parsed.getTime())) {
-				setError("Start time must be valid");
+				setError(t("errors.startTimeMustBeValid"));
 				return;
 			}
 			payload.startsAt = parsed.toISOString();
@@ -414,20 +406,20 @@ export function SettingsClient() {
 		if (updates.endsAt !== undefined) {
 			const parsed = new Date(updates.endsAt);
 			if (Number.isNaN(parsed.getTime())) {
-				setError("End time must be valid");
+				setError(t("errors.endTimeMustBeValid"));
 				return;
 			}
 			payload.endsAt = parsed.toISOString();
 		}
 		if (payload.startsAt && payload.endsAt) {
 			if (new Date(payload.startsAt) >= new Date(payload.endsAt)) {
-				setError("End time must be after start time");
+				setError(t("errors.endAfterStart"));
 				return;
 			}
 		}
 		if (updates.order !== undefined) {
 			if (!Number.isFinite(updates.order) || !Number.isInteger(updates.order)) {
-				setError("Order must be an integer");
+				setError(t("errors.orderMustBeInteger"));
 				return;
 			}
 			payload.order = updates.order;
@@ -448,7 +440,7 @@ export function SettingsClient() {
 
 			if (!response.ok) {
 				const body = (await response.json()) as { error?: string };
-				throw new Error(body.error ?? "Failed to update period");
+				throw new Error(body.error ?? t("errors.updatePeriodFailed"));
 			}
 
 			const updated = (await response.json()) as {
@@ -468,7 +460,7 @@ export function SettingsClient() {
 			);
 		} catch (cause) {
 			setError(
-				cause instanceof Error ? cause.message : "Failed to update period",
+				cause instanceof Error ? cause.message : t("errors.updatePeriodFailed"),
 			);
 		} finally {
 			setState("idle");
@@ -486,7 +478,7 @@ export function SettingsClient() {
 
 			if (!response.ok) {
 				const body = (await response.json()) as { error?: string };
-				throw new Error(body.error ?? "Failed to delete period");
+				throw new Error(body.error ?? t("errors.deletePeriodFailed"));
 			}
 
 			setConfig((prev) =>
@@ -501,7 +493,7 @@ export function SettingsClient() {
 			);
 		} catch (cause) {
 			setError(
-				cause instanceof Error ? cause.message : "Failed to delete period",
+				cause instanceof Error ? cause.message : t("errors.deletePeriodFailed"),
 			);
 		} finally {
 			setState("idle");
@@ -512,7 +504,7 @@ export function SettingsClient() {
 	const createAbsenceUnit = async (label: string, periodIds: string[]) => {
 		const normalizedLabel = label.trim();
 		if (!normalizedLabel) {
-			setError("Absence unit label is required");
+			setError(t("errors.absenceUnitLabelRequired"));
 			return;
 		}
 
@@ -533,7 +525,7 @@ export function SettingsClient() {
 
 			if (!response.ok) {
 				const body = (await response.json()) as { error?: string };
-				throw new Error(body.error ?? "Failed to create absence unit");
+				throw new Error(body.error ?? t("errors.createAbsenceUnitFailed"));
 			}
 
 			const payload = (await response.json()) as {
@@ -551,7 +543,7 @@ export function SettingsClient() {
 			setError(
 				cause instanceof Error
 					? cause.message
-					: "Failed to create absence unit",
+					: t("errors.createAbsenceUnitFailed"),
 			);
 		} finally {
 			setState("idle");
@@ -565,7 +557,7 @@ export function SettingsClient() {
 	) => {
 		const normalizedLabel = label.trim();
 		if (!normalizedLabel) {
-			setError("Absence unit label cannot be empty");
+			setError(t("errors.absenceUnitLabelEmpty"));
 			return;
 		}
 		const uniquePeriodIds = Array.from(new Set(periodIds));
@@ -585,7 +577,7 @@ export function SettingsClient() {
 
 			if (!response.ok) {
 				const body = (await response.json()) as { error?: string };
-				throw new Error(body.error ?? "Failed to update absence unit");
+				throw new Error(body.error ?? t("errors.updateAbsenceUnitFailed"));
 			}
 
 			const payload = (await response.json()) as {
@@ -605,7 +597,7 @@ export function SettingsClient() {
 			setError(
 				cause instanceof Error
 					? cause.message
-					: "Failed to update absence unit",
+					: t("errors.updateAbsenceUnitFailed"),
 			);
 		} finally {
 			setState("idle");
@@ -623,7 +615,7 @@ export function SettingsClient() {
 
 			if (!response.ok) {
 				const body = (await response.json()) as { error?: string };
-				throw new Error(body.error ?? "Failed to delete absence unit");
+				throw new Error(body.error ?? t("errors.deleteAbsenceUnitFailed"));
 			}
 
 			setConfig((prev) =>
@@ -638,7 +630,7 @@ export function SettingsClient() {
 			setError(
 				cause instanceof Error
 					? cause.message
-					: "Failed to delete absence unit",
+					: t("errors.deleteAbsenceUnitFailed"),
 			);
 		} finally {
 			setState("idle");
@@ -648,11 +640,11 @@ export function SettingsClient() {
 	const createCategory = async (label: string, order: number) => {
 		const normalizedLabel = label.trim();
 		if (!normalizedLabel) {
-			setError("Category label is required");
+			setError(t("errors.categoryLabelRequired"));
 			return;
 		}
 		if (!Number.isFinite(order) || !Number.isInteger(order)) {
-			setError("Order must be an integer");
+			setError(t("errors.orderMustBeInteger"));
 			return;
 		}
 
@@ -668,7 +660,7 @@ export function SettingsClient() {
 
 			if (!response.ok) {
 				const body = (await response.json()) as { error?: string };
-				throw new Error(body.error ?? "Failed to create category");
+				throw new Error(body.error ?? t("errors.createCategoryFailed"));
 			}
 
 			const payload = (await response.json()) as {
@@ -687,7 +679,9 @@ export function SettingsClient() {
 			);
 		} catch (cause) {
 			setError(
-				cause instanceof Error ? cause.message : "Failed to create category",
+				cause instanceof Error
+					? cause.message
+					: t("errors.createCategoryFailed"),
 			);
 		} finally {
 			setState("idle");
@@ -702,14 +696,14 @@ export function SettingsClient() {
 		if (data.label !== undefined) {
 			const trimmed = data.label.trim();
 			if (!trimmed) {
-				setError("Category label cannot be empty");
+				setError(t("errors.categoryLabelEmpty"));
 				return;
 			}
 			payload.label = trimmed;
 		}
 		if (data.order !== undefined) {
 			if (!Number.isFinite(data.order) || !Number.isInteger(data.order)) {
-				setError("Order must be an integer");
+				setError(t("errors.orderMustBeInteger"));
 				return;
 			}
 			payload.order = data.order;
@@ -733,7 +727,7 @@ export function SettingsClient() {
 
 			if (!response.ok) {
 				const body = (await response.json()) as { error?: string };
-				throw new Error(body.error ?? "Failed to update category");
+				throw new Error(body.error ?? t("errors.updateCategoryFailed"));
 			}
 
 			const updated = (await response.json()) as {
@@ -753,7 +747,9 @@ export function SettingsClient() {
 			);
 		} catch (cause) {
 			setError(
-				cause instanceof Error ? cause.message : "Failed to update category",
+				cause instanceof Error
+					? cause.message
+					: t("errors.updateCategoryFailed"),
 			);
 		} finally {
 			setState("idle");
@@ -774,7 +770,7 @@ export function SettingsClient() {
 
 			if (!response.ok) {
 				const body = (await response.json()) as { error?: string };
-				throw new Error(body.error ?? "Failed to delete category");
+				throw new Error(body.error ?? t("errors.deleteCategoryFailed"));
 			}
 
 			setConfig((prev) =>
@@ -789,7 +785,9 @@ export function SettingsClient() {
 			);
 		} catch (cause) {
 			setError(
-				cause instanceof Error ? cause.message : "Failed to delete category",
+				cause instanceof Error
+					? cause.message
+					: t("errors.deleteCategoryFailed"),
 			);
 		} finally {
 			setState("idle");
@@ -820,7 +818,7 @@ export function SettingsClient() {
 
 			if (!response.ok) {
 				const body = (await response.json()) as { error?: string };
-				throw new Error(body.error ?? "Failed to create subject");
+				throw new Error(body.error ?? t("errors.createSubjectFailed"));
 			}
 
 			const responseBody = (await response.json()) as {
@@ -836,7 +834,9 @@ export function SettingsClient() {
 			);
 		} catch (cause) {
 			setError(
-				cause instanceof Error ? cause.message : "Failed to create subject",
+				cause instanceof Error
+					? cause.message
+					: t("errors.createSubjectFailed"),
 			);
 		} finally {
 			setState("idle");
@@ -868,7 +868,7 @@ export function SettingsClient() {
 
 			if (!response.ok) {
 				const body = (await response.json()) as { error?: string };
-				throw new Error(body.error ?? "Failed to update subject");
+				throw new Error(body.error ?? t("errors.updateSubjectFailed"));
 			}
 
 			const responseBody = (await response.json()) as {
@@ -886,7 +886,9 @@ export function SettingsClient() {
 			);
 		} catch (cause) {
 			setError(
-				cause instanceof Error ? cause.message : "Failed to update subject",
+				cause instanceof Error
+					? cause.message
+					: t("errors.updateSubjectFailed"),
 			);
 		} finally {
 			setState("idle");
@@ -904,7 +906,7 @@ export function SettingsClient() {
 
 			if (!response.ok) {
 				const body = (await response.json()) as { error?: string };
-				throw new Error(body.error ?? "Failed to delete subject");
+				throw new Error(body.error ?? t("errors.deleteSubjectFailed"));
 			}
 
 			setConfig((prev) =>
@@ -917,7 +919,9 @@ export function SettingsClient() {
 			);
 		} catch (cause) {
 			setError(
-				cause instanceof Error ? cause.message : "Failed to delete subject",
+				cause instanceof Error
+					? cause.message
+					: t("errors.deleteSubjectFailed"),
 			);
 		} finally {
 			setState("idle");
@@ -1220,27 +1224,28 @@ function EditableRow({
 	onDelete,
 	saving,
 }: EditableRowProps) {
+	const t = useTranslations("app.admin.settings");
 	return (
 		<div className="flex flex-wrap items-center gap-3 rounded-xl border border-slate-200/70 p-4 shadow-sm dark:border-white/10 dark:bg-white/6">
 			<Input
 				value={label}
 				onChange={(event) => onChangeLabel(event.target.value)}
-				placeholder="Label"
+				placeholder={t("labelPlaceholder")}
 				disabled={saving}
 			/>
 			<Input
 				type="number"
 				value={order}
 				onChange={(event) => onChangeOrder(event.target.value)}
-				placeholder="Order"
+				placeholder={t("orderPlaceholder")}
 				disabled={saving}
 			/>
 			<div className="flex items-center gap-2">
 				<Button onClick={onSave} disabled={saving}>
-					Save
+					{t("save")}
 				</Button>
 				<Button onClick={onDelete} disabled={saving}>
-					Delete
+					{t("delete")}
 				</Button>
 			</div>
 		</div>
@@ -1310,6 +1315,7 @@ function EditablePeriodRow({
 	onDelete,
 	disabled,
 }: PeriodRowProps) {
+	const t = useTranslations("app.admin.settings");
 	const [form, setForm] = useState({
 		label: period.label,
 		order: String(period.order),
@@ -1333,7 +1339,7 @@ function EditablePeriodRow({
 				onChange={(event) =>
 					setForm((prev) => ({ ...prev, label: event.target.value }))
 				}
-				placeholder="Label"
+				placeholder={t("labelPlaceholder")}
 				disabled={disabled}
 			/>
 			<input
@@ -1360,7 +1366,7 @@ function EditablePeriodRow({
 				onChange={(event) =>
 					setForm((prev) => ({ ...prev, order: event.target.value }))
 				}
-				placeholder="Order"
+				placeholder={t("orderPlaceholder")}
 				disabled={disabled}
 			/>
 			<div className="flex items-center gap-2">
@@ -1406,6 +1412,7 @@ function AbsenceUnitManager({
 	onDelete,
 	disabled,
 }: AbsenceUnitManagerProps) {
+	const t = useTranslations("app.admin.settings");
 	const [label, setLabel] = useState("");
 	const [selectedPeriods, setSelectedPeriods] = useState<string[]>([]);
 
@@ -1423,7 +1430,7 @@ function AbsenceUnitManager({
 				<Input
 					value={label}
 					onChange={(event) => setLabel(event.target.value)}
-					placeholder="Label"
+					placeholder={t("labelPlaceholder")}
 					disabled={disabled}
 				/>
 				<Button
@@ -1437,7 +1444,7 @@ function AbsenceUnitManager({
 					}}
 					disabled={disabled}
 				>
-					Add unit
+					{t("addAbsenceUnit")}
 				</Button>
 			</div>
 
@@ -1492,6 +1499,7 @@ function EditableAbsenceUnitRow({
 	onDelete,
 	disabled,
 }: EditableAbsenceUnitRowProps) {
+	const t = useTranslations("app.admin.settings");
 	const [label, setLabel] = useState(unit.label);
 	const [selected, setSelected] = useState<string[]>(unit.periodIds);
 
@@ -1514,17 +1522,17 @@ function EditableAbsenceUnitRow({
 				<Input
 					value={label}
 					onChange={(event) => setLabel(event.target.value)}
-					placeholder="Label"
+					placeholder={t("labelPlaceholder")}
 					disabled={disabled}
 				/>
 				<Button
 					onClick={() => void onSave(unit.id, label.trim(), selected)}
 					disabled={disabled}
 				>
-					Save
+					{t("save")}
 				</Button>
 				<Button onClick={() => void onDelete(unit.id)} disabled={disabled}>
-					Delete
+					{t("delete")}
 				</Button>
 			</div>
 			<div className="flex flex-wrap gap-2">
@@ -1630,6 +1638,7 @@ function SubjectManager({
 	onDelete,
 	disabled,
 }: SubjectManagerProps) {
+	const t = useTranslations("app.admin.settings");
 	const [form, setForm] = useState({
 		label: "",
 		weight: "0",
@@ -1702,7 +1711,7 @@ function SubjectManager({
 					onChange={(event) =>
 						setForm((prev) => ({ ...prev, label: event.target.value }))
 					}
-					placeholder="Label"
+					placeholder={t("labelPlaceholder")}
 					disabled={disabled}
 				/>
 				<Input
@@ -1711,7 +1720,7 @@ function SubjectManager({
 					onChange={(event) =>
 						setForm((prev) => ({ ...prev, weight: event.target.value }))
 					}
-					placeholder="Weight"
+					placeholder={t("weightPlaceholder")}
 					disabled={disabled}
 				/>
 				<select
@@ -1722,7 +1731,7 @@ function SubjectManager({
 					className="rounded-lg border border-slate-200 px-3 py-2 text-sm shadow-sm dark:border-white/10 dark:bg-white/8"
 					disabled={disabled}
 				>
-					<option value="">No category</option>
+					<option value="">{t("noCategory")}</option>
 					{categories.map((category) => (
 						<option key={category.id} value={category.id}>
 							{category.label}
@@ -1740,8 +1749,8 @@ function SubjectManager({
 					className="rounded-lg border border-slate-200 px-3 py-2 text-sm shadow-sm dark:border-white/10 dark:bg-white/8"
 					disabled={disabled}
 				>
-					<option value="NUMERIC">Numeric</option>
-					<option value="LITERAL">Literal</option>
+					<option value="NUMERIC">{t("valueTypes.numeric")}</option>
+					<option value="LITERAL">{t("valueTypes.literal")}</option>
 				</select>
 				{form.valueType === "NUMERIC" ? (
 					<>
@@ -1750,7 +1759,7 @@ function SubjectManager({
 							onChange={(event) =>
 								setForm((prev) => ({ ...prev, numericMin: event.target.value }))
 							}
-							placeholder="Min"
+							placeholder={t("numericMinLabel")}
 							disabled={disabled}
 						/>
 						<Input
@@ -1758,7 +1767,7 @@ function SubjectManager({
 							onChange={(event) =>
 								setForm((prev) => ({ ...prev, numericMax: event.target.value }))
 							}
-							placeholder="Max"
+							placeholder={t("numericMaxLabel")}
 							disabled={disabled}
 						/>
 						<Input
@@ -1769,7 +1778,7 @@ function SubjectManager({
 									numericDecimals: event.target.value,
 								}))
 							}
-							placeholder="Decimals"
+							placeholder={t("numericDecimalsLabel")}
 							disabled={disabled}
 						/>
 					</>
@@ -1783,13 +1792,13 @@ function SubjectManager({
 							}))
 						}
 						rows={3}
-						placeholder='Literal scale JSON (e.g. [{"code":"A","label":"Excellent"}])'
+						placeholder={t("literalScalePlaceholder")}
 						className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm shadow-sm dark:border-white/10 dark:bg-white/8"
 						disabled={disabled}
 					/>
 				)}
 				<Button onClick={() => void submit()} disabled={disabled}>
-					Add subject
+					{t("addSubject")}
 				</Button>
 			</div>
 
@@ -1824,6 +1833,7 @@ function EditableSubjectRow({
 	onDelete,
 	disabled,
 }: EditableSubjectRowProps) {
+	const t = useTranslations("app.admin.settings");
 	const [form, setForm] = useState({
 		label: subject.label,
 		weight: String(subject.weight),
@@ -1897,7 +1907,7 @@ function EditableSubjectRow({
 			try {
 				payload.literalScale = JSON.parse(form.literalScaleRaw || "[]");
 			} catch {
-				window.alert("Literal scale must be valid JSON");
+				window.alert(t("errors.literalScaleInvalid"));
 				return;
 			}
 		}
@@ -1913,7 +1923,7 @@ function EditableSubjectRow({
 					onChange={(event) =>
 						setForm((prev) => ({ ...prev, label: event.target.value }))
 					}
-					placeholder="Label"
+					placeholder={t("labelPlaceholder")}
 					disabled={disabled}
 				/>
 				<Input
@@ -1922,7 +1932,7 @@ function EditableSubjectRow({
 					onChange={(event) =>
 						setForm((prev) => ({ ...prev, weight: event.target.value }))
 					}
-					placeholder="Weight"
+					placeholder={t("weightPlaceholder")}
 					disabled={disabled}
 				/>
 				<select
@@ -1933,7 +1943,7 @@ function EditableSubjectRow({
 					className="rounded-lg border border-slate-200 px-3 py-2 text-sm shadow-sm dark:border-white/10 dark:bg-white/8"
 					disabled={disabled}
 				>
-					<option value="">No category</option>
+					<option value="">{t("noCategory")}</option>
 					{categories.map((category) => (
 						<option key={category.id} value={category.id}>
 							{category.label}
@@ -1951,8 +1961,8 @@ function EditableSubjectRow({
 					className="rounded-lg border border-slate-200 px-3 py-2 text-sm shadow-sm dark:border-white/10 dark:bg-white/8"
 					disabled={disabled}
 				>
-					<option value="NUMERIC">Numeric</option>
-					<option value="LITERAL">Literal</option>
+					<option value="NUMERIC">{t("valueTypes.numeric")}</option>
+					<option value="LITERAL">{t("valueTypes.literal")}</option>
 				</select>
 			</div>
 			{form.valueType === "NUMERIC" ? (
@@ -1962,7 +1972,7 @@ function EditableSubjectRow({
 						onChange={(event) =>
 							setForm((prev) => ({ ...prev, numericMin: event.target.value }))
 						}
-						placeholder="Min"
+						placeholder={t("numericMinLabel")}
 						disabled={disabled}
 					/>
 					<Input
@@ -1970,7 +1980,7 @@ function EditableSubjectRow({
 						onChange={(event) =>
 							setForm((prev) => ({ ...prev, numericMax: event.target.value }))
 						}
-						placeholder="Max"
+						placeholder={t("numericMaxLabel")}
 						disabled={disabled}
 					/>
 					<Input
@@ -1981,7 +1991,7 @@ function EditableSubjectRow({
 								numericDecimals: event.target.value,
 							}))
 						}
-						placeholder="Decimals"
+						placeholder={t("numericDecimalsLabel")}
 						disabled={disabled}
 					/>
 				</div>
@@ -2001,10 +2011,10 @@ function EditableSubjectRow({
 			)}
 			<div className="flex items-center gap-2">
 				<Button onClick={() => void save()} disabled={disabled}>
-					Save
+					{t("save")}
 				</Button>
 				<Button onClick={() => void onDelete(subject.id)} disabled={disabled}>
-					Delete
+					{t("delete")}
 				</Button>
 			</div>
 		</div>

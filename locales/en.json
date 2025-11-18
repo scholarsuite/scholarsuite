@@ -51,7 +51,6 @@
       "users": {
         "title": "User Management",
         "description": "Create, edit, and support the internal users that operate the school platform.",
-        "loadingUsers": "Loading users...",
         "createNewUser": "Create a new user",
         "emailPlaceholder": "Email",
         "displayNamePlaceholder": "Display name",
@@ -94,6 +93,7 @@
         "studyLevelsDescription": "Define and order the academic levels available in your institution.",
         "labelPlaceholder": "Label",
         "orderPlaceholder": "Order",
+        "weightPlaceholder": "Weight",
         "addLevel": "Add level",
         "coursePeriods": "Course periods",
         "coursePeriodsDescription": "Define the time slots used across attendance and scheduling features.",
@@ -108,7 +108,50 @@
         "addSubject": "Add subject",
         "loadingConfiguration": "Loading configuration...",
         "save": "Save",
-        "delete": "Delete"
+        "delete": "Delete",
+        "noCategory": "No category",
+        "addAbsenceUnit": "Add unit",
+        "valueTypes": {
+          "numeric": "Numeric",
+          "literal": "Literal"
+        },
+        "numericMinLabel": "Min",
+        "numericMaxLabel": "Max",
+        "numericDecimalsLabel": "Decimals",
+        "literalScalePlaceholder": "Literal scale JSON (e.g. [{\"code\":\"A\",\"label\":\"Excellent\"}])",
+        "errors": {
+          "schoolNameRequired": "School name cannot be empty",
+          "saveSchoolNameFailed": "Failed to save school name",
+          "levelLabelRequired": "Level label is required",
+          "levelLabelEmpty": "Level label cannot be empty",
+          "orderMustBeInteger": "Order must be an integer",
+          "createLevelFailed": "Failed to create level",
+          "updateLevelFailed": "Failed to update level",
+          "deleteLevelFailed": "Failed to delete level",
+          "periodLabelRequired": "Period label is required",
+          "timesRequired": "Start and end times are required",
+          "timesMustBeValid": "Start and end times must be valid",
+          "startTimeMustBeValid": "Start time must be valid",
+          "endTimeMustBeValid": "End time must be valid",
+          "endAfterStart": "End time must be after start time",
+          "createPeriodFailed": "Failed to create period",
+          "updatePeriodFailed": "Failed to update period",
+          "deletePeriodFailed": "Failed to delete period",
+          "absenceUnitLabelRequired": "Absence unit label is required",
+          "absenceUnitLabelEmpty": "Absence unit label cannot be empty",
+          "createAbsenceUnitFailed": "Failed to create absence unit",
+          "updateAbsenceUnitFailed": "Failed to update absence unit",
+          "deleteAbsenceUnitFailed": "Failed to delete absence unit",
+          "categoryLabelRequired": "Category label is required",
+          "categoryLabelEmpty": "Category label cannot be empty",
+          "createCategoryFailed": "Failed to create category",
+          "updateCategoryFailed": "Failed to update category",
+          "deleteCategoryFailed": "Failed to delete category",
+          "literalScaleInvalid": "Literal scale must be valid JSON",
+          "createSubjectFailed": "Failed to create subject",
+          "updateSubjectFailed": "Failed to update subject",
+          "deleteSubjectFailed": "Failed to delete subject"
+        }
       },
       "logs": {
         "title": "System Logs",
@@ -118,7 +161,10 @@
         "requestId": "Request {id}",
         "user": "User",
         "metadata": "Metadata",
-        "systemUser": "System"
+        "systemUser": "System",
+        "viewMetadata": "View metadata",
+        "noMetadata": "No metadata",
+        "unableToDisplay": "Unable to display metadata: {message}"
       }
     },
     "signIn": {

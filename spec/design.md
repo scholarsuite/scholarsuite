@@ -51,3 +51,14 @@ Nous allons utiliser les breakpoints par défaut de Tailwind CSS :
 ## Respect des standards
 
 L'application suit les standards de [W3C](https://www.w3.org/) et [WCAG](https://www.w3.org/WAI/WCAG21/quickref/) pour l'accessibilité et le respect des normes du web.
+
+## Badges et tags
+
+- Tag: pour de petites étiquettes descriptives (IDs, catégories, scopes). Utiliser `variant` pour la couleur sémantique, `size="sm"` pour les tables denses, `appearance="outline"` pour un style discret et `mono` pour les identifiants.
+- StatusBadge: pour les statuts métier (success, warning, info, danger, neutral) qui nécessitent une emphase plus forte que `Tag`.
+- LevelBadge: spécifique aux niveaux de logs (DEBUG/INFO/WARN/ERROR). À n'utiliser que dans le contexte journaux.
+
+Règles de choix rapides:
+- Métadonnée légère dans une cellule de tableau: `Tag` (`size="sm"`).
+- État d’un enregistrement (p. ex. actif/suspendu): `StatusBadge`.
+- Niveaux de logs: `LevelBadge`.

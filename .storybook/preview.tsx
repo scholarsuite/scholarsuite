@@ -1,5 +1,7 @@
 import type { Preview } from "@storybook/nextjs";
+import { NextIntlClientProvider } from "next-intl";
 import { ThemeProvider } from "next-themes";
+import messages from "../locales/en.json";
 import "#styles/globals.css";
 
 const preview: Preview = {
@@ -26,6 +28,7 @@ const preview: Preview = {
 	decorators: [
 		(Story, context) => {
 			const theme = context.globals.theme;
+
 			return (
 				<ThemeProvider
 					attribute="class"
@@ -34,7 +37,9 @@ const preview: Preview = {
 					forcedTheme={theme}
 					enableSystem={false}
 				>
-					<Story />
+					<NextIntlClientProvider locale="en" messages={messages}>
+						<Story />
+					</NextIntlClientProvider>
 				</ThemeProvider>
 			);
 		},
