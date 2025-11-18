@@ -1,12 +1,14 @@
-import type { FC } from "react";
+import { AdminDashboardLayout } from "#components/Layout/AdminDashboard.tsx";
 
-const AdminSettingsPage: FC = () => {
+import { SettingsClient } from "./SettingsClient.tsx";
+
+export default function AdminSettingsPage() {
 	return (
-		<div>
-			<h1>App Configuration</h1>
-			<p>Not implemented</p>
-		</div>
+		<AdminDashboardLayout
+			title="Platform configuration"
+			description="Control how the school platform behaves by adjusting domain settings, calendars, grading rules, and more."
+		>
+			<SettingsClient />
+		</AdminDashboardLayout>
 	);
-};
-
-export default AdminSettingsPage;
+}

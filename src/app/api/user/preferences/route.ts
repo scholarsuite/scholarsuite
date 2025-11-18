@@ -1,7 +1,5 @@
 import { auth } from "#lib/auth.ts";
-import { PrismaClient } from "#prisma/client";
-
-const prisma = new PrismaClient();
+import { prisma } from "#lib/prisma.ts";
 
 export async function PATCH(req: Request): Promise<Response> {
 	try {

@@ -1,11 +1,17 @@
 import type { FC } from "react";
 
+import { AdminDashboardLayout } from "#components/Layout/AdminDashboard.tsx";
+
 const AdminLogsPage: FC = () => {
 	return (
-		<div>
-			<h1>System Logs</h1>
-			<p>Not implemented</p>
-		</div>
+		<AdminDashboardLayout
+			title="System logs"
+			description="Audit platform activity to troubleshoot issues and maintain compliance."
+		>
+			<p className="text-sm text-slate-600 dark:text-slate-300">
+				Log streaming is not implemented yet.
+			</p>
+		</AdminDashboardLayout>
 	);
 };
 

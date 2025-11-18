@@ -15,7 +15,7 @@
     "db:studio": "npx prisma studio",
     "biome:check": "npx @biomejs/biome check",
     "biome:fix": "npx @biomejs/biome check --write",
-    "pre-commit": "node --run biome:fix && node --run type:check",
+    "pre-commit": "node --run biome:fix && next typegen && npx prisma generate && node --run type:check",
     "storybook": "storybook dev -p 6006",
     "storybook:build": "storybook build"
   },

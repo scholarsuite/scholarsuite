@@ -1,4 +1,4 @@
-import { ArrowDownIcon } from "@heroicons/react/20/solid";
+import { ArrowDownIcon } from "@heroicons/react/24/solid";
 import type { Meta as MetaObj, StoryObj } from "@storybook/react";
 import { Button } from "./Button";
 
