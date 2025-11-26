@@ -2,7 +2,6 @@
 
 import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useMemo, useState } from "react";
-
 import { Button } from "#components/Common/Button.tsx";
 import { Input } from "#components/Common/Input.tsx";
 import type { GRADE_VALUE_TYPE } from "#prisma/client";

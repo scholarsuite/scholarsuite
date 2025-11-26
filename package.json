@@ -27,7 +27,8 @@
     "#components/*": "./src/components/*",
     "#utils/*": "./src/utils/*",
     "#locales/*": "./locales/*",
-    "#providers/*": "./src/providers/*"
+    "#providers/*": "./src/providers/*",
+    "#types/*": "./src/types/*"
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",

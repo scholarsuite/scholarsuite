@@ -1,12 +1,11 @@
 import Link from "next/link";
-import { getLocale, getTranslations } from "next-intl/server";
+import { getFormatter, getNow, getTranslations } from "next-intl/server";
 import { LevelBadge } from "#components/admin/logs/LevelBadge.tsx";
 import { MetadataViewer } from "#components/Common/MetadataViewer.tsx";
 import { Tag } from "#components/Common/Tag.tsx";
 import { AdminDashboardLayout } from "#components/Layout/AdminDashboard.tsx";
 import { prisma } from "#lib/prisma.ts";
 import { LOG_LEVEL } from "#prisma/client";
-import { formatRelative } from "#utils/datetime.ts";
 
 export const revalidate = 0;
 
@@ -107,7 +106,8 @@ async function getRecentLogs(): Promise<SerializedLog[]> {
  */
 export default async function AdminLogsPage() {
 	const t = await getTranslations("app.admin");
-	const locale = await getLocale();
+	const now = await getNow();
+	const format = await getFormatter();
 
 	const logs = await getRecentLogs();
 
@@ -167,10 +167,10 @@ export default async function AdminLogsPage() {
 				) : (
 					<div className="space-y-4">
 						{logs.map((log) => {
-							const absoluteTime = new Intl.DateTimeFormat(locale, {
+							const absoluteTime = format.dateTime(new Date(log.timestamp), {
 								dateStyle: "medium",
 								timeStyle: "medium",
-							}).format(new Date(log.timestamp));
+							});
 
 							return (
 								<article
@@ -186,7 +186,9 @@ export default async function AdminLogsPage() {
 												{absoluteTime}
 											</time>
 											<div className="mt-1 flex flex-wrap items-center gap-3 text-xs text-slate-500 dark:text-slate-400">
-												<span>{formatRelative(log.timestamp, locale)}</span>
+												<span>
+													{format.relativeTime(new Date(log.timestamp), now)}
+												</span>
 												{log.scope ? (
 													<Tag variant="info">{log.scope}</Tag>
 												) : null}

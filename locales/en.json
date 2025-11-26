@@ -165,6 +165,94 @@
         "viewMetadata": "View metadata",
         "noMetadata": "No metadata",
         "unableToDisplay": "Unable to display metadata: {message}"
+      },
+      "schoolYears": {
+        "title": "School year orchestration",
+        "description": "Plan academic cycles, configure their evaluation periods, and summarise the connected structures.",
+        "messages": {
+          "loading": "Loading school years...",
+          "loadFailed": "Unable to load school years (status {status}).",
+          "genericError": "Something went wrong while loading school years.",
+          "sampleData": "Showing sample data until the backend endpoint is ready.",
+          "createdLocally": "School year \"{label}\" currently exists only in this session.",
+          "unsavedChanges": "You have local changes. Persist them through the admin API before leaving this page.",
+          "noSelection": "Select a school year to inspect its configuration.",
+          "noActiveYear": "There are no active school years right now."
+        },
+        "list": {
+          "title": "School years",
+          "create": "New school year",
+          "empty": "No school years match this filter yet.",
+          "filters": {
+            "active": "Active",
+            "upcoming": "Upcoming",
+            "archived": "Archived",
+            "all": "All"
+          }
+        },
+        "statuses": {
+          "active": "Active",
+          "upcoming": "Upcoming",
+          "archived": "Archived"
+        },
+        "creation": {
+          "title": "Create school year",
+          "description": "Define the core properties for a new academic cycle. Additional setup can be completed afterwards.",
+          "labelPlaceholder": "Label (e.g. 2025-2026)",
+          "startDate": "Start date",
+          "endDate": "End date",
+          "levelsPlaceholder": "Comma-separated levels (optional)",
+          "levelsDescription": "Example: Year 1, Year 2, Year 3",
+          "submit": "Create year",
+          "cancel": "Cancel",
+          "errors": {
+            "labelRequired": "A label is required",
+            "datesRequired": "Start and end dates are required",
+            "invalidDateRange": "End date must be the same as or later than the start date"
+          }
+        },
+        "overview": {
+          "updated": "Last updated {value}",
+          "levels": "Levels",
+          "absenceUnits": "Absence units",
+          "notes": "Notes"
+        },
+        "summary": {
+          "students": "Students",
+          "classes": "Classes",
+          "groups": "Groups",
+          "periods": "Evaluation periods"
+        },
+        "evaluationPeriods": {
+          "title": "Evaluation periods",
+          "description": "Define the grading and reporting windows that belong to this school year ({year}).",
+          "add": "Add period",
+          "labelPlaceholder": "Label",
+          "startDate": "Start date",
+          "endDate": "End date",
+          "order": "Order",
+          "empty": "No evaluation periods recorded yet.",
+          "table": {
+            "name": "Name",
+            "dates": "Dates",
+            "order": "Order",
+            "status": "Status",
+            "actions": "Actions"
+          },
+          "remove": "Remove",
+          "status": {
+            "planned": "Planned",
+            "open": "Open",
+            "locked": "Locked",
+            "archived": "Archived"
+          },
+          "errors": {
+            "labelRequired": "Label is required",
+            "datesRequired": "Start and end dates are required",
+            "invalidDateRange": "End date must be the same as or later than the start date",
+            "invalidOrder": "Order must be a positive integer"
+          }
+        }
       }
     },
     "signIn": {

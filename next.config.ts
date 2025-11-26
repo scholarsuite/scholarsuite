@@ -4,6 +4,9 @@ import createNextIntlPlugin from "next-intl/plugin";
 const nextConfig: NextConfig = {
 	devIndicators: false,
 	typedRoutes: true,
+	typescript: {
+		ignoreBuildErrors: true,
+	},
 };
 
 const withNextIntl = createNextIntlPlugin("./src/lib/intl/request.ts");

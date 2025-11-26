@@ -31,20 +31,25 @@ const ADMIN_SECTIONS: Array<{
 		description: "sections.schoolYears.description",
 	},
 	{
+		// not implemented yet
 		href: "/admin/classes",
 		title: "sections.classes.title",
 		description: "sections.classes.description",
 	},
 	{
+		// not implemented yet
 		href: "/admin/students",
 		title: "sections.students.title",
 		description: "sections.students.description",
 	},
 	{
+		// not implemented yet
 		href: "/admin/attendance",
 		title: "sections.attendance.title",
 		description: "sections.attendance.description",
 	},
+	/*
+	NOT MVP FEATURES
 	{
 		href: "/admin/evaluations",
 		title: "sections.evaluations.title",
@@ -60,6 +65,7 @@ const ADMIN_SECTIONS: Array<{
 		title: "sections.disciplinaryReports.title",
 		description: "sections.disciplinaryReports.description",
 	},
+	*/
 ];
 
 export default function AdminPage() {

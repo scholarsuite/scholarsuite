@@ -1,5 +1,5 @@
 import type { Meta as MetaObj, StoryObj } from "@storybook/react";
-import { Input } from "./Input";
+import { Input } from "./Input.tsx";
 
 type Story = StoryObj<typeof Input>;
 type Meta = MetaObj<typeof Input>;

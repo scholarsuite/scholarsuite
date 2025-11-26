@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import type { FC, PropsWithChildren } from "react";
 
-type Variant = "success" | "warning" | "info" | "danger" | "neutral";
+export type Variant = "success" | "warning" | "info" | "danger" | "neutral";
 
 export const StatusBadge: FC<
 	PropsWithChildren<{
