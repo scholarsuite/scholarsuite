@@ -15,3 +15,10 @@ tsconfig.tsbuildinfo
 /.next
 *storybook.log
 storybook-static
+
+# TypeScript link
+next-env.d.ts
+
+# Development file
+todo.md
+next-env.d.ts
