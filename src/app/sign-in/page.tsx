@@ -3,6 +3,7 @@ import Image from "next/image";
 import { useTranslations } from "next-intl";
 import type { FC, FormEvent } from "react";
 import { useState } from "react";
+import { Button } from "#components/Common/Button.tsx";
 import { Card } from "#components/Common/Card.tsx";
 import { Input } from "#components/Common/Input.tsx";
 import { Label } from "#components/Common/Label.tsx";
@@ -66,18 +67,15 @@ const SignInPage: FC = () => {
 						>
 							{t("app.signIn.emailLabel")}
 						</Label>
-						<div className="relative">
-							<Input
-								id="email"
-								type="email"
-								value={email}
-								onChange={(e) => setEmail(e.target.value)}
-								placeholder="you@example.com"
-								required
-								className={`w-full px-4 py-3 rounded-xl shadow-sm focus:outline-none transition duration-150 bg-slate-50 border border-slate-200 text-slate-900 placeholder:text-slate-400 focus:ring-2 focus:ring-indigo-200 focus:border-indigo-300 dark:bg-white/6 dark:border-white/10 dark:text-white dark:placeholder:text-white/50 dark:focus:ring-white/20 dark:focus:border-white`}
-							/>
-							<span className="absolute -left-6 -top-8 w-36 h-40 bg-linear-to-br from-slate-700/20 via-slate-600/10 to-transparent opacity-20 transform -rotate-12 blur-xl pointer-events-none dark:from-white/30 dark:via-white/10 dark:to-transparent" />
-						</div>
+						<Input
+							id="email"
+							type="email"
+							value={email}
+							onChange={(e) => setEmail(e.target.value)}
+							placeholder="you@example.com"
+							required
+							className="w-full"
+						/>
 					</div>
 
 					<div>
@@ -94,21 +92,12 @@ const SignInPage: FC = () => {
 							onChange={(e) => setPassword(e.target.value)}
 							placeholder="••••••••"
 							required
-							className={`w-full px-4 py-3 rounded-xl shadow-sm focus:outline-none transition duration-150 bg-slate-50 border border-slate-200 text-slate-900 placeholder:text-slate-400 dark:bg-white/6 dark:border-white/10 dark:text-white dark:placeholder:text-white/50 dark:focus:ring-white/20 dark:focus:border-white`}
 						/>
 					</div>
 
-					<button
-						type="submit"
-						disabled={loading}
-						className={`group relative inline-flex items-center justify-center gap-3 w-full px-6 py-3 mt-2 rounded-xl transition duration-200 ease-out overflow-hidden bg-slate-100 border border-slate-200 text-slate-900 shadow-sm hover:scale-[1.02] active:scale-95 hover:bg-slate-50 dark:bg-white/8 dark:border-white/20 dark:text-white dark:backdrop-blur-md dark:shadow-lg dark:hover:bg-white/12`}
-					>
-						<span className="absolute inset-0 pointer-events-none rounded-xl border border-slate-200 dark:border-white/10" />
-						<span className="absolute -left-10 -top-6 w-36 h-40 bg-linear-to-br from-slate-700/20 via-slate-600/10 to-transparent opacity-30 transform -rotate-12 blur-xl transition-transform duration-500 ease-out group-hover:translate-x-10 group-hover:scale-110 group-active:translate-x-6 dark:from-white/40 dark:via-white/10 dark:to-transparent" />
-						<span className="z-10 font-semibold">
-							{loading ? t("common.loading") : t("app.signIn.signInButton")}
-						</span>
-					</button>
+					<Button type="submit" disabled={loading} className="w-full">
+						{loading ? t("common.loading") : t("app.signIn.signInButton")}
+					</Button>
 				</form>
 
 				<div className="mt-6">
@@ -120,7 +109,7 @@ const SignInPage: FC = () => {
 						<span className="flex-1 h-px bg-slate-200 dark:bg-white/10" />
 					</div>
 
-					<button
+					<Button
 						type="button"
 						disabled={loading}
 						onClick={async () => {
@@ -135,9 +124,8 @@ const SignInPage: FC = () => {
 								setLoading(false);
 							}
 						}}
-						className="group relative inline-flex items-center justify-center gap-3 w-full px-6 py-3 mt-2 rounded-xl transition duration-200 ease-out overflow-hidden bg-white border border-slate-200 text-slate-900 shadow-sm hover:scale-[1.02] active:scale-95 hover:bg-slate-50 dark:bg-white/8 dark:border-white/20 dark:text-white dark:backdrop-blur-md dark:shadow-lg dark:hover:bg-white/12"
+						className="w-full"
 					>
-						<span className="absolute inset-0 pointer-events-none rounded-xl border border-slate-200 dark:border-white/10" />
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
 							width="24"
@@ -154,10 +142,8 @@ const SignInPage: FC = () => {
 							<path d="M9 18c-4.51 2-5-2-7-2" />
 						</svg>
 
-						<span className="z-10 font-semibold">
-							{loading ? t("common.loading") : t("app.signIn.signInWithGitHub")}
-						</span>
-					</button>
+						{loading ? t("common.loading") : t("app.signIn.signInWithGitHub")}
+					</Button>
 				</div>
 			</Card>
 		</main>

@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Button } from "#components/Common/Button.tsx";
 import { Input } from "#components/Common/Input.tsx";
+import { Select } from "#components/Common/Select.tsx";
 import type { GRADE_VALUE_TYPE } from "#prisma/client";
 import { formatTimeInput } from "#utils/admin/datetime.ts";
 import { sortByOrder } from "#utils/admin/sort.ts";
@@ -975,8 +976,8 @@ export function SettingsClient() {
 			</section>
 
 			<section className="space-y-6 rounded-2xl border border-slate-200/80 p-6 shadow-sm dark:border-white/10 dark:bg-white/4">
-				<header className="flex items-center justify-between">
-					<div>
+				<header className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between md:gap-10">
+					<div className="max-w-md space-y-1">
 						<h2 className="text-lg font-medium text-slate-900 dark:text-white">
 							{t("studyLevels")}
 						</h2>
@@ -984,33 +985,46 @@ export function SettingsClient() {
 							{t("studyLevelsDescription")}
 						</p>
 					</div>
-					<div className="flex items-center gap-2">
-						<Input
-							value={levelForm.label}
-							onChange={(event) =>
-								setLevelForm((prev) => ({ ...prev, label: event.target.value }))
-							}
-							placeholder={t("labelPlaceholder")}
-						/>
-						<Input
-							type="number"
-							value={levelForm.order}
-							onChange={(event) =>
-								setLevelForm((prev) => ({ ...prev, order: event.target.value }))
-							}
-							placeholder={t("orderPlaceholder")}
-						/>
-						<Button
-							onClick={() =>
-								void createLevel(
-									levelForm.label.trim(),
-									Number.parseInt(levelForm.order, 10),
-								)
-							}
-							disabled={isSaving}
-						>
-							{t("addLevel")}
-						</Button>
+					<div className="grid w-full gap-3 md:max-w-2xl md:grid-cols-[minmax(0,1.5fr),minmax(0,0.6fr),auto] md:items-end">
+						<div>
+							<Input
+								value={levelForm.label}
+								onChange={(event) =>
+									setLevelForm((prev) => ({
+										...prev,
+										label: event.target.value,
+									}))
+								}
+								placeholder={t("labelPlaceholder")}
+							/>
+						</div>
+						<div>
+							<Input
+								type="number"
+								value={levelForm.order}
+								onChange={(event) =>
+									setLevelForm((prev) => ({
+										...prev,
+										order: event.target.value,
+									}))
+								}
+								placeholder={t("orderPlaceholder")}
+							/>
+						</div>
+						<div className="flex">
+							<Button
+								className="mt-0! w-full! md:w-auto!"
+								onClick={() =>
+									void createLevel(
+										levelForm.label.trim(),
+										Number.parseInt(levelForm.order, 10),
+									)
+								}
+								disabled={isSaving}
+							>
+								{t("addLevel")}
+							</Button>
+						</div>
 					</div>
 				</header>
 
@@ -1028,8 +1042,8 @@ export function SettingsClient() {
 			</section>
 
 			<section className="space-y-6 rounded-2xl border border-slate-200/80 p-6 shadow-sm dark:border-white/10 dark:bg-white/4">
-				<header className="flex items-center justify-between">
-					<div>
+				<header className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between md:gap-10">
+					<div className="max-w-md space-y-1">
 						<h2 className="text-lg font-medium text-slate-900 dark:text-white">
 							{t("coursePeriods")}
 						</h2>
@@ -1037,55 +1051,67 @@ export function SettingsClient() {
 							{t("coursePeriodsDescription")}
 						</p>
 					</div>
-					<div className="flex flex-wrap items-center gap-2">
-						<Input
-							value={periodForm.label}
-							onChange={(event) =>
-								setPeriodForm((prev) => ({
-									...prev,
-									label: event.target.value,
-								}))
-							}
-							placeholder={t("labelPlaceholder")}
-						/>
-						<input
-							type="datetime-local"
-							value={periodForm.startsAt}
-							onChange={(event) =>
-								setPeriodForm((prev) => ({
-									...prev,
-									startsAt: event.target.value,
-								}))
-							}
-							className="rounded-lg border border-slate-200 px-3 py-2 text-sm shadow-sm dark:border-white/10 dark:bg-white/8"
-							disabled={isSaving}
-						/>
-						<input
-							type="datetime-local"
-							value={periodForm.endsAt}
-							onChange={(event) =>
-								setPeriodForm((prev) => ({
-									...prev,
-									endsAt: event.target.value,
-								}))
-							}
-							className="rounded-lg border border-slate-200 px-3 py-2 text-sm shadow-sm dark:border-white/10 dark:bg-white/8"
-							disabled={isSaving}
-						/>
-						<Input
-							type="number"
-							value={periodForm.order}
-							onChange={(event) =>
-								setPeriodForm((prev) => ({
-									...prev,
-									order: event.target.value,
-								}))
-							}
-							placeholder={t("orderPlaceholder")}
-						/>
-						<Button onClick={() => void createPeriod()} disabled={isSaving}>
-							{t("addPeriod")}
-						</Button>
+					<div className="grid w-full gap-3 md:max-w-3xl md:grid-cols-[minmax(0,1.4fr),repeat(2,minmax(0,1fr)),minmax(0,0.5fr),auto] md:items-end">
+						<div>
+							<Input
+								value={periodForm.label}
+								onChange={(event) =>
+									setPeriodForm((prev) => ({
+										...prev,
+										label: event.target.value,
+									}))
+								}
+								placeholder={t("labelPlaceholder")}
+							/>
+						</div>
+						<div>
+							<Input
+								type="datetime-local"
+								value={periodForm.startsAt}
+								onChange={(event) =>
+									setPeriodForm((prev) => ({
+										...prev,
+										startsAt: event.target.value,
+									}))
+								}
+								disabled={isSaving}
+							/>
+						</div>
+						<div>
+							<Input
+								type="datetime-local"
+								value={periodForm.endsAt}
+								onChange={(event) =>
+									setPeriodForm((prev) => ({
+										...prev,
+										endsAt: event.target.value,
+									}))
+								}
+								disabled={isSaving}
+							/>
+						</div>
+						<div>
+							<Input
+								type="number"
+								value={periodForm.order}
+								onChange={(event) =>
+									setPeriodForm((prev) => ({
+										...prev,
+										order: event.target.value,
+									}))
+								}
+								placeholder={t("orderPlaceholder")}
+							/>
+						</div>
+						<div className="flex">
+							<Button
+								className="mt-0! w-full! md:w-auto!"
+								onClick={() => void createPeriod()}
+								disabled={isSaving}
+							>
+								{t("addPeriod")}
+							</Button>
+						</div>
 					</div>
 				</header>
 
@@ -1123,8 +1149,8 @@ export function SettingsClient() {
 			</section>
 
 			<section className="space-y-6 rounded-2xl border border-slate-200/80 p-6 shadow-sm dark:border-white/10 dark:bg-white/4">
-				<header className="flex items-center justify-between">
-					<div>
+				<header className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between md:gap-10">
+					<div className="max-w-md space-y-1">
 						<h2 className="text-lg font-medium text-slate-900 dark:text-white">
 							{t("subjectCategories")}
 						</h2>
@@ -1132,39 +1158,46 @@ export function SettingsClient() {
 							{t("subjectCategoriesDescription")}
 						</p>
 					</div>
-					<div className="flex items-center gap-2">
-						<Input
-							value={categoryForm.label}
-							onChange={(event) =>
-								setCategoryForm((prev) => ({
-									...prev,
-									label: event.target.value,
-								}))
-							}
-							placeholder={t("labelPlaceholder")}
-						/>
-						<Input
-							type="number"
-							value={categoryForm.order}
-							onChange={(event) =>
-								setCategoryForm((prev) => ({
-									...prev,
-									order: event.target.value,
-								}))
-							}
-							placeholder={t("orderPlaceholder")}
-						/>
-						<Button
-							onClick={() =>
-								void createCategory(
-									categoryForm.label.trim(),
-									Number.parseInt(categoryForm.order, 10),
-								)
-							}
-							disabled={isSaving}
-						>
-							{t("addCategory")}
-						</Button>
+					<div className="grid w-full gap-3 md:max-w-2xl md:grid-cols-[minmax(0,1.5fr),minmax(0,0.6fr),auto] md:items-end">
+						<div>
+							<Input
+								value={categoryForm.label}
+								onChange={(event) =>
+									setCategoryForm((prev) => ({
+										...prev,
+										label: event.target.value,
+									}))
+								}
+								placeholder={t("labelPlaceholder")}
+							/>
+						</div>
+						<div>
+							<Input
+								type="number"
+								value={categoryForm.order}
+								onChange={(event) =>
+									setCategoryForm((prev) => ({
+										...prev,
+										order: event.target.value,
+									}))
+								}
+								placeholder={t("orderPlaceholder")}
+							/>
+						</div>
+						<div className="flex">
+							<Button
+								className="mt-0! w-full! md:w-auto!"
+								onClick={() =>
+									void createCategory(
+										categoryForm.label.trim(),
+										Number.parseInt(categoryForm.order, 10),
+									)
+								}
+								disabled={isSaving}
+							>
+								{t("addCategory")}
+							</Button>
+						</div>
 					</div>
 				</header>
 
@@ -1225,25 +1258,37 @@ function EditableRow({
 }: EditableRowProps) {
 	const t = useTranslations("app.admin.settings");
 	return (
-		<div className="flex flex-wrap items-center gap-3 rounded-xl border border-slate-200/70 p-4 shadow-sm dark:border-white/10 dark:bg-white/6">
-			<Input
-				value={label}
-				onChange={(event) => onChangeLabel(event.target.value)}
-				placeholder={t("labelPlaceholder")}
-				disabled={saving}
-			/>
-			<Input
-				type="number"
-				value={order}
-				onChange={(event) => onChangeOrder(event.target.value)}
-				placeholder={t("orderPlaceholder")}
-				disabled={saving}
-			/>
-			<div className="flex items-center gap-2">
-				<Button onClick={onSave} disabled={saving}>
+		<div className="grid gap-3 rounded-xl border border-slate-200/70 p-4 shadow-sm dark:border-white/10 dark:bg-white/6 md:grid-cols-[minmax(0,1.5fr),minmax(0,0.6fr),auto] md:items-center">
+			<div>
+				<Input
+					value={label}
+					onChange={(event) => onChangeLabel(event.target.value)}
+					placeholder={t("labelPlaceholder")}
+					disabled={saving}
+				/>
+			</div>
+			<div>
+				<Input
+					type="number"
+					value={order}
+					onChange={(event) => onChangeOrder(event.target.value)}
+					placeholder={t("orderPlaceholder")}
+					disabled={saving}
+				/>
+			</div>
+			<div className="flex flex-col gap-2 md:flex-row md:justify-end">
+				<Button
+					className="mt-0! w-full! md:w-auto!"
+					onClick={onSave}
+					disabled={saving}
+				>
 					{t("save")}
 				</Button>
-				<Button onClick={onDelete} disabled={saving}>
+				<Button
+					className="mt-0! w-full! md:w-auto!"
+					onClick={onDelete}
+					disabled={saving}
+				>
 					{t("delete")}
 				</Button>
 			</div>
@@ -1332,44 +1377,51 @@ function EditablePeriodRow({
 	}, [period.endsAt, period.label, period.order, period.startsAt]);
 
 	return (
-		<div className="flex flex-wrap items-center gap-3 rounded-xl border border-slate-200/70 p-4 shadow-sm dark:border-white/10 dark:bg-white/6">
-			<Input
-				value={form.label}
-				onChange={(event) =>
-					setForm((prev) => ({ ...prev, label: event.target.value }))
-				}
-				placeholder={t("labelPlaceholder")}
-				disabled={disabled}
-			/>
-			<input
-				type="datetime-local"
-				value={form.startsAt}
-				onChange={(event) =>
-					setForm((prev) => ({ ...prev, startsAt: event.target.value }))
-				}
-				className="rounded-lg border border-slate-200 px-3 py-2 text-sm shadow-sm dark:border-white/10 dark:bg-white/8"
-				disabled={disabled}
-			/>
-			<input
-				type="datetime-local"
-				value={form.endsAt}
-				onChange={(event) =>
-					setForm((prev) => ({ ...prev, endsAt: event.target.value }))
-				}
-				className="rounded-lg border border-slate-200 px-3 py-2 text-sm shadow-sm dark:border-white/10 dark:bg-white/8"
-				disabled={disabled}
-			/>
-			<Input
-				type="number"
-				value={form.order}
-				onChange={(event) =>
-					setForm((prev) => ({ ...prev, order: event.target.value }))
-				}
-				placeholder={t("orderPlaceholder")}
-				disabled={disabled}
-			/>
-			<div className="flex items-center gap-2">
+		<div className="grid gap-3 rounded-xl border border-slate-200/70 p-4 shadow-sm dark:border-white/10 dark:bg-white/6 md:grid-cols-[minmax(0,1.3fr),repeat(2,minmax(0,1fr)),minmax(0,0.5fr),auto] md:items-center">
+			<div>
+				<Input
+					value={form.label}
+					onChange={(event) =>
+						setForm((prev) => ({ ...prev, label: event.target.value }))
+					}
+					placeholder={t("labelPlaceholder")}
+					disabled={disabled}
+				/>
+			</div>
+			<div>
+				<Input
+					type="datetime-local"
+					value={form.startsAt}
+					onChange={(event) =>
+						setForm((prev) => ({ ...prev, startsAt: event.target.value }))
+					}
+					disabled={disabled}
+				/>
+			</div>
+			<div>
+				<Input
+					type="datetime-local"
+					value={form.endsAt}
+					onChange={(event) =>
+						setForm((prev) => ({ ...prev, endsAt: event.target.value }))
+					}
+					disabled={disabled}
+				/>
+			</div>
+			<div>
+				<Input
+					type="number"
+					value={form.order}
+					onChange={(event) =>
+						setForm((prev) => ({ ...prev, order: event.target.value }))
+					}
+					placeholder={t("orderPlaceholder")}
+					disabled={disabled}
+				/>
+			</div>
+			<div className="flex flex-col gap-2 md:flex-row md:justify-end">
 				<Button
+					className="mt-0! w-full! md:w-auto!"
 					onClick={() =>
 						void onSave(period.id, {
 							label: form.label.trim(),
@@ -1386,7 +1438,11 @@ function EditablePeriodRow({
 				>
 					Save
 				</Button>
-				<Button onClick={() => void onDelete(period.id)} disabled={disabled}>
+				<Button
+					className="mt-0! w-full! md:w-auto!"
+					onClick={() => void onDelete(period.id)}
+					disabled={disabled}
+				>
 					Delete
 				</Button>
 			</div>
@@ -1425,26 +1481,31 @@ function AbsenceUnitManager({
 
 	return (
 		<div className="space-y-4">
-			<div className="flex flex-wrap items-center gap-3">
-				<Input
-					value={label}
-					onChange={(event) => setLabel(event.target.value)}
-					placeholder={t("labelPlaceholder")}
-					disabled={disabled}
-				/>
-				<Button
-					onClick={() => {
-						if (!label.trim()) {
-							return;
-						}
-						void onCreate(label.trim(), selectedPeriods);
-						setLabel("");
-						setSelectedPeriods([]);
-					}}
-					disabled={disabled}
-				>
-					{t("addAbsenceUnit")}
-				</Button>
+			<div className="grid gap-3 md:grid-cols-[minmax(0,1.5fr),auto] md:items-end">
+				<div>
+					<Input
+						value={label}
+						onChange={(event) => setLabel(event.target.value)}
+						placeholder={t("labelPlaceholder")}
+						disabled={disabled}
+					/>
+				</div>
+				<div className="flex">
+					<Button
+						className="mt-0! w-full! md:w-auto!"
+						onClick={() => {
+							if (!label.trim()) {
+								return;
+							}
+							void onCreate(label.trim(), selectedPeriods);
+							setLabel("");
+							setSelectedPeriods([]);
+						}}
+						disabled={disabled}
+					>
+						{t("addAbsenceUnit")}
+					</Button>
+				</div>
 			</div>
 
 			<div className="flex flex-wrap gap-2">
@@ -1517,20 +1578,27 @@ function EditableAbsenceUnitRow({
 
 	return (
 		<div className="space-y-3 rounded-xl border border-slate-200/70 p-4 shadow-sm dark:border-white/10 dark:bg-white/6">
-			<div className="flex flex-wrap items-center gap-3">
-				<Input
-					value={label}
-					onChange={(event) => setLabel(event.target.value)}
-					placeholder={t("labelPlaceholder")}
-					disabled={disabled}
-				/>
+			<div className="grid gap-3 md:grid-cols-[minmax(0,1.5fr),auto,auto] md:items-center">
+				<div>
+					<Input
+						value={label}
+						onChange={(event) => setLabel(event.target.value)}
+						placeholder={t("labelPlaceholder")}
+						disabled={disabled}
+					/>
+				</div>
 				<Button
+					className="mt-0! w-full! md:w-auto!"
 					onClick={() => void onSave(unit.id, label.trim(), selected)}
 					disabled={disabled}
 				>
 					{t("save")}
 				</Button>
-				<Button onClick={() => void onDelete(unit.id)} disabled={disabled}>
+				<Button
+					className="mt-0! w-full! md:w-auto!"
+					onClick={() => void onDelete(unit.id)}
+					disabled={disabled}
+				>
 					{t("delete")}
 				</Button>
 			</div>
@@ -1704,101 +1772,137 @@ function SubjectManager({
 
 	return (
 		<div className="space-y-6">
-			<div className="flex flex-wrap items-center gap-3 rounded-xl border border-slate-200/70 p-4 shadow-sm dark:border-white/10 dark:bg-white/6">
-				<Input
-					value={form.label}
-					onChange={(event) =>
-						setForm((prev) => ({ ...prev, label: event.target.value }))
-					}
-					placeholder={t("labelPlaceholder")}
-					disabled={disabled}
-				/>
-				<Input
-					type="number"
-					value={form.weight}
-					onChange={(event) =>
-						setForm((prev) => ({ ...prev, weight: event.target.value }))
-					}
-					placeholder={t("weightPlaceholder")}
-					disabled={disabled}
-				/>
-				<select
-					value={form.categoryId}
-					onChange={(event) =>
-						setForm((prev) => ({ ...prev, categoryId: event.target.value }))
-					}
-					className="rounded-lg border border-slate-200 px-3 py-2 text-sm shadow-sm dark:border-white/10 dark:bg-white/8"
-					disabled={disabled}
-				>
-					<option value="">{t("noCategory")}</option>
-					{categories.map((category) => (
-						<option key={category.id} value={category.id}>
-							{category.label}
-						</option>
-					))}
-				</select>
-				<select
-					value={form.valueType}
-					onChange={(event) =>
-						setForm((prev) => ({
-							...prev,
-							valueType: event.target.value as GRADE_VALUE_TYPE,
-						}))
-					}
-					className="rounded-lg border border-slate-200 px-3 py-2 text-sm shadow-sm dark:border-white/10 dark:bg-white/8"
-					disabled={disabled}
-				>
-					<option value="NUMERIC">{t("valueTypes.numeric")}</option>
-					<option value="LITERAL">{t("valueTypes.literal")}</option>
-				</select>
+			<div className="grid gap-3 rounded-xl border border-slate-200/70 p-4 shadow-sm dark:border-white/10 dark:bg-white/6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 xl:items-end">
+				<div className="xl:col-span-2">
+					<Input
+						value={form.label}
+						onChange={(event) =>
+							setForm((prev) => ({ ...prev, label: event.target.value }))
+						}
+						placeholder={t("labelPlaceholder")}
+						disabled={disabled}
+					/>
+				</div>
+				<div>
+					<Input
+						type="number"
+						value={form.weight}
+						onChange={(event) =>
+							setForm((prev) => ({ ...prev, weight: event.target.value }))
+						}
+						placeholder={t("weightPlaceholder")}
+						disabled={disabled}
+					/>
+				</div>
+				<div>
+					<Select
+						values={[
+							{
+								items: [
+									{ value: "", label: t("noCategory") },
+									...categories.map((c) => ({ value: c.id, label: c.label })),
+								],
+							},
+						]}
+						defaultValue={form.categoryId || undefined}
+						onChange={(value) =>
+							setForm((prev) => ({ ...prev, categoryId: value }))
+						}
+						ariaLabel={t("noCategory")}
+						className="h-12 w-full"
+						disabled={disabled}
+					/>
+				</div>
+				<div>
+					<Select
+						values={[
+							{
+								items: [
+									{ value: "NUMERIC", label: t("valueTypes.numeric") },
+									{ value: "LITERAL", label: t("valueTypes.literal") },
+								],
+							},
+						]}
+						defaultValue={form.valueType}
+						onChange={(value) =>
+							setForm((prev) => ({
+								...prev,
+								valueType: value as GRADE_VALUE_TYPE,
+							}))
+						}
+						ariaLabel={t("valueTypes.select")}
+						className="h-12 w-full"
+						disabled={disabled}
+					/>
+				</div>
 				{form.valueType === "NUMERIC" ? (
 					<>
-						<Input
-							value={form.numericMin}
-							onChange={(event) =>
-								setForm((prev) => ({ ...prev, numericMin: event.target.value }))
-							}
-							placeholder={t("numericMinLabel")}
-							disabled={disabled}
-						/>
-						<Input
-							value={form.numericMax}
-							onChange={(event) =>
-								setForm((prev) => ({ ...prev, numericMax: event.target.value }))
-							}
-							placeholder={t("numericMaxLabel")}
-							disabled={disabled}
-						/>
-						<Input
-							value={form.numericDecimals}
+						<div>
+							<Input
+								value={form.numericMin}
+								onChange={(event) =>
+									setForm((prev) => ({
+										...prev,
+										numericMin: event.target.value,
+									}))
+								}
+								placeholder={t("numericMinLabel")}
+								disabled={disabled}
+							/>
+						</div>
+						<div>
+							<Input
+								value={form.numericMax}
+								onChange={(event) =>
+									setForm((prev) => ({
+										...prev,
+										numericMax: event.target.value,
+									}))
+								}
+								placeholder={t("numericMaxLabel")}
+								disabled={disabled}
+							/>
+						</div>
+						<div>
+							<Input
+								value={form.numericDecimals}
+								onChange={(event) =>
+									setForm((prev) => ({
+										...prev,
+										numericDecimals: event.target.value,
+									}))
+								}
+								placeholder={t("numericDecimalsLabel")}
+								disabled={disabled}
+							/>
+						</div>
+					</>
+				) : (
+					<div className="md:col-span-2 lg:col-span-3 xl:col-span-3">
+						<textarea
+							value={form.literalScaleRaw}
 							onChange={(event) =>
 								setForm((prev) => ({
 									...prev,
-									numericDecimals: event.target.value,
+									literalScaleRaw: event.target.value,
 								}))
 							}
-							placeholder={t("numericDecimalsLabel")}
+							rows={3}
+							placeholder={t("literalScalePlaceholder")}
+							className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm shadow-sm dark:border-white/10 dark:bg-white/8"
 							disabled={disabled}
 						/>
-					</>
-				) : (
-					<textarea
-						value={form.literalScaleRaw}
-						onChange={(event) =>
-							setForm((prev) => ({
-								...prev,
-								literalScaleRaw: event.target.value,
-							}))
-						}
-						rows={3}
-						placeholder={t("literalScalePlaceholder")}
-						className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm shadow-sm dark:border-white/10 dark:bg-white/8"
-						disabled={disabled}
-					/>
+					</div>
 				)}
-				<Button onClick={() => void submit()} disabled={disabled}>
-					{t("addSubject")}
-				</Button>
+				<div className="flex">
+					<Button
+						className="mt-0! w-full! md:w-auto!"
+						onClick={() => void submit()}
+						disabled={disabled}
+					>
+						{t("addSubject")}
+					</Button>
+				</div>
 			</div>
 
 			<div className="space-y-3">
@@ -1916,103 +2020,141 @@ function EditableSubjectRow({
 
 	return (
 		<div className="space-y-3 rounded-xl border border-slate-200/70 p-4 shadow-sm dark:border-white/10 dark:bg-white/6">
-			<div className="flex flex-wrap items-center gap-3">
-				<Input
-					value={form.label}
-					onChange={(event) =>
-						setForm((prev) => ({ ...prev, label: event.target.value }))
-					}
-					placeholder={t("labelPlaceholder")}
-					disabled={disabled}
-				/>
-				<Input
-					type="number"
-					value={form.weight}
-					onChange={(event) =>
-						setForm((prev) => ({ ...prev, weight: event.target.value }))
-					}
-					placeholder={t("weightPlaceholder")}
-					disabled={disabled}
-				/>
-				<select
-					value={form.categoryId}
-					onChange={(event) =>
-						setForm((prev) => ({ ...prev, categoryId: event.target.value }))
-					}
-					className="rounded-lg border border-slate-200 px-3 py-2 text-sm shadow-sm dark:border-white/10 dark:bg-white/8"
-					disabled={disabled}
-				>
-					<option value="">{t("noCategory")}</option>
-					{categories.map((category) => (
-						<option key={category.id} value={category.id}>
-							{category.label}
-						</option>
-					))}
-				</select>
-				<select
-					value={form.valueType}
-					onChange={(event) =>
-						setForm((prev) => ({
-							...prev,
-							valueType: event.target.value as GRADE_VALUE_TYPE,
-						}))
-					}
-					className="rounded-lg border border-slate-200 px-3 py-2 text-sm shadow-sm dark:border-white/10 dark:bg-white/8"
-					disabled={disabled}
-				>
-					<option value="NUMERIC">{t("valueTypes.numeric")}</option>
-					<option value="LITERAL">{t("valueTypes.literal")}</option>
-				</select>
-			</div>
-			{form.valueType === "NUMERIC" ? (
-				<div className="flex flex-wrap items-center gap-3">
+			<div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-8 xl:items-start">
+				<div className="xl:col-span-2">
 					<Input
-						value={form.numericMin}
+						value={form.label}
 						onChange={(event) =>
-							setForm((prev) => ({ ...prev, numericMin: event.target.value }))
+							setForm((prev) => ({ ...prev, label: event.target.value }))
 						}
-						placeholder={t("numericMinLabel")}
-						disabled={disabled}
-					/>
-					<Input
-						value={form.numericMax}
-						onChange={(event) =>
-							setForm((prev) => ({ ...prev, numericMax: event.target.value }))
-						}
-						placeholder={t("numericMaxLabel")}
-						disabled={disabled}
-					/>
-					<Input
-						value={form.numericDecimals}
-						onChange={(event) =>
-							setForm((prev) => ({
-								...prev,
-								numericDecimals: event.target.value,
-							}))
-						}
-						placeholder={t("numericDecimalsLabel")}
+						placeholder={t("labelPlaceholder")}
 						disabled={disabled}
 					/>
 				</div>
-			) : (
-				<textarea
-					value={form.literalScaleRaw}
-					onChange={(event) =>
-						setForm((prev) => ({
-							...prev,
-							literalScaleRaw: event.target.value,
-						}))
-					}
-					rows={3}
-					className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm shadow-sm dark:border-white/10 dark:bg-white/8"
+				<div>
+					<Input
+						type="number"
+						value={form.weight}
+						onChange={(event) =>
+							setForm((prev) => ({ ...prev, weight: event.target.value }))
+						}
+						placeholder={t("weightPlaceholder")}
+						disabled={disabled}
+					/>
+				</div>
+				<div className="xl:col-span-2">
+					<Select
+						values={[
+							{
+								items: [
+									{ value: "", label: t("noCategory") },
+									...categories.map((c) => ({ value: c.id, label: c.label })),
+								],
+							},
+						]}
+						defaultValue={form.categoryId || undefined}
+						onChange={(value) =>
+							setForm((prev) => ({ ...prev, categoryId: value }))
+						}
+						ariaLabel={t("noCategory")}
+						className="h-12 w-full"
+						disabled={disabled}
+					/>
+				</div>
+				<div>
+					<Select
+						values={[
+							{
+								items: [
+									{ value: "NUMERIC", label: t("valueTypes.numeric") },
+									{ value: "LITERAL", label: t("valueTypes.literal") },
+								],
+							},
+						]}
+						defaultValue={form.valueType}
+						onChange={(value) =>
+							setForm((prev) => ({
+								...prev,
+								valueType: value as GRADE_VALUE_TYPE,
+							}))
+						}
+						ariaLabel={t("valueTypes.select")}
+						className="h-12 w-full"
+						disabled={disabled}
+					/>
+				</div>
+				{form.valueType === "NUMERIC" ? (
+					<>
+						<div>
+							<Input
+								value={form.numericMin}
+								onChange={(event) =>
+									setForm((prev) => ({
+										...prev,
+										numericMin: event.target.value,
+									}))
+								}
+								placeholder={t("numericMinLabel")}
+								disabled={disabled}
+							/>
+						</div>
+						<div>
+							<Input
+								value={form.numericMax}
+								onChange={(event) =>
+									setForm((prev) => ({
+										...prev,
+										numericMax: event.target.value,
+									}))
+								}
+								placeholder={t("numericMaxLabel")}
+								disabled={disabled}
+							/>
+						</div>
+						<div>
+							<Input
+								value={form.numericDecimals}
+								onChange={(event) =>
+									setForm((prev) => ({
+										...prev,
+										numericDecimals: event.target.value,
+									}))
+								}
+								placeholder={t("numericDecimalsLabel")}
+								disabled={disabled}
+							/>
+						</div>
+					</>
+				) : (
+					<div className="md:col-span-2 lg:col-span-3 xl:col-span-4">
+						<textarea
+							value={form.literalScaleRaw}
+							onChange={(event) =>
+								setForm((prev) => ({
+									...prev,
+									literalScaleRaw: event.target.value,
+								}))
+							}
+							rows={3}
+							className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm shadow-sm dark:border-white/10 dark:bg-white/8"
+							disabled={disabled}
+						/>
+					</div>
+				)}
+			</div>
+			<div className="flex flex-wrap items-center gap-2 md:justify-end">
+				<Button
+					className="mt-0! w-full! md:w-auto!"
+					onClick={() => void save()}
 					disabled={disabled}
-				/>
-			)}
-			<div className="flex items-center gap-2">
-				<Button onClick={() => void save()} disabled={disabled}>
+				>
 					{t("save")}
 				</Button>
-				<Button onClick={() => void onDelete(subject.id)} disabled={disabled}>
+				<Button
+					className="mt-0! w-full! md:w-auto!"
+					onClick={() => void onDelete(subject.id)}
+					disabled={disabled}
+				>
 					{t("delete")}
 				</Button>
 			</div>

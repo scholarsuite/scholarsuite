@@ -86,7 +86,7 @@ export const SchoolYearDetails: FC<SchoolYearDetailsProps> = ({
 						value={String(year.evaluationPeriods.length)}
 					/>
 				</div>
-				{year.levels.length ? (
+				{year.levels.length && (
 					<div className="space-y-2">
 						<p className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-300">
 							{t("overview.levels")}
@@ -102,9 +102,9 @@ export const SchoolYearDetails: FC<SchoolYearDetailsProps> = ({
 							))}
 						</div>
 					</div>
-				) : null}
+				)}
 
-				{year.absenceUnits.length ? (
+				{year.absenceUnits.length && (
 					<div className="space-y-2">
 						<p className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-300">
 							{t("overview.absenceUnits")}
@@ -120,9 +120,9 @@ export const SchoolYearDetails: FC<SchoolYearDetailsProps> = ({
 							))}
 						</div>
 					</div>
-				) : null}
+				)}
 
-				{year.notes ? (
+				{year.notes && (
 					<div className="space-y-2">
 						<p className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-300">
 							{t("overview.notes")}
@@ -131,7 +131,7 @@ export const SchoolYearDetails: FC<SchoolYearDetailsProps> = ({
 							{year.notes}
 						</p>
 					</div>
-				) : null}
+				)}
 			</section>
 
 			<EvaluationPeriodsSection

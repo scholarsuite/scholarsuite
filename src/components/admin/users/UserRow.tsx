@@ -181,11 +181,11 @@ export const UserRow: FC<UserRowProps> = ({ user, onUpdated, roleOptions }) => {
 						<p className="font-medium text-slate-900 dark:text-white">
 							{user.name}
 						</p>
-						{user.firstName || user.lastName ? (
+						{(user.firstName || user.lastName) && (
 							<p className="text-xs text-slate-500 dark:text-slate-300">
 								{[user.firstName, user.lastName].filter(Boolean).join(" ")}
 							</p>
-						) : null}
+						)}
 					</div>
 				)}
 			</Td>
@@ -209,12 +209,15 @@ export const UserRow: FC<UserRowProps> = ({ user, onUpdated, roleOptions }) => {
 					<div className="flex flex-wrap gap-2">
 						{roleOptions.map((role) => {
 							const checked = localUser.roles.includes(role);
+
 							return (
 								<label
 									key={role}
 									className="flex items-center gap-2 rounded-lg border border-slate-200 px-2 py-1 text-xs uppercase tracking-wide text-slate-600 dark:border-white/10 dark:text-white/70"
+									htmlFor={`role-${role}`}
 								>
-									<input
+									<Input
+										id={`role-${role}`}
 										type="checkbox"
 										checked={checked}
 										onChange={() => toggleRole(role)}
@@ -244,7 +247,7 @@ export const UserRow: FC<UserRowProps> = ({ user, onUpdated, roleOptions }) => {
 					>
 						{isEditing ? t("cancel") : t("edit")}
 					</Button>
-					{isEditing ? (
+					{isEditing && (
 						<Button
 							type="button"
 							onClick={() => void saveChanges()}
@@ -252,7 +255,7 @@ export const UserRow: FC<UserRowProps> = ({ user, onUpdated, roleOptions }) => {
 						>
 							{saving ? t("saving") : t("save")}
 						</Button>
-					) : null}
+					)}
 					<Button
 						type="button"
 						onClick={() => void toggleArchive()}
@@ -268,7 +271,7 @@ export const UserRow: FC<UserRowProps> = ({ user, onUpdated, roleOptions }) => {
 						{t("resetPassword")}
 					</Button>
 				</div>
-				{error ? <p className="mt-2 text-xs text-red-500">{error}</p> : null}
+				{error && <p className="mt-2 text-xs text-red-500">{error}</p>}
 			</Td>
 		</Tr>
 	);

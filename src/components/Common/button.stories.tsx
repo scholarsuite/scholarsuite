@@ -28,4 +28,25 @@ export const Disabled: Story = {
 	},
 };
 
+export const Outline: Story = {
+	args: {
+		children: "Button Link",
+		variant: "outline",
+	},
+};
+
+export const Success: Story = {
+	args: {
+		children: "Button Link",
+		variant: "success",
+	},
+};
+
+export const Danger: Story = {
+	args: {
+		children: "Button Link",
+		variant: "danger",
+	},
+};
+
 export default { component: Button } as Meta;

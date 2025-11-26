@@ -24,4 +24,30 @@ export const Disabled: Story = {
 	},
 };
 
+export const DateInput: Story = {
+	args: {
+		type: "date",
+	},
+};
+
+export const DateTimeInput: Story = {
+	args: {
+		type: "datetime-local",
+	},
+};
+
+export const PasswordInput: Story = {
+	args: {
+		type: "password",
+		placeholder: "Enter your password",
+	},
+};
+
+export const checkbox: Story = {
+	args: {
+		type: "checkbox",
+		checked: true,
+	},
+};
+
 export default { component: Input } as Meta;

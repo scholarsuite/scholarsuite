@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 import type { FC } from "react";
 import { useState } from "react";
 import { Button } from "#components/Common/Button.tsx";
+import { InfoBox } from "#components/Common/InfoBox.tsx";
 import { Input } from "#components/Common/Input.tsx";
 
 type CreateSchoolYearFormProps = {
@@ -80,11 +81,7 @@ export const CreateSchoolYearForm: FC<CreateSchoolYearFormProps> = ({
 				</p>
 			</header>
 
-			{error ? (
-				<p className="rounded-xl border border-rose-200 bg-rose-50/80 p-3 text-sm text-rose-700 dark:border-rose-500/30 dark:bg-rose-500/10 dark:text-rose-200">
-					{error}
-				</p>
-			) : null}
+			{error && <InfoBox variant="error">{error}</InfoBox>}
 
 			<div className="grid gap-4 md:grid-cols-2">
 				<Input
@@ -131,14 +128,9 @@ export const CreateSchoolYearForm: FC<CreateSchoolYearFormProps> = ({
 				>
 					{t("creation.submit")}
 				</Button>
-				<button
-					type="button"
-					onClick={onCancel}
-					disabled={isSubmitting}
-					className="text-sm font-medium text-slate-600 underline-offset-4 transition hover:text-slate-800 hover:underline dark:text-slate-300 dark:hover:text-white"
-				>
+				<Button type="button" onClick={onCancel} disabled={isSubmitting}>
 					{t("creation.cancel")}
-				</button>
+				</Button>
 			</div>
 		</section>
 	);

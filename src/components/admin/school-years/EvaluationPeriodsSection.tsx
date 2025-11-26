@@ -1,11 +1,11 @@
 "use client";
 
 import { TrashIcon } from "@heroicons/react/24/outline";
-import classNames from "classnames";
 import { useFormatter, useTranslations } from "next-intl";
 import type { FC } from "react";
 import { useEffect, useState } from "react";
 import { Button } from "#components/Common/Button.tsx";
+import { InfoBox } from "#components/Common/InfoBox.tsx";
 import { Input } from "#components/Common/Input.tsx";
 import { StatusBadge } from "#components/Common/StatusBadge.tsx";
 import { Table, Tbody, Td, Th, Thead, Tr } from "#components/Common/Table.tsx";
@@ -145,11 +145,7 @@ export const EvaluationPeriodsSection: FC<EvaluationPeriodsSectionProps> = ({
 				</Button>
 			</div>
 
-			{error ? (
-				<p className="rounded-xl border border-rose-200 bg-rose-50/80 p-3 text-sm text-rose-700 dark:border-rose-500/30 dark:bg-rose-500/10 dark:text-rose-200">
-					{error}
-				</p>
-			) : null}
+			{error && <InfoBox variant="error">{error}</InfoBox>}
 
 			<div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
 				<Input
@@ -238,24 +234,16 @@ export const EvaluationPeriodsSection: FC<EvaluationPeriodsSectionProps> = ({
 										</StatusBadge>
 									</Td>
 									<Td className="text-right">
-										<button
+										<Button
 											type="button"
 											onClick={() => void removePeriod(period.id)}
 											disabled={removingId === period.id || submitting}
-											className={classNames(
-												"text-sm font-medium text-rose-600 transition dark:text-rose-300",
-												{
-													"cursor-not-allowed opacity-60":
-														removingId === period.id || submitting,
-													"hover:text-rose-500 hover:underline": !(
-														removingId === period.id || submitting
-													),
-												},
-											)}
+											size="small"
+											variant="danger"
 										>
 											<TrashIcon className="mr-1 inline size-4 align-middle" />
 											{t("evaluationPeriods.remove")}
-										</button>
+										</Button>
 									</Td>
 								</Tr>
 							))}

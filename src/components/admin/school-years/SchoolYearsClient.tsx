@@ -1,5 +1,6 @@
 "use client";
 
+import classNames from "classnames";
 import { useFormatter, useTranslations } from "next-intl";
 import type { FC } from "react";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -328,12 +329,21 @@ export const SchoolYearsClient: FC = () => {
 						<div className="mt-4 flex flex-wrap gap-2">
 							{filters.map((item) => {
 								const isActive = item.id === filter;
+
 								return (
 									<button
 										key={item.id}
 										type="button"
 										onClick={() => setFilter(item.id)}
-										className={`rounded-full border px-3 py-1 text-xs font-medium transition focus:outline-none focus:ring-2 focus:ring-indigo-200 dark:focus:ring-indigo-400 ${isActive ? "border-indigo-400 bg-indigo-50 text-indigo-700 dark:border-indigo-300/60 dark:bg-indigo-500/10 dark:text-indigo-200" : "border-slate-200 text-slate-600 hover:border-slate-300 dark:border-white/10 dark:text-slate-300"}`}
+										className={classNames(
+											"rounded-full border px-3 py-1 text-xs font-medium transition focus:outline-none focus:ring-2 focus:ring-indigo-200 dark:focus:ring-indigo-400",
+											{
+												"border-indigo-400 bg-indigo-50 text-indigo-700 dark:border-indigo-300/60 dark:bg-indigo-500/10 dark:text-indigo-200":
+													isActive,
+												"border-slate-200 text-slate-600 hover:border-slate-300 dark:border-white/10 dark:text-slate-300":
+													!isActive,
+											},
+										)}
 									>
 										{item.label}
 									</button>

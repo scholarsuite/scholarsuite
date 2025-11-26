@@ -264,9 +264,9 @@ export const UsersClient: FC<UsersClientProps> = ({ defaultRole }) => {
 						<Button type="button" onClick={resetForm} disabled={isSaving}>
 							{t("reset")}
 						</Button>
-						{createError ? (
+						{createError && (
 							<p className="text-sm text-red-500">{createError}</p>
-						) : null}
+						)}
 					</div>
 				</form>
 			</section>

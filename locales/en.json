@@ -156,7 +156,7 @@
       "logs": {
         "title": "System Logs",
         "description": "Review recent system events to monitor activity and troubleshoot issues.",
-        "showingLogs": "Showing {count} of the latest {limit} log entries. New entries appear here once they are written to the database.",
+        "showingLogs": "Showing {count} of {total} log entries (page {page} of {totalPages}).",
         "noLogs": "No logs recorded yet.",
         "requestId": "Request {id}",
         "user": "User",
@@ -164,7 +164,27 @@
         "systemUser": "System",
         "viewMetadata": "View metadata",
         "noMetadata": "No metadata",
-        "unableToDisplay": "Unable to display metadata: {message}"
+        "unableToDisplay": "Unable to display metadata: {message}",
+        "filters": {
+          "level": "Log level",
+          "levelAll": "All levels",
+          "start": "Start date",
+          "end": "End date",
+          "apply": "Apply",
+          "reset": "Reset"
+        },
+        "messages": {
+          "loading": "Loading logs...",
+          "loadFailed": "Unable to load logs (status {status}).",
+          "genericError": "Something went wrong while loading logs.",
+          "invalidDateRange": "End date must be on or after the start date."
+        },
+        "pagination": {
+          "summary": "Page {page} of {totalPages}",
+          "empty": "No pages to display.",
+          "previous": "Previous",
+          "next": "Next"
+        }
       },
       "schoolYears": {
         "title": "School year orchestration",
